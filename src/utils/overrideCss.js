@@ -5,8 +5,8 @@ const theme = createTheme({
         MuiAppBar: {
             styleOverrides: {
                 colorPrimary: {
-                  backgroundColor: 'white',
-                  boxShadow: 'none',
+                    backgroundColor: 'white',
+                    boxShadow: 'none',
                 }
             }
         },
@@ -15,6 +15,11 @@ const theme = createTheme({
         secondary: {
             main: '#000',
         },
+    },
+    typography: {
+        fontFamily: [
+            'sans-serif',
+        ].join(','),
       },
 });
 

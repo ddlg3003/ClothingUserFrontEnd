@@ -59,7 +59,7 @@ const Navbar = () => {
                         </Button>
                         {!isAuthenticated && 
                             <Button color="secondary" onClick={() => {}}> 
-                                {!isMobile && <>Login &nbsp;</>}
+                                {!isMobile && <>Đăng nhập &nbsp;</>}
                                 <AccountCircle />
                             </Button>
                         }                           
