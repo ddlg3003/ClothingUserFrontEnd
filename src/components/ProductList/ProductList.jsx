@@ -11,7 +11,7 @@ const PorductList = () => {
             <Typography variant="h3" align="center" paddingBottom="20px" paddingTop="40px">Sản phẩm hot</Typography>
             <Products />
             <div className={classes.moreButton}>
-                <Button variant="contained" color="secondary" style={{ margin: '20px 0 40px 0' }}>Xem thêm</Button> 
+                <Button variant="contained" color="secondary" style={{ margin: '20px 0 40px 0' }} size="large">Xem thêm</Button> 
             </div>
         </div>
     )
