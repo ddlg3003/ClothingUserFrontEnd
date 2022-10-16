@@ -14,7 +14,7 @@ const Footer = () => {
 
     const content = {
         'brand': { image: logo, width: 110 },
-        'copy': '© 2022 ADNCloth.',
+        'copy': '©2022 ADNCloth.',
         'link1': 'FaceBook',
         'link2': 'Instagram',
         'link3': 'Twitter',
@@ -34,11 +34,10 @@ const Footer = () => {
         <Container maxWidth="md">
           <Box py={6} className={classes.rootBox}>
             <Link href="#" color="inherit" underline="none">
-              <img src={logo} alt="ADNCloth" />
+              <img src={logo} alt="ADNCloth" width='110' />
             </Link> 
             {/* <Link to="/"><img src={logo} /></Link> */}
             <Box component="nav" className={classes.footerNav}>
-              
               <Link href="#" variant="body1" color="textPrimary" className={classes.footerLink}><FacebookIcon/></Link>
               <Link href="#" variant="body1" color="textPrimary" className={classes.footerLink}><InstagramIcon/></Link>
               <Link href="#" variant="body1" color="textPrimary" className={classes.footerLink}><TwitterIcon/></Link>

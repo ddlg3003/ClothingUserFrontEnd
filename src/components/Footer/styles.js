@@ -16,7 +16,8 @@ export default makeStyles((theme) => ({
     flexWrap: 'wrap',
     justifyContent: 'center',
     marginRight: 'auto',
-    marginLeft: theme.spacing(3),
+    marginLeft: 'auto',
+    // marginLeft: theme.spacing(3),
     marginBottom: theme.spacing(0),
 
     [theme.breakpoints.down('md')]: {
@@ -28,8 +29,8 @@ export default makeStyles((theme) => ({
   },
 
   footerLink: {
-    marginLeft: theme.spacing(3),
-    marginRight: theme.spacing(3),
+    marginLeft: theme.spacing(0),
+    marginRight: theme.spacing(2),
     [theme.breakpoints.down('md')]: {
       marginBottom: theme.spacing(2),
     }
