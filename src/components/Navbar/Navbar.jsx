@@ -33,11 +33,11 @@ const Navbar = () => {
                         }}
                     />                    
                     <div>
-                        <Button color="secondary">
+                        <Button color="black">
                             <ShoppingCartIcon />
                         </Button>
                         {!isAuthenticated && 
-                            <Button color="secondary" onClick={() => {}}> 
+                            <Button color="black" onClick={() => {}}> 
                                 {!isMobile && <>Đăng nhập &nbsp;</>}
                                 <AccountCircle />
                             </Button>

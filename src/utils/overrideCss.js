@@ -12,9 +12,12 @@ const theme = createTheme({
         },
     },
     palette: {
-        secondary: {
+        black: {
             main: '#000',
         },
+        white: {
+            main: '#fff',
+        }
     },
     typography: {
         allVariants: {

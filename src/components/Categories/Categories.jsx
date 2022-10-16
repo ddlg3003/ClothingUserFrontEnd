@@ -8,7 +8,7 @@ const Categories = () => {
 
     return (
         <div className={classes.cateContainer}>
-            <Typography variant="h3" align="center" paddingBottom="30px" paddingTop="40px">DANH MỤC</Typography>
+            <Typography fontSize="30px" fontWeight="bold" align="center" paddingBottom="30px" paddingTop="40px">DANH MỤC</Typography>
             <Grid container justifyContent="center" spacing={4}>                 
                 <Category />
                 <Category />
