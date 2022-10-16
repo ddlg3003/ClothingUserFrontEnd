@@ -8,8 +8,8 @@ const Categories = () => {
 
     return (
         <div className={classes.cateContainer}>
-            <Typography variant="h3" align="center" paddingBottom="20px" paddingTop="40px">Danh mục</Typography>
-            <Grid container justifyContent="center" spacing={2}>                 
+            <Typography variant="h3" align="center" paddingBottom="30px" paddingTop="40px">DANH MỤC</Typography>
+            <Grid container justifyContent="center" spacing={4}>                 
                 <Category />
                 <Category />
                 <Category />

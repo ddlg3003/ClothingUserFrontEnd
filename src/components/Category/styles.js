@@ -15,24 +15,24 @@ export default makeStyles((theme) => ({
         }
     },
     image: {
-        height: '800px',
+        height: '600px',
         marginBottom: '10px',
-        width: '600px',
+        width: '400px',
         borderRadius: '10px',
         [theme.breakpoints.down('sm')]: {
-            height: '400px',
-            width: '300px',
+            height: '300px',
+            width: '200px',
         },
     },
     cateName: {
         padding: '20px',
         color: '#fff',
         borderRadius: '10px',
-        width: '600px',
+        width: '400px',
         backgroundColor: '#1a1a1a',
         [theme.breakpoints.down('sm')]: {
             padding: '10px',
-            width: '300px',
+            width: '200px',
         },
     }
 }));

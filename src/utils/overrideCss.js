@@ -17,10 +17,11 @@ const theme = createTheme({
         },
     },
     typography: {
-        fontFamily: [
-            'sans-serif',
-        ].join(','),
-      },
+        allVariants: {
+            fontFamily: '"Poppins", sans-serif',
+            // fontWeight: '100',
+        },
+    },
 });
 
 export default theme;

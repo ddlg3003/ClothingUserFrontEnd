@@ -16,43 +16,22 @@ const Navbar = () => {
         <>
             <AppBar position="fixed">
                 <Toolbar className={classes.toolbar}>
-                    {!isMobile ? 
-                        <>
-                            <Link to="/"><img src={logo} /></Link>
-                            <TextField 
-                                className={classes.search}
-                                onKeyPress={() => {}}
-                                // value={}
-                                onChange={() => {}}
-                                variant="standard"
-                                InputProps={{
-                                    // className: classes.input,
-                                    startAdornment: (
-                                        <InputAdornment position="start">
-                                            <SearchIcon />
-                                        </InputAdornment>
-                                    )
-                                }}
-                            />
-                        </> : 
-                        <>
-                            <TextField 
-                                onKeyPress={() => {}}
-                                // value={}
-                                onChange={() => {}}
-                                variant="standard"
-                                className={classes.search}
-                                InputProps={{
-                                    // className: classes.input,
-                                    startAdornment: (
-                                        <InputAdornment position="start">
-                                            <SearchIcon />
-                                        </InputAdornment>
-                                    )
-                                }}
-                            />                        
-                        </>
-                    }
+                    {!isMobile && <Link to="/"><img src={logo} /></Link>}
+                    <TextField 
+                        className={classes.search}
+                        onKeyPress={() => {}}
+                        // value={}
+                        onChange={() => {}}
+                        variant="standard"
+                        InputProps={{
+                            // className: classes.input,
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <SearchIcon />
+                                </InputAdornment>
+                            )
+                        }}
+                    />                    
                     <div>
                         <Button color="secondary">
                             <ShoppingCartIcon />
