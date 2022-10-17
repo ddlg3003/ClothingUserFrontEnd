@@ -17,12 +17,12 @@ const Product = () => {
                     <div>
                         <Rating readOnly value={4.5} precision={0.1} size="large" /> 
                     </div>
-                    <Typography variant="title1" className={classes.title} fontSize={18}>Áo Polo nam Pique Cotton USA thấm hút tối đa (kẻ sọc)</Typography>
+                    <Typography fontWeight="normal" variant="title1" className={classes.title} fontSize={16}>Áo Polo nam Pique Cotton USA thấm hút tối đa (kẻ sọc)</Typography>
                     <Typography 
                         color="error" 
                         className={classes.title} 
-                        fontWeight="bold" 
-                        fontSize={20}
+                        fontWeight="bold"
+                        fontSize={15}
                     >
                         {
                             Intl.NumberFormat('vi-VN', {

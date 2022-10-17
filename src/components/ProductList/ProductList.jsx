@@ -8,8 +8,7 @@ const PorductList = () => {
 
     return (
         <div className={classes.container}>
-            <Typography fontSize="30px" fontWeight="bold" align="center" paddingBottom="30px" paddingTop="40px">SẢN PHẨM HOT</Typography>
-            <Products />
+  <Typography letterSpacing="2px" fontSize="25px" fontWeight="normal" align="center" paddingBottom="30px" paddingTop="40px">SẢN PHẨM HOT</Typography>            <Products />
             <div className={classes.moreButton}>
                 <Button variant="contained" color="black" style={{ margin: '20px 0 40px 0', color: 'white' }} size="large">Xem thêm</Button> 
             </div>
