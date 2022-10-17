@@ -10,39 +10,21 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 
 const Footer = () => {
     const classes = useStyles();
-    const logo = 'https://fontmeme.com/permalink/221015/466d5aeb7170191e34604da1b59fb9b2.png';
-
-    const content = {
-        'brand': { image: logo, width: 110 },
-        'copy': '©2022 ADNCloth.',
-        'link1': 'FaceBook',
-        'link2': 'Instagram',
-        'link3': 'Twitter',
-        'link4': 'Reddit'
-      };
-    
-      let brand;
-    
-      if (content.brand.image) {
-        brand = <img src={ content.brand.image } alt="" width={ content.brand.width } />;
-      } else {
-        brand = content.brand.text || '';
-      }
+    const logo = 'https://fontmeme.com/permalink/221016/0904f554131fbb26609e131d851031a4.png?fbclid=IwAR0arYmZn4xlsq0mSYQ2nGP5qIAm4aXMe_D1TZPw1HcnjrCczz3QX71si5o';
 
     return (
         <>
-        <Container maxWidth="md">
-          <Box py={6} className={classes.rootBox}>
+        <Container disableGutters maxWidth={false} >
+          <Box className={classes.rootBox}>
             <Link href="#" color="inherit" underline="none">
-              <img src={logo} alt="ADNCloth" width='110' />
+              <img src={logo} alt="ADNCloth" width='110'  />
             </Link> 
-            {/* <Link to="/"><img src={logo} /></Link> */}
             <Box component="nav" className={classes.footerNav}>
-              <Link href="#" variant="body1" color="textPrimary" className={classes.footerLink}><FacebookIcon/></Link>
-              <Link href="#" variant="body1" color="textPrimary" className={classes.footerLink}><InstagramIcon/></Link>
-              <Link href="#" variant="body1" color="textPrimary" className={classes.footerLink}><TwitterIcon/></Link>
+              <Link href="#" color="textPrimary" className={classes.footerLink} style={{ color: '#fff' }}><FacebookIcon/></Link>
+              <Link href="#" color="textPrimary" className={classes.footerLink} style={{ color: '#fff' }}><InstagramIcon/></Link>
+              <Link href="#" color="textPrimary" className={classes.footerLink} style={{ color: '#fff' }}><TwitterIcon/></Link>
             </Box>
-            <Typography color="textSecondary" component="p" variant="caption" gutterBottom={false}>{content['copy']}</Typography>
+            <Typography style={{ color: '#fff' }} component="p" variant="caption" gutterBottom={false}>©2022 ADNCloth.</Typography>
           </Box>
         </Container>
         </>

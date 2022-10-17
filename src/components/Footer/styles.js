@@ -3,6 +3,12 @@ import { makeStyles } from '@mui/styles';
 export default makeStyles((theme) => ({
 
   rootBox: {
+    position: 'absolute',
+    left: '0',
+    bottom: '0',
+    right: '0',
+    padding: '30px',
+    backgroundColor: 'black',
     display: 'flex',
     flexWrap: 'wrap',
     alignItems: 'center',
@@ -17,8 +23,9 @@ export default makeStyles((theme) => ({
     justifyContent: 'center',
     marginRight: 'auto',
     marginLeft: 'auto',
-    // marginLeft: theme.spacing(3),
+    // marginLeft: theme.spacing(3),  
     marginBottom: theme.spacing(0),
+    
 
     [theme.breakpoints.down('md')]: {
       width: '100%',
@@ -30,7 +37,7 @@ export default makeStyles((theme) => ({
 
   footerLink: {
     marginLeft: theme.spacing(0),
-    marginRight: theme.spacing(2),
+    marginRight: theme.spacing(3),
     [theme.breakpoints.down('md')]: {
       marginBottom: theme.spacing(2),
     }
