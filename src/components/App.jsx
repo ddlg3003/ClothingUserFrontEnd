@@ -8,13 +8,17 @@ import ProductDetail from './ProductDetail/ProductDetail';
 import Profile from './Profile/Profile'
 import Cart from './Cart/Cart';
 import Login from './Login/Login';
+import useStyles from './styles';
 
 const App = () => {
+    const classes = useStyles();
+
     return (
-        <div>
+        <div className={classes.root}>
             <CssBaseline />
             <Navbar />
-            <main>
+            <main className={classes.content}>
+                <div className={classes.toolbar}/>
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/products/:id" element={<ProductDetail />} />

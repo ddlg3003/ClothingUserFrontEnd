@@ -5,17 +5,26 @@ const theme = createTheme({
         MuiAppBar: {
             styleOverrides: {
                 colorPrimary: {
-                  backgroundColor: 'white',
-                  boxShadow: 'none',
+                    backgroundColor: 'white',
+                    boxShadow: 'none',
                 }
             }
         },
     },
     palette: {
-        secondary: {
+        black: {
             main: '#000',
         },
-      },
+        white: {
+            main: '#fff',
+        }
+    },
+    typography: {
+        allVariants: {
+            fontFamily: '"Poppins", sans-serif',
+            // fontWeight: '100',
+        },
+    },
 });
 
 export default theme;

@@ -1,12 +1,14 @@
 import React from 'react';
 import Categories from '../Categories/Categories';
-import Products from '../Products/Products';
+import ProductList from '../ProductList/ProductList';
+import Carousel from '../Carousel/Carousel';
 
 const Home = () => {
     return (
         <div>
+            <Carousel />
             <Categories />
-            <Products />
+            <ProductList />
         </div>
     )
 }
