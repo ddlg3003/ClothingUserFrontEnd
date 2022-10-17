@@ -1,4 +1,5 @@
 import React from 'react';
+import { WHITE_LOGO } from '../../utils/globalVariables';
 import { Container, Typography, Box, Link } from '@mui/material';
 import useStyles from './styles';
 import FacebookIcon from '@mui/icons-material/Facebook';
@@ -7,7 +8,7 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 
 const Footer = () => {
     const classes = useStyles();
-    const logo = 'https://fontmeme.com/permalink/221016/0904f554131fbb26609e131d851031a4.png?fbclid=IwAR0arYmZn4xlsq0mSYQ2nGP5qIAm4aXMe_D1TZPw1HcnjrCczz3QX71si5o';
+    const logo = WHITE_LOGO;
 
     return (
         <>

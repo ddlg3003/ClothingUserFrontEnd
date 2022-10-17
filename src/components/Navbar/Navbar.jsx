@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { BLACK_LOGO } from '../../utils/globalVariables';
 import { AppBar, Toolbar, Drawer, Button, IconButton, useMediaQuery } from '@mui/material';
 import { TextField, InputAdornment } from '@mui/material';
 import { Search as SearchIcon, AccountCircle } from '@mui/icons-material';
@@ -6,9 +7,10 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Link } from 'react-router-dom';
 import useStyles from './styles';
 
+
 const Navbar = () => {
     const classes = useStyles();
-    const logo = 'https://fontmeme.com/permalink/221015/466d5aeb7170191e34604da1b59fb9b2.png';
+    const logo = BLACK_LOGO;
     const isMobile = useMediaQuery('(max-width: 800px)');
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
