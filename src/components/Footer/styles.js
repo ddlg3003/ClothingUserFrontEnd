@@ -3,10 +3,10 @@ import { makeStyles } from '@mui/styles';
 export default makeStyles((theme) => ({
 
   rootBox: {
-    position: 'absolute',
-    left: '0',
-    bottom: '0',
-    right: '0',
+    // position: 'absolute',
+    // left: '0',
+    // bottom: '0',
+    // right: '0',
     padding: '30px',
     backgroundColor: 'black',
     display: 'flex',
