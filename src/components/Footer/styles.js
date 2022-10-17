@@ -38,6 +38,7 @@ export default makeStyles((theme) => ({
   footerLink: {
     marginLeft: theme.spacing(0),
     marginRight: theme.spacing(3),
+    paddingRight: '10px',
     [theme.breakpoints.down('md')]: {
       marginBottom: theme.spacing(2),
     }
