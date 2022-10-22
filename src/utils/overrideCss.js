@@ -6,7 +6,7 @@ const theme = createTheme({
             styleOverrides: {
                 colorPrimary: {
                     backgroundColor: 'white',
-                    boxShadow: 'none',
+                    // boxShadow: 'none',
                 }
             }
         },

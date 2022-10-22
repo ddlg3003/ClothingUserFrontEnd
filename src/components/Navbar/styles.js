@@ -3,7 +3,7 @@ import { makeStyles } from '@mui/styles';
 export default makeStyles((theme) => ({
     toolbar: {
         margin: '0 100px',
-        height: '100px',
+        height: '80px',
         borderBottom: '1px solid #dedede',
         display: 'flex',
         justifyContent: 'space-between',
@@ -13,8 +13,44 @@ export default makeStyles((theme) => ({
         }
     },
     search: {
+        [theme.breakpoints.down('md')]: {
+            width: '40%',
+        },
         [theme.breakpoints.down('sm')]: {
-            width: '50%',
+            width: '30%',
         }
+    },
+    nav: {
+        display: 'flex',
+        justifyContent: 'center',
+    },
+    hoverPaper: {
+        zIndex: 2,
+        // display: 'none',
+    },
+    popOverRoot: {
+        pointerEvents: 'none',
+    },
+    // navButton: {
+    //     width: 'auto',
+    //     height: '62px',
+    // },
+    drawer: {
+        [theme.breakpoints.up('sm')]: {
+            width: '240px',
+            flexShrink: 0
+        }
+    },
+    drawerPaper: {
+        width: '240px',
+    },
+    responsiveLogo: {
+        display: 'flex',
+        justifyContent: 'center',
+    },
+    dropdown: {
+        [theme.breakpoints.down('800')]: {
+            marginLeft: '16px',
+        } 
     }
 }));
