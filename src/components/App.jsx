@@ -5,6 +5,7 @@ import Navbar from './Navbar/Navbar';
 import Footer from './Footer/Footer';
 import Home from './Home/Home';
 import ProductDetail from './ProductDetail/ProductDetail';
+import ProductListMore from './ProductListMore/ProductListMore';
 import Profile from './Profile/Profile'
 import Cart from './Cart/Cart';
 import Login from './Login/Login';
@@ -22,6 +23,7 @@ const App = () => {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/products/:id" element={<ProductDetail />} />
+                    <Route path="/products/" element={<ProductListMore />} />
                     <Route path="user/:id" element={<Profile />} />
                     <Route path="/cart" element={<Cart />} />
                     <Route path="/login" element={<Login />} />

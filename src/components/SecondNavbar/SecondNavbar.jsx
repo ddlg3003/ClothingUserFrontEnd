@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Stack } from '@mui/material';
 import { BLACK_LOGO } from '../../utils/globalVariables';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Link } from 'react-router-dom';
 import useStyles from './styles';
 
 const SecondNavbar = ({ handleClick, handleCloseHover, direction, spacing }) => {
@@ -20,7 +21,7 @@ const SecondNavbar = ({ handleClick, handleCloseHover, direction, spacing }) => 
             >
                 Danh mục <ExpandMoreIcon />
             </Button>
-            <Button className={classes.navButton} color="black" size="large">
+            <Button component={Link} to="/products" className={classes.navButton} color="black" size="large">
                 Sản phẩm
             </Button>
             <Button className={classes.navButton} color="black" size="large">
