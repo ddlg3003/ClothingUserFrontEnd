@@ -68,7 +68,7 @@ const Navbar = () => {
                         }}
                     />                    
                     <div>
-                        <Button color="black">
+                        <Button component={Link} to="/cart" color="black">
                             <ShoppingCartIcon />
                         </Button>
                         {!isAuthenticated && 
