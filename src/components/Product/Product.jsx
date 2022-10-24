@@ -22,7 +22,7 @@ const Product = () => {
                         color="error" 
                         className={classes.title} 
                         fontWeight="bold"
-                        fontSize={15}
+                        fontSize={18}
                     >
                         {
                             Intl.NumberFormat('vi-VN', {
