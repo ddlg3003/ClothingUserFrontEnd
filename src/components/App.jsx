@@ -10,6 +10,7 @@ import Profile from './Profile/Profile'
 import Cart from './Cart/Cart';
 import Login from './Login/Login';
 import useStyles from './styles';
+import Checkout from './Checkout/Checkout';
 
 const App = () => {
     const classes = useStyles();
@@ -26,6 +27,7 @@ const App = () => {
                     <Route path="/products/" element={<ProductListMore />} />
                     <Route path="user/:id" element={<Profile />} />
                     <Route path="/cart" element={<Cart />} />
+                    <Route path="/checkout" element={<Checkout />} />
                     <Route path="/login" element={<Login />} />
                 </Routes>
             </main>
