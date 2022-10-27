@@ -1,9 +1,7 @@
 import React from "react";
-import Stack from "@mui/material/Stack";
-
 import {
+  Stack,
   Button,
-  IconButton,
   Typography,
   Table,
   TableBody,
@@ -19,22 +17,16 @@ import {
   ListItemText,
   DialogTitle,
   Dialog,
+  ToggleButton,
+  ToggleButtonGroup,
 } from "@mui/material";
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import AddIcon from "@mui/icons-material/Add";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import PersonIcon from "@mui/icons-material/Person";
 import { Box, Container } from "@mui/system";
 import useStyles from "./styles";
 import PropTypes from "prop-types";
 import { blue } from "@mui/material/colors";
 import { useState } from "react";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
 
 function createData(name, price, amount, img, total) {
   return { name, price, amount, img, total };
@@ -131,15 +123,17 @@ AddressSelectionDialog.propTypes = {
 };
 
 const Checkout = () => {
+  const classes = useStyles();
+
   const [open, setOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState(address[0]);
   const [paymentTypeValue, setPaymentTypeValue] = useState("credit");
-  const [creditMethod, setCreditMethod] = useState('VCB');
+  const [creditMethod, setCreditMethod] = useState("VCB");
 
-  const handleCreditMethod = (e) => {
-    setCreditMethod(e.target.value);
-    console.log(e.target.value);
-  }
+  const handleCreditMethod = (value) => {
+    setCreditMethod(value);
+    console.log(value);
+  };
 
   const handleClickChangeAddress = () => {
     setOpen(true);
@@ -153,8 +147,6 @@ const Checkout = () => {
   const handlePaymentTypeChange = (e) => {
     setPaymentTypeValue(e.target.value);
   };
-
-  const classes = useStyles();
 
   return (
     <>
@@ -238,7 +230,7 @@ const Checkout = () => {
               <TableHead>
                 <TableRow>
                   <TableCell align="left" width={120}>
-                    <Typography fontSize="17px">Sản Phẩm</Typography>
+                    <Typography fontWeight="bold" fontSize="17px">Sản Phẩm</Typography>
                   </TableCell>
                   <TableCell align="left"></TableCell>
                   <TableCell align="left">
@@ -307,7 +299,7 @@ const Checkout = () => {
                 fontSize="23px"
                 fontWeight="normal"
                 align="center"
-                paddingBottom="10px"
+                paddingBottom="30px"
                 display="inline-block"
               >
                 Phương thức thanh toán
@@ -320,6 +312,7 @@ const Checkout = () => {
               aria-label="Platform"
               value={paymentTypeValue}
               onChange={handlePaymentTypeChange}
+              sx = {{ pb : 2}}
             >
               <ToggleButton size="large" value="credit">
                 Liên kết tài khoản
@@ -334,9 +327,17 @@ const Checkout = () => {
                 chuyển (nếu có) áp dụng cả với phí thu hộ.
               </Typography>
               <div hidden={paymentTypeValue !== "credit"}>
-                <ToggleButtonGroup value={creditMethod} exclusive aria-label="text alignment" onChange={handleCreditMethod}>
-                  <ToggleButton value="VCB" aria-label="left aligned" >
-                    <Stack value="VCB" onClick={handleCreditMethod}>
+                <ToggleButtonGroup
+                  value={creditMethod}
+                  exclusive
+                  aria-label="text alignment"
+                >
+                  <ToggleButton
+                    onClick={() => handleCreditMethod("VCB")}
+                    value="VCB"
+                    aria-label="left aligned"
+                  >
+                    <Stack>
                       <img
                         width="50"
                         src="http://cdn.airpay.vn/images_v1/c134/icon_c13401_v001.png"
@@ -345,6 +346,7 @@ const Checkout = () => {
                     </Stack>
                   </ToggleButton>
                   <ToggleButton
+                    onClick={() => handleCreditMethod("BIDV")}
                     value="BIDV"
                     aria-label="left aligned"
                   >
