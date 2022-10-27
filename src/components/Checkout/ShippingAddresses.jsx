@@ -1,14 +1,7 @@
 import React from "react";
 import {
-  Stack,
   Button,
   Typography,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   Paper,
   Avatar,
   List,
@@ -17,8 +10,6 @@ import {
   ListItemText,
   DialogTitle,
   Dialog,
-  ToggleButton,
-  ToggleButtonGroup,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
@@ -27,7 +18,6 @@ import useStyles from "./styles";
 import PropTypes from "prop-types";
 import { blue } from "@mui/material/colors";
 import { useState } from "react";
-import CartItems from "./CartItems";
 
 const address = [
     "1 Đ. Võ Văn Ngân, Linh Chiểu, Thành Phố Thủ Đức, Thành phố Hồ Chí Minh",

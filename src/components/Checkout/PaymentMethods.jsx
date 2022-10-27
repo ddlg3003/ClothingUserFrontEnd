@@ -1,41 +1,19 @@
 import React from "react";
 import {
   Stack,
-  Button,
   Typography,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Avatar,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  DialogTitle,
-  Dialog,
   ToggleButton,
   ToggleButtonGroup,
 } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { Box, Container } from "@mui/system";
 import useStyles from "./styles";
-import PropTypes from "prop-types";
-import { blue } from "@mui/material/colors";
 import { useState } from "react";
-import CartItems from "./CartItems";
-import ShippingAddresses from "./ShippingAddresses";
 
 const PaymentMethods = () => {
   const classes = useStyles();
 
   const [paymentTypeValue, setPaymentTypeValue] = useState("credit");
   const [creditMethod, setCreditMethod] = useState("VCB");
-  
+
   const handlePaymentTypeChange = (e) => {
     setPaymentTypeValue(e.target.value);
   };
