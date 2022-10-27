@@ -50,5 +50,9 @@ export default makeStyles((theme) => ({
     paddingLeft: '50px!important',
     paddingTop: '14px!important',
     paddingBottom: '14px!important',
-    }
+    },
+
+  paymentContainer: {
+      marginTop: '30px'
+  }
 }));

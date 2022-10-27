@@ -1,4 +1,6 @@
 import React from "react";
+import Stack from "@mui/material/Stack";
+
 import {
   Button,
   IconButton,
@@ -18,6 +20,8 @@ import {
   DialogTitle,
   Dialog,
 } from "@mui/material";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import AddIcon from "@mui/icons-material/Add";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import PersonIcon from "@mui/icons-material/Person";
@@ -26,11 +30,11 @@ import useStyles from "./styles";
 import PropTypes from "prop-types";
 import { blue } from "@mui/material/colors";
 import { useState } from "react";
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 
 function createData(name, price, amount, img, total) {
   return { name, price, amount, img, total };
@@ -59,7 +63,7 @@ const rows = [
     30000
   ),
   createData(
-    "Khăn choàng",
+    "Khăn choàng1",
     159000,
     2,
     "https://demo.themefisher.com/aviato/images/shop/cart/cart-3.jpg",
@@ -87,7 +91,7 @@ function AddressSelectionDialog(props) {
   return (
     <Dialog onClose={handleClose} open={open}>
       <DialogTitle>Địa chỉ của tôi</DialogTitle>
-      <List sx={{ pt: 0 }}>
+      <List>
         {address.map((address) => (
           <ListItem
             button
@@ -129,6 +133,13 @@ AddressSelectionDialog.propTypes = {
 const Checkout = () => {
   const [open, setOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState(address[0]);
+  const [paymentTypeValue, setPaymentTypeValue] = useState("credit");
+  const [creditMethod, setCreditMethod] = useState('VCB');
+
+  const handleCreditMethod = (e) => {
+    setCreditMethod(e.target.value);
+    console.log(e.target.value);
+  }
 
   const handleClickChangeAddress = () => {
     setOpen(true);
@@ -137,6 +148,10 @@ const Checkout = () => {
   const handleCloseChangeAddress = (value) => {
     setOpen(false);
     setSelectedValue(value);
+  };
+
+  const handlePaymentTypeChange = (e) => {
+    setPaymentTypeValue(e.target.value);
   };
 
   const classes = useStyles();
@@ -155,7 +170,7 @@ const Checkout = () => {
           THANH TOÁN
         </Typography>{" "}
         <Container>
-          <Box className={classes.addressBox} component={Paper} elevation="1">
+          <Box className={classes.addressBox} component={Paper} elevation={1}>
             <div>
               <LocationOnIcon fontSize="small" sx={{ color: "black" }} />
               <Typography
@@ -217,7 +232,7 @@ const Checkout = () => {
           <TableContainer
             className={classes.TableContainer}
             component={Paper}
-            elevation="2"
+            elevation={2}
           >
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
@@ -283,7 +298,7 @@ const Checkout = () => {
           <Box
             className={classes.paymentTypeBox}
             component={Paper}
-            elevation="1"
+            elevation={1}
           >
             <div>
               <Typography
@@ -298,27 +313,51 @@ const Checkout = () => {
                 Phương thức thanh toán
               </Typography>{" "}
             </div>
-            <div>
-              <FormControl>
-                <RadioGroup
-                  row
-                  aria-labelledby="demo-row-radio-buttons-group-label"
-                  name="row-radio-buttons-group"
-                >
-                  <FormControlLabel
-                  
-                    value="Liên kết tài khoản"
-                    control={<Radio />}
-                    label="Liên kết tài khoản"
-                  />
-                  <FormControlLabel
-                    value="Thanh toán khi nhận hàng"
-                    control={<Radio />}
-                    label="Thanh toán khi nhận hàng"
-                  />
-                  
-                </RadioGroup>
-              </FormControl>
+            <div></div>
+            <ToggleButtonGroup
+              color="success"
+              exclusive
+              aria-label="Platform"
+              value={paymentTypeValue}
+              onChange={handlePaymentTypeChange}
+            >
+              <ToggleButton size="large" value="credit">
+                Liên kết tài khoản
+              </ToggleButton>
+              <ToggleButton size="large" value="COD">
+                Thanh toán khi nhận hàng
+              </ToggleButton>
+            </ToggleButtonGroup>
+            <div className={classes.paymentContainer}>
+              <Typography hidden={paymentTypeValue !== "COD"} fontSize="18px">
+                Thanh toán khi nhận hàng Phí thu hộ: ₫0 VNĐ. Ưu đãi về phí vận
+                chuyển (nếu có) áp dụng cả với phí thu hộ.
+              </Typography>
+              <div hidden={paymentTypeValue !== "credit"}>
+                <ToggleButtonGroup value={creditMethod} exclusive aria-label="text alignment" onChange={handleCreditMethod}>
+                  <ToggleButton value="VCB" aria-label="left aligned" >
+                    <Stack value="VCB" onClick={handleCreditMethod}>
+                      <img
+                        width="50"
+                        src="http://cdn.airpay.vn/images_v1/c134/icon_c13401_v001.png"
+                      />
+                      VCB
+                    </Stack>
+                  </ToggleButton>
+                  <ToggleButton
+                    value="BIDV"
+                    aria-label="left aligned"
+                  >
+                    <Stack>
+                      <img
+                        width="50"
+                        src="http://cdn.airpay.vn/images_v1/c134/icon_c13400_v001.png"
+                      />
+                      BIDV
+                    </Stack>
+                  </ToggleButton>
+                </ToggleButtonGroup>
+              </div>
             </div>
           </Box>
         </Container>
@@ -338,13 +377,14 @@ const Checkout = () => {
               }).format(120000000)}
             </Typography>
           </div>
+
           <div>
             <Button
               size="large"
               variant="outlined"
               color="black"
               className={classes.checkoutButton}
-              sx={{ marginRight: "380px" }}
+              sx={{ mr: "380px" }}
             >
               Mua Hàng
             </Button>
