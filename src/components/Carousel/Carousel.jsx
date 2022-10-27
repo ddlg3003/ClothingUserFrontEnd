@@ -9,7 +9,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 const Carousel = () => {
     const classes = useStyles();
-    const slider = React.useRef(null);
+    const slider = useRef(null);
     const settings = {
         arrows: false,
         dots: true,
