@@ -18,8 +18,8 @@ import {
     Fade,
     selectClasses,
 } from '@mui/material';
-import RemoveIcon from "@mui/icons-material/Remove";
-import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from '@mui/icons-material/Remove';
+import AddIcon from '@mui/icons-material/Add';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import useStyles from './styles';
 
@@ -27,8 +27,8 @@ const ProductDetail = () => {
     const classes = useStyles();
     const [quantity, setQuantity] = useState(0);
     const [open, setOpen] = useState(false);
-    const [image, setImage] = useState(""); // set image for modal
-    const [isSelectedImg, setIsSelectedImg] = useState(null);
+    const [image, setImage] = useState(''); // set image for modal
+    const [isSelectedImg, setIsSelectedImg] = useState(0);
 
     const images = [
         'https://media.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/August2022/DSC05295-copy_73.jpg',
@@ -37,9 +37,6 @@ const ProductDetail = () => {
         'https://media.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/August2022/DSC05295-copy_73.jpg'
 
     ];
-
-    // Set image state for product image
-    const [mainImg, setMainImg] = useState(images[0]);
 
     const colors = [
         '#f1f1f1',
@@ -50,6 +47,11 @@ const ProductDetail = () => {
     const sizes = [
         'S', 'M', 'L',
     ];
+
+    // Set image state for product image
+    const [mainImg, setMainImg] = useState(images[0]);
+    const [currentColor, setCurrentColor] = useState('');
+    const [currentSize, setCurrentSize] = useState('');
 
     const reduceQuantity = () => {
         if(quantity > 0) {
@@ -69,6 +71,16 @@ const ProductDetail = () => {
     const handleMainImg = (value, index) => {
         setMainImg(value);
         setIsSelectedImg(index);
+    }
+
+    const handleSubmit = () => {
+        const data = {
+            size: currentSize,
+            color: currentColor,
+            quantity,
+        };        
+
+        console.log(data);
     }
 
     return (
@@ -130,7 +142,11 @@ const ProductDetail = () => {
                         </Typography>
                         <div className={classes.wrapper}>
                             {colors.map((color, i) => (
-                                <div key={color} className={classes.colorItem} style={{ background: color }} />
+                                <div key={color} 
+                                    className={classes.colorItem} 
+                                    style={{ background: color, border: color === currentColor && '2px solid blue' }} 
+                                    onClick={() => setCurrentColor(color)}
+                                />
                             ))}
                         </div>
                     </div>
@@ -144,7 +160,14 @@ const ProductDetail = () => {
                         </Typography>
                         <div className={classes.wrapper}>
                             {sizes.map((size, i) => (
-                                <div className={classes.sizeItem} key={size}>{size}</div>
+                                <div 
+                                    className={classes.sizeItem} 
+                                    style={{ border: size === currentSize && '2px solid blue' }}
+                                    key={size}
+                                    onClick={() => setCurrentSize(size)}
+                                >
+                                    {size}
+                                </div>
                             ))}
                         </div>
                     </div>
@@ -173,6 +196,7 @@ const ProductDetail = () => {
                             color="black" 
                             style={{ color: 'white', padding: '20px' }} 
                             size="large"
+                            onClick={handleSubmit}
                         >
                             Thêm vào giỏ
                         </Button>
@@ -210,7 +234,15 @@ const ProductDetail = () => {
                     </Typography> 
                 </Grid>
             </Grid>
-            <Grid item container marginTop="40px" justifyContent="center" textAlign="center" direction="column">
+            <Grid 
+                item 
+                container 
+                marginTop="40px" 
+                justifyContent="center" 
+                textAlign="center" 
+                alignItems="center" 
+                direction="column"
+            >
                 <Grid item>
                     <Typography 
                         letterSpacing="2px" 
@@ -223,10 +255,35 @@ const ProductDetail = () => {
                     </Typography> 
                 </Grid>
                 <Grid item>
-                    <List>
-                        <ListItem>KAAK</ListItem>
-                        <Divider />
-                    </List>
+                    <List className={classes.commentList}>
+                        <Divider className={classes.divider} />
+                        <ListItem alignItems="flex-start">
+                            <ListItemAvatar>
+                                <Avatar alt="Dante" src="https://yt3.ggpht.com/yti/AJo0G0mXhiLDl1CtA0Q65KQgegDt_mRqPuePpPzUk6ao=s88-c-k-c0x00ffffff-no-rj-mo" />
+                            </ListItemAvatar>
+                            <ListItemText primary="Dang" secondary={
+                                    <React.Fragment>
+                                        {'28-10-2022'}
+                                        <Typography 
+                                            letterSpacing="1px" 
+                                            fontSize="16px" 
+                                            fontWeight="normal" 
+                                            paddingTop="10px" 
+                                            component="span"
+                                            color="text.primary"
+                                            display="block"
+                                        >
+                                            Chất lượng tốt
+                                        </Typography>
+                                    </React.Fragment>
+                                } 
+                            />
+                            <div style={{ marginTop: '6px' }}>
+                                <Rating readOnly value={4.5} precision={0.1} size="small" /> 
+                            </div>
+                        </ListItem>
+                        <Divider className={classes.divider} />
+                    </List>       
                 </Grid>
             </Grid>
             <Modal
