@@ -16,44 +16,68 @@ import ClearIcon from "@mui/icons-material/Clear";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import { Box, Container } from "@mui/system";
+import { useState } from "react";
 
-function createData(name, price, amount, img, total) {
-  return { name, price, amount, img, total };
+function createData(id, name, price, amount, img, total) {
+  return { id, name, price, amount, img, total };
 }
 
 const rows = [
   createData(
+    0,
     "Kính chống nắng",
-    159000,
-    2,
+    100000,
+    3,
     "https://demo.themefisher.com/aviato/images/shop/cart/cart-1.jpg",
-    30000
+    300000
   ),
   createData(
+    1,
     "Váy body",
     200000,
     2,
     "https://demo.themefisher.com/aviato/images/shop/cart/cart-2.jpg",
-    30000
+    400000
   ),
   createData(
+    2,
     "Khăn choàng",
-    159000,
+    200000,
     2,
     "https://demo.themefisher.com/aviato/images/shop/cart/cart-3.jpg",
-    30000
+    400000
   ),
   createData(
+    3,
     "Khăn choàng",
-    159000,
-    2,
+    150000,
+    4,
     "https://demo.themefisher.com/aviato/images/shop/cart/cart-3.jpg",
-    30000
+    600000
   ),
 ];
 
 const Cart = () => {
   const classes = useStyles();
+
+  const [datas, setDatas] = useState(rows);
+
+  const handleIncrease = (id, amount) => {
+    const tempData = [...datas];
+    tempData[id].amount++;
+    tempData[id].total = tempData[id].price * tempData[id].amount;
+    setDatas(tempData);
+  };
+
+  const handleDecrease = (id, amount) => {
+    const tempData = [...datas];
+    if (amount > 0) {
+      tempData[id].amount--;
+      tempData[id].total = tempData[id].price * tempData[id].amount;
+    }
+
+    setDatas(tempData);
+  };
 
   return (
     <>
@@ -68,7 +92,7 @@ const Cart = () => {
         >
           GIỎ HÀNG
         </Typography>{" "}
-        <Container sx="md">
+        <Container size="md">
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
@@ -95,14 +119,14 @@ const Cart = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row) => (
+                {datas.map((data, i) => (
                   <TableRow
-                    key={row.name}
+                    key={data.id}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
                     <TableCell component="th" scope="row">
                       <div>
-                        <img width={80} src={row.img} alt="" />
+                        <img width={80} src={data.img} alt="" />
                       </div>
                     </TableCell>
                     <TableCell component="th" scope="row">
@@ -111,23 +135,35 @@ const Cart = () => {
                         maxWidth={200}
                         className={classes.itemName}
                       >
-                        {row.name}
+                        {data.name}
                       </Typography>
                     </TableCell>
                     <TableCell align="left">
                       <Typography fontSize="18px" className={classes.itemName}>
-                        {row.price}
+                        {data.price}
                       </Typography>
                     </TableCell>
                     <TableCell align="center" width={170}>
-                      <IconButton size="small">
+                      <IconButton
+                        size="small"
+                        onClick={() => handleDecrease(data.id, data.amount)}
+                      >
                         <RemoveIcon
                           fontSize="inherit"
                           className={classes.removeItemButton}
                         />
                       </IconButton>
-                      <input className={classes.inputField} />
-                      <IconButton size="small">
+                      <input
+                        disabled={true}
+                        readOnly={true}
+                        onChange={() => {}}
+                        value={data.amount}
+                        className={classes.inputField}
+                      />
+                      <IconButton
+                        size="small"
+                        onClick={() => handleIncrease(data.id, data.amount)}
+                      >
                         <AddIcon
                           fontSize="inherit"
                           className={classes.removeItemButton}
@@ -136,7 +172,7 @@ const Cart = () => {
                     </TableCell>
                     <TableCell align="left">
                       <Typography fontSize="18px" className={classes.itemName}>
-                        {row.total}
+                        {data.total}
                       </Typography>
                     </TableCell>
                     <TableCell width={100} align="left">
@@ -158,8 +194,7 @@ const Cart = () => {
 
       <div className={classes.buttonContainer}>
         <div className={classes.totalText}>
-          <Typography fontSize="20px">Tổng thanh toán:
-          </Typography>
+          <Typography fontSize="20px">Tổng thanh toán:</Typography>
 
           <Typography
             color="error"
@@ -170,7 +205,9 @@ const Cart = () => {
             {Intl.NumberFormat("vi-VN", {
               style: "currency",
               currency: "VND",
-            }).format(120000000)}
+            }).format(datas.reduce((acc, data) => {
+              return acc = acc + data.total;
+            }, 0))}
           </Typography>
         </div>
         <div>
