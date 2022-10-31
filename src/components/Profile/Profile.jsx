@@ -251,7 +251,8 @@ const Profile = () => {
                           <Button
                             size="large"
                             variant="contained"
-                            color="primary"
+                            color="black" 
+                            style={{ color: 'white'}} 
                           >
                             Lưu
                           </Button>
@@ -266,7 +267,8 @@ const Profile = () => {
                         height={150}
                         className={classes.image}
                       />
-                      <Button variant="contained" component="label">
+                      <Button variant="contained" component="label" color="black" 
+                            style={{ color: 'white'}} >
                         Chọn ảnh
                         <input hidden accept="image/*" multiple type="file" />
                       </Button>
