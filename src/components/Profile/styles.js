@@ -36,7 +36,7 @@ export default makeStyles((theme) => ({
         // marginLeft:"70px",
         // marginBottom: "30px",
         fontSize: '25px',
-        display: 'block',
+        display: 'inline-block',
         padding: '10px 0'
     },
 
