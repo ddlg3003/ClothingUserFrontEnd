@@ -1,34 +1,42 @@
-import {
-  Container,
-  Divider,
-  ListItem,
-  ListItemText,
-  List,
-  Paper,
-  Typography,
-  Button,
-  TextField,
-  Grid,
-  Stack,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-  FormControl,
-  FormLabel,
-  InputLabel,
-  MenuItem,
-  Select,
-  ListItemIcon,
-  ListItemButton,
-} from "@mui/material";
-import PersonIcon from "@mui/icons-material/Person";
 import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
 import LockIcon from "@mui/icons-material/Lock";
-import React from "react";
-import useStyles from "./styles";
-import { validateEmail, validatePhoneNumber } from "../../utils/validateString";
-import { useState } from "react";
+import PersonIcon from "@mui/icons-material/Person";
+import AddIcon from "@mui/icons-material/Add";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import {
+  Button,
+  Container,
+  Divider,
+  FormControl,
+  FormControlLabel,
+  Grid,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Paper,
+  Radio,
+  RadioGroup,
+  Stack,
+  TextField,
+  Typography,
+  Box,
+} from "@mui/material";
+import React, { useState } from "react";
 import DatePicker from "react-date-picker";
+import {
+  validateEmail,
+  validatePassword,
+  validatePhoneNumber,
+} from "../../utils/validateString";
+import useStyles from "./styles";
+
+const address = [
+  "1 Đ. Võ Văn Ngân, Linh Chiểu, Thành Phố Thủ Đức, Thành phố Hồ Chí Minh",
+  "484 Đ. Lê Văn Việt, Tăng Nhơn Phú A, Quận 9, Thành phố Hồ Chí Minh",
+  "242 Đ. Phạm Văn Đồng, Thành phố, Thủ Đức, Thành phố Hồ Chí Minh",
+];
 
 const style = {
   width: "100%",
@@ -48,8 +56,13 @@ const Profile = () => {
     gender: "male",
   });
   const [birthday, setBirthday] = useState(new Date().toLocaleString());
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
 
   const [emailValid, setEmailValid] = useState(true);
+  const [newPasswordValid, setNewPasswordValid] = useState(true);
+  const [confirmNewPasswordValid, setConfirmNewPasswordValid] = useState(true);
 
   const handleGenderChange = (event) => {
     const gender = event.target.value;
@@ -77,9 +90,37 @@ const Profile = () => {
     setUserInfo((prev) => ({ ...prev, email: email }));
     if (!validateEmail(email)) {
       setEmailValid(false);
-    } else setEmailValid(true);
+      return;
+    }
+    setEmailValid(true);
   };
 
+  const handleCurrentPasswordChange = (event) => {
+    const curPassword = event.target.value;
+    setCurrentPassword(curPassword);
+  };
+
+  const handleNewPasswordChange = (event) => {
+    const newPass = event.target.value;
+    setNewPassword(newPass);
+
+    if (!validatePassword(newPass)) {
+      setNewPasswordValid(false);
+      return;
+    }
+    setNewPasswordValid(true);
+  };
+
+  const handleComfirmNewPasswordChange = (event) => {
+    const confirmNewPass = event.target.value;
+    setConfirmNewPassword(confirmNewPass);
+
+    if (confirmNewPass !== newPassword) {
+      setConfirmNewPasswordValid(false);
+      return;
+    }
+    setConfirmNewPasswordValid(true);
+  };
   return (
     <>
       <div className={classes.body}>
@@ -242,7 +283,11 @@ const Profile = () => {
                           <Typography mt="5px">Ngày sinh</Typography>
                         </Grid>
                         <Grid item xs={8} mb={2}>
-                          <DatePicker format="dd-MM-y" onChange={setBirthday} value={birthday} />
+                          <DatePicker
+                            format="dd-MM-y"
+                            onChange={setBirthday}
+                            value={birthday}
+                          />
                         </Grid>
                         <Grid item xs={4}>
                           <p hidden={true}>Save</p>
@@ -251,9 +296,9 @@ const Profile = () => {
                           <Button
                             size="large"
                             variant="contained"
-                            color="black" 
-                            style={{ color: 'white'}} 
-                           >
+                            color="black"
+                            style={{ color: "white" }}
+                          >
                             Lưu
                           </Button>
                         </Grid>
@@ -267,8 +312,12 @@ const Profile = () => {
                         height={150}
                         className={classes.image}
                       />
-                      <Button variant="contained" component="label" color="black" 
-                            style={{ color: 'white'}} >
+                      <Button
+                        variant="contained"
+                        component="label"
+                        color="black"
+                        style={{ color: "white" }}
+                      >
                         Chọn ảnh
                         <input hidden accept="image/*" multiple type="file" />
                       </Button>
@@ -277,19 +326,154 @@ const Profile = () => {
                 </div>
 
                 <div hidden={navSelection !== "address"}>
-                  <div className={classes.title}>Địa chỉ của tôi</div>
+                  <Box sx={{ display: "flex", mb: 1 }}>
+                    <Box sx={{ flexGrow: 1 }} className={classes.title}>
+                      Địa chỉ của tôi
+                    </Box>
+                    <Box className={classes.title}>
+                      <Button
+                        color="black"
+                        component="label"
+                        style={{ color: "white" }}
+                        size="large"
+                        variant="contained"
+                      >
+                        <AddIcon /> Thêm địa chỉ mới
+                      </Button>
+                    </Box>
+                  </Box>
+
                   <Divider />
 
-                  <div>2</div>
-                  <div>3</div>
+                  <Container sx={{ mt: 3 }}>
+                    {address.map((address) => (
+                      <>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            p: 1,
+                            bgcolor: "background.paper",
+                            borderRadius: 1,
+                            mb: 5,
+                            mt: 3,
+                          }}
+                        >
+                          <Stack>
+                          <Box sx={{ flexGrow: 1, p: 2, fontSize: 16 }}>{address}</Box>
+                          <Box sx={{ flexGrow: 1, p: 2, fontSize: 16 }}>{address}</Box>
+
+                          </Stack>
+                          <Stack>
+                            <Box>
+                              <Button
+                                sx={{ mb: 1}}
+                                color="black"
+                                variant="contained"
+                                component="label"
+                                style={{ color: "white" }}
+                                startIcon={<EditIcon />}
+                                
+                              >
+                                Cập nhật
+                              </Button>
+                            </Box>
+                            <Box>
+                              <Button
+                                color="black"
+                                variant="contained"
+                                component="label"
+                                style={{ color: "white" }}
+                                startIcon={<DeleteIcon />}
+                              >
+                                Xóa
+                              </Button>
+                            </Box>{" "}
+                          </Stack>
+                        </Box>
+                        <Divider />
+                      </>
+                    ))}
+                  </Container>
                 </div>
 
                 <div hidden={navSelection !== "changePassword"}>
                   <div className={classes.title}>Đổi mật khẩu</div>
                   <Divider />
 
-                  <div>2</div>
-                  <div>3</div>
+                  <div>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="flex-start"
+                      alignItems="flex-start"
+                      spacing={2}
+                      mt="10px"
+                    >
+                      {" "}
+                      <Grid item xs={4}>
+                        <Typography mt="20px">Mật Khẩu Hiện Tại</Typography>
+                      </Grid>
+                      <Grid item xs={8} mb="10px">
+                        <TextField
+                          width="1000px"
+                          id="outlined-basic"
+                          variant="outlined"
+                          value={currentPassword}
+                          onChange={handleCurrentPasswordChange}
+                          type="password"
+                        />
+                      </Grid>
+                      <Grid item xs={4}>
+                        <Typography mt="20px">Mật Khẩu Mới</Typography>
+                      </Grid>
+                      <Grid item xs={8}>
+                        <TextField
+                          type="password"
+                          id="outlined-basic"
+                          variant="outlined"
+                          value={newPassword}
+                          onChange={handleNewPasswordChange}
+                          error={newPasswordValid === false}
+                        />
+                        <Typography  color="red" hidden={newPasswordValid === true}>
+                          Mật khẩu phải dài 8-16 ký tự, chứa ít nhất một ký tự
+                          viết hoa và một ký tự viết thường
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={4}>
+                        <Typography width="300px" mt="20px">
+                          Xác Nhận Mật Khẩu
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={8}>
+                        <TextField
+                          type="password"
+                          id="outlined-basic"
+                          variant="outlined"
+                          value={confirmNewPassword}
+                          onChange={handleComfirmNewPasswordChange}
+                          error={confirmNewPasswordValid === false}
+
+                        />
+                        <Typography color="red" hidden={confirmNewPasswordValid === true}>
+                          Mật khẩu và Mật khẩu xác nhận không giống nhau
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={4}>
+                        <p hidden="true">Save</p>
+                      </Grid>
+                      <Grid item xs={8}>
+                        <Button
+                          size="large"
+                          variant="contained"
+                          color="black"
+                          style={{ color: "white" }}
+                        >
+                          Xác nhận
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  </div>
                 </div>
               </div>
             </Paper>
