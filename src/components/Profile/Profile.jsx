@@ -245,7 +245,7 @@ const Profile = () => {
                           <DatePicker format="dd-MM-y" onChange={setBirthday} value={birthday} />
                         </Grid>
                         <Grid item xs={4}>
-                          <p hidden="true">Save</p>
+                          <p hidden={true}>Save</p>
                         </Grid>
                         <Grid item xs={8}>
                           <Button
