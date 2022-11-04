@@ -1,10 +1,14 @@
+import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
 import LockIcon from "@mui/icons-material/Lock";
 import PersonIcon from "@mui/icons-material/Person";
-import AddIcon from "@mui/icons-material/Add";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+
 import {
+  Box,
   Button,
   Container,
   Divider,
@@ -18,13 +22,13 @@ import {
   Paper,
   Radio,
   RadioGroup,
-  Stack,
-  TextField,
   Typography,
-  Box,
 } from "@mui/material";
+import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs from "dayjs";
 import React, { useState } from "react";
-import DatePicker from "react-date-picker";
 import {
   validateEmail,
   validatePassword,
@@ -33,9 +37,15 @@ import {
 import useStyles from "./styles";
 
 const address = [
-  "1 Đ. Võ Văn Ngân, Linh Chiểu, Thành Phố Thủ Đức, Thành phố Hồ Chí Minh",
-  "484 Đ. Lê Văn Việt, Tăng Nhơn Phú A, Quận 9, Thành phố Hồ Chí Minh",
-  "242 Đ. Phạm Văn Đồng, Thành phố, Thủ Đức, Thành phố Hồ Chí Minh",
+  {name: "Phạm Phi Anh",
+  phone: "0909090909",
+  address:"1 Đ. Võ Văn Ngân, Linh Chiểu, Thành Phố Thủ Đức, Thành phố Hồ Chí Minh"},
+  {name: "Nguyễn Hữu Đăng",
+  phone: "554122589",
+  address:"484 Đ. Lê Văn Việt, Tăng Nhơn Phú A, Quận 9, Thành phố Hồ Chí Minh"},
+  {name: "Mai Thanh Nhã",
+  phone: "441201474",
+  address:"242 Đ. Phạm Văn Đồng, Thành phố, Thủ Đức, Thành phố Hồ Chí Minh"}
 ];
 
 const style = {
@@ -55,7 +65,7 @@ const Profile = () => {
     phone: "03300333",
     gender: "male",
   });
-  const [birthday, setBirthday] = useState(new Date().toLocaleString());
+  const [birthday, setBirthday] = useState(dayjs("2022-04-07"));
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
@@ -280,14 +290,23 @@ const Profile = () => {
                           </FormControl>{" "}
                         </Grid>
                         <Grid item xs={4}>
-                          <Typography mt="5px">Ngày sinh</Typography>
+                          <Typography mt="15px">Ngày sinh</Typography>
                         </Grid>
                         <Grid item xs={8} mb={2}>
-                          <DatePicker
-                            format="dd-MM-y"
-                            onChange={setBirthday}
-                            value={birthday}
-                          />
+                          <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DatePicker
+                              disableFuture
+                              openTo="year"
+                              views={["year", "month", "day"]}
+                              value={birthday}
+                              onChange={(newValue) => {
+                                setBirthday(newValue);
+                              }}
+                              renderInput={(params) => (
+                                <TextField {...params} />
+                              )}
+                            />
+                          </LocalizationProvider>
                         </Grid>
                         <Grid item xs={4}>
                           <p hidden="true">Save</p>
@@ -348,47 +367,66 @@ const Profile = () => {
                   <Container sx={{ mt: 3 }}>
                     {address.map((address) => (
                       <>
-                        <Box
-                          sx={{
-                            display: "flex",
-                            p: 1,
-                            bgcolor: "background.paper",
-                            borderRadius: 1,
-                            mb: 5,
-                            mt: 3,
-                          }}
-                        >
-                          <Stack>
-                          <Box sx={{ flexGrow: 1, p: 2, fontSize: 16 }}>{address}</Box>
-                          <Box sx={{ flexGrow: 1, p: 2, fontSize: 16 }}>{address}</Box>
+                        <Box>
+                          <Grid container spacing={2} sx={{ mb: 5, mt:4 }}>
+                            <Grid
+                              item
+                              xs
+                              container
+                              direction="column"
+                              spacing={2}
+                              
+                            >
+                              <Grid item xs >
+                                <Typography
+                                  gutterBottom
+                                  variant="subtitle1"
+                                  component="div"
+                                  fontSize={18}
+                                >
+                                  {address.name}
+                                </Typography>
+                                <Typography
+                                  variant="body2"
+                                  color="text.secondary"
+                                  fontSize={18}
 
-                          </Stack>
-                          <Stack>
-                            <Box>
-                              <Button
-                                sx={{ mb: 1}}
-                                color="black"
-                                variant="contained"
-                                component="label"
-                                style={{ color: "white" }}
-                                startIcon={<EditIcon />}
+                                >
+                                  {address.phone}
+                                </Typography> 
+                                <Typography fontSize={18} variant="body2" color="text.secondary" gutterBottom>
+                                {address.address}
+
+                                </Typography>
                                 
-                              >
-                                Cập nhật
-                              </Button>
-                            </Box>
-                            <Box>
-                              <Button
-                                color="black"
-                                variant="contained"
-                                component="label"
-                                style={{ color: "white" }}
-                                startIcon={<DeleteIcon />}
-                              >
-                                Xóa
-                              </Button>
-                            </Box>{" "}
-                          </Stack>
+                              </Grid>
+                            </Grid>
+                            <Grid item>
+                              <Box>
+                                <Button
+                                  sx={{ mb: 1 }}
+                                  color="black"
+                                  variant="contained"
+                                  component="label"
+                                  style={{ color: "white" }}
+                                  startIcon={<EditIcon />}
+                                >
+                                  Cập nhật
+                                </Button>
+                              </Box>
+                              <Box>
+                                <Button
+                                  color="black"
+                                  variant="contained"
+                                  component="label"
+                                  style={{ color: "white" }}
+                                  startIcon={<DeleteIcon />}
+                                >
+                                  Xóa
+                                </Button>
+                              </Box>{" "}
+                            </Grid>
+                          </Grid>
                         </Box>
                         <Divider />
                       </>
@@ -435,7 +473,10 @@ const Profile = () => {
                           onChange={handleNewPasswordChange}
                           error={newPasswordValid === false}
                         />
-                        <Typography  color="red" hidden={newPasswordValid === true}>
+                        <Typography
+                          color="red"
+                          hidden={newPasswordValid === true}
+                        >
                           Mật khẩu phải dài 8-16 ký tự, chứa ít nhất một ký tự
                           viết hoa và một ký tự viết thường
                         </Typography>
@@ -453,9 +494,11 @@ const Profile = () => {
                           value={confirmNewPassword}
                           onChange={handleComfirmNewPasswordChange}
                           error={confirmNewPasswordValid === false}
-
                         />
-                        <Typography color="red" hidden={confirmNewPasswordValid === true}>
+                        <Typography
+                          color="red"
+                          hidden={confirmNewPasswordValid === true}
+                        >
                           Mật khẩu và Mật khẩu xác nhận không giống nhau
                         </Typography>
                       </Grid>
