@@ -33,7 +33,7 @@ export default makeStyles((theme) => ({
         width: '300px',
         whiteSpace: 'nowrap',
         overflow: 'hidden',
-        marginTop: '20px',
+        marginTop: '8px',
         marginBottom: 0,
         textAlign: 'center',
     },

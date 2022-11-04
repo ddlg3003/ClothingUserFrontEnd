@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BLACK_LOGO } from '../../utils/globalVariables';
 import { AppBar, Toolbar, Drawer, Button, IconButton, useMediaQuery, Stack, Menu, MenuItem } from '@mui/material';
 import { TextField, InputAdornment } from '@mui/material';
-import { Search as SearchIcon, AccountCircle, LeakAddTwoTone, Menu as MenuIcon } from '@mui/icons-material';
+import { Search as SearchIcon, AccountCircle, Menu as MenuIcon } from '@mui/icons-material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SecondNavbar from '../SecondNavbar/SecondNavbar';
 import { Link } from 'react-router-dom';
@@ -72,7 +72,7 @@ const Navbar = () => {
                             <ShoppingCartIcon />
                         </Button>
                         {!isAuthenticated && 
-                            <Button color="black" onClick={() => {}}> 
+                            <Button component={Link} to="/auth" color="black" onClick={() => {}}> 
                                 {!isMobile && <>Đăng nhập &nbsp;</>}
                                 <AccountCircle />
                             </Button>
