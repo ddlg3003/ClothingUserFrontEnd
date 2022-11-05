@@ -1,31 +1,10 @@
-import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
-import LockIcon from "@mui/icons-material/Lock";
-import PersonIcon from "@mui/icons-material/Person";
-import ProfileDetails from "./ProfileDetails";
 
 import {
-  Button,
-  Container,
-  Divider,
-  Grid,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Paper,
-  Typography,
+    Button, Divider,
+    Grid, Typography
 } from "@mui/material";
-import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
-import dayjs from "dayjs";
-import React, { useState } from "react";
-import {
-  validateEmail,
-  validatePassword,
-  validatePhoneNumber,
-} from "../../utils/validateString";
-import AddressDetails from "./AddressDetails";
-import useStyles from "./styles";
+import React from "react";
 
 const PasswordChange = (props) => {
   return (
