@@ -11,6 +11,6 @@ export function validateEmail(str) {
 export function validatePassword(str) {
   return (
     str.length > 7 &&
-    str.length < 17
+    str.length < 16
   );
 }
