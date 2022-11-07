@@ -283,11 +283,7 @@ const Profile = () => {
                           <Typography mt="5px">Ngày sinh</Typography>
                         </Grid>
                         <Grid item xs={8} mb={2}>
-                          <DatePicker
-                            format="dd-MM-y"
-                            onChange={setBirthday}
-                            value={birthday}
-                          />
+                          
                         </Grid>
                         <Grid item xs={4}>
                           <p hidden={true}>Save</p>
