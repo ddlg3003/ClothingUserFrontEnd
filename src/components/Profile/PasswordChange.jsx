@@ -28,7 +28,7 @@ const PasswordChange = (props) => {
           <Grid item xs={8} mb="10px">
             <TextField
               width="1000px"
-              id="outlined-basic"
+              
               variant="outlined"
               value={props.currentPassword}
               onChange={props.handleCurrentPasswordChange}
@@ -41,15 +41,14 @@ const PasswordChange = (props) => {
           <Grid item xs={8}>
             <TextField
               type="password"
-              id="outlined-basic"
+              
               variant="outlined"
               value={props.newPassword}
               onChange={props.handleNewPasswordChange}
               error={props.newPasswordValid === false}
             />
             <Typography color="red" hidden={props.newPasswordValid === true}>
-              Mật khẩu phải dài 8-16 ký tự, chứa ít nhất một ký tự viết hoa và
-              một ký tự viết thường
+              Có 8-15 ký tự, chữ số, ký tự đặc biệt & in hoa
             </Typography>
           </Grid>
           <Grid item xs={4}>
@@ -60,14 +59,14 @@ const PasswordChange = (props) => {
           <Grid item xs={8}>
             <TextField
               type="password"
-              id="outlined-basic"
+              
               variant="outlined"
               value={props.confirmNewPassword}
               onChange={props.handleComfirmNewPasswordChange}
               error={props.confirmNewPasswordValid === false}
             />
             <Typography color="red" hidden={props.confirmNewPasswordValid === true}>
-              Mật khẩu và Mật khẩu xác nhận không giống nhau
+              Mật khẩu không trùng khớp
             </Typography>
           </Grid>
           <Grid item xs={4}>

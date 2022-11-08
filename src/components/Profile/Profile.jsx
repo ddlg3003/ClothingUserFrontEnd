@@ -2,30 +2,34 @@ import { Container, Paper, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import React, { useState } from "react";
 import {
-  validateEmail,
-  validatePassword,
-  validatePhoneNumber,
+  PASSWORD_REGEX
+} from "../../utils/globalVariables";
+import {
+  validateEmail, validatePhoneNumber
 } from "../../utils/validateString";
 import AddressDetails from "./AddressDetails";
 import PasswordChange from "./PasswordChange";
-import SideBar from "./SideBar";
 import ProfileDetails from "./ProfileDetails";
+import SideBar from "./SideBar";
 import useStyles from "./styles";
 
 const address = [
   {
+    id: 1,
     name: "Phạm Phi Anh",
     phone: "0909090909",
     address:
       "1 Đ. Võ Văn Ngân, Linh Chiểu, Thành Phố Thủ Đức, Thành phố Hồ Chí Minh",
   },
   {
+    id: 2,
     name: "Nguyễn Hữu Đăng",
     phone: "554122589",
     address:
       "484 Đ. Lê Văn Việt, Tăng Nhơn Phú A, Quận 9, Thành phố Hồ Chí Minh",
   },
   {
+    id: 3,
     name: "Mai Thanh Nhã",
     phone: "441201474",
     address: "242 Đ. Phạm Văn Đồng, Thành phố, Thủ Đức, Thành phố Hồ Chí Minh",
@@ -76,7 +80,6 @@ const Profile = () => {
 
   const handleNavSelectionChange = (value) => {
     setNavSelection(value);
-    console.log(value);
   };
 
   const handleNameChange = (event) => {
@@ -108,8 +111,7 @@ const Profile = () => {
   const handleNewPasswordChange = (event) => {
     const newPass = event.target.value;
     setNewPassword(newPass);
-
-    if (!validatePassword(newPass)) {
+    if (!newPass.match(PASSWORD_REGEX)) {
       setNewPasswordValid(false);
       return;
     }

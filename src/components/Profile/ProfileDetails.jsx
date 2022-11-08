@@ -44,7 +44,7 @@ const ProfileDetails = (props) => {
             </Grid>
             <Grid item xs={8} mb="10px">
               <TextField
-                id="outlined-basic"
+                
                 variant="outlined"
                 value={props.userInfo.name}
                 onChange={props.handleNameChange}
@@ -55,7 +55,7 @@ const ProfileDetails = (props) => {
             </Grid>
             <Grid item xs={8}>
               <TextField
-                id="outlined-basic"
+                
                 variant="outlined"
                 value={props.userInfo.email}
                 onChange={props.handleEmailChange}
@@ -70,7 +70,7 @@ const ProfileDetails = (props) => {
             </Grid>
             <Grid item xs={8}>
               <TextField
-                id="outlined-basic"
+                
                 variant="outlined"
                 value={props.userInfo.phone}
                 onChange={props.handlePhoneNumberChange}
