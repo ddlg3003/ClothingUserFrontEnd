@@ -18,7 +18,10 @@ export default makeStyles((theme) => ({
         textAlign: 'center',
         lineHeight: '75px',
         display: 'block',
-        flexShrink: '0'
+        flexShrink: '0',
+        [theme.breakpoints.down('md')]: {
+            width: '165px',
+        },
     },
 
     profileMain: {
@@ -26,7 +29,7 @@ export default makeStyles((theme) => ({
         position: 'relative',
         flexGrow: '1',
         width: '900px',
-        minHeight: "600px",
+        minHeight: "500px",
         boxSizing: 'border-box',
         display: 'block',
         padding: "30px"

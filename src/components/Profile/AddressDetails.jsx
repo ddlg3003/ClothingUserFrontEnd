@@ -16,6 +16,7 @@ import UpdateAddressDialog from "./UpdateAddressDialog";
 import DeleteAlertDialog from "./DeleteAlertDialog";
 
 const AddressDetails = (props) => {
+  // Dialog's states
   const [openNewAddressDialog, setOpenNewAddressDialog] = useState(false);
   const [openUpdateAddressDialog, setOpenUpdateAddressDialog] = useState("");
   const [openDeleteAddressDialog, setOpenDeleteAddressDialog] = useState("");
@@ -131,7 +132,7 @@ const AddressDetails = (props) => {
                     >
                       Xóa
                     </Button>
-                    <DeleteAlertDialog 
+                    <DeleteAlertDialog
                       open={openDeleteAddressDialog === address.id}
                       onClose={handleCloseDeleteAddress}
                       id={address.id}

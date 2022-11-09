@@ -5,13 +5,13 @@ import DialogTitle from "@mui/material/DialogTitle";
 import React from "react";
 
 const DeleteAlertDialog = (props) => {
-  const { onClose, open, id } = props;
+  const { onClose, open, item } = props;
   const handleClose = () => {
     onClose();
   };
 
   const handleConfirmClick = () => {
-    console.log(id);
+    console.log(item);
   };
 
   return (
@@ -22,7 +22,7 @@ const DeleteAlertDialog = (props) => {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Bạn chắc chắn muốn xóa địa chỉ này?"}
+          {"Bạn chắc chắn muốn xóa sản phẩm này?"}
         </DialogTitle>
         <DialogActions>
           <Button
