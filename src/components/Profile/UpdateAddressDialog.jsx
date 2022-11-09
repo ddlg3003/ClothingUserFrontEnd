@@ -65,12 +65,12 @@ const UpdateAddressDialog = (props) => {
         </DialogContent>
 
         <DialogActions>
-          <Button
+        <Button
             sx={{ mb: 1 }}
-            color="black"
+            color="white"
             variant="contained"
             component="label"
-            style={{ color: "white" }}
+            style={{ color: "black" }}
             onClick={handleClose}
           >
             Trở lại
