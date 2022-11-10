@@ -17,51 +17,19 @@ import { Container } from "@mui/system";
 import React, { useState } from "react";
 import useStyles from "./styles";
 import DeleteAlertDialog from "./DeleteAlertDialog";
+import { useDispatch, useSelector } from "react-redux";
+import { increaseItem, decreaseItem } from "../../features/cart";
+import { Link } from "react-router-dom";
 
-function createData(id, name, price, amount, img, total) {
-  return { id, name, price, amount, img, total };
-}
-
-const rows = [
-  createData(
-    0,
-    "Kính chống nắng",
-    100000,
-    300,
-    "https://demo.themefisher.com/aviato/images/shop/cart/cart-1.jpg",
-    300000
-  ),
-  createData(
-    1,
-    "Váy body",
-    200000,
-    2,
-    "https://demo.themefisher.com/aviato/images/shop/cart/cart-2.jpg",
-    400000
-  ),
-  createData(
-    2,
-    "Khăn choàng",
-    200000,
-    2,
-    "https://demo.themefisher.com/aviato/images/shop/cart/cart-3.jpg",
-    400000
-  ),
-  createData(
-    3,
-    "Khăn choàng",
-    150000,
-    4,
-    "https://demo.themefisher.com/aviato/images/shop/cart/cart-3.jpg",
-    600000
-  ),
-];
 
 const Cart = () => {
   const classes = useStyles();
 
-  const [datas, setDatas] = useState(rows);
   const [openDeleteItemDialog, setOpenDeleteItemDialog] = useState("");
+
+  const dispatch = useDispatch();
+
+  const datas = useSelector(state => state.cart.data);
 
   const handleCloseDeleteItem = () => {
     setOpenDeleteItemDialog("");
@@ -70,26 +38,19 @@ const Cart = () => {
   const handleClickDeleteItem = (id) => {
     setOpenDeleteItemDialog(id);
   };
-  const handleIncrease = (id, amount) => {
-    const tempData = [...datas];
-    tempData[id].amount++;
-    tempData[id].total = tempData[id].price * tempData[id].amount;
-    setDatas(tempData);
+  const handleIncrease = (id, quantity) => {
+    dispatch(increaseItem(id));
   };
 
-  const handleDecrease = (id, amount) => {
-    const tempData = [...datas];
-    if (amount === 1) {
+  const handleDecrease = (id, quantity) => {
+    if (quantity === 1) {
       handleClickDeleteItem(id);
       return;
     }
 
-    if (amount > 0) {
-      tempData[id].amount--;
-      tempData[id].total = tempData[id].price * tempData[id].amount;
+    if (quantity > 0) {
+      dispatch(decreaseItem(id));
     }
-
-    setDatas(tempData);
   };
 
   return (
@@ -159,7 +120,7 @@ const Cart = () => {
                     <TableCell align="center" width={170}>
                       <IconButton
                         size="small"
-                        onClick={() => handleDecrease(data.id, data.amount)}
+                        onClick={() => handleDecrease(data.id, data.quantity)}
                       >
                         <RemoveIcon
                           fontSize="inherit"
@@ -170,12 +131,12 @@ const Cart = () => {
                         disabled={true}
                         readOnly={true}
                         onChange={() => {}}
-                        value={data.amount}
+                        value={data.quantity}
                         className={classes.inputField}
                       />
                       <IconButton
                         size="small"
-                        onClick={() => handleIncrease(data.id, data.amount)}
+                        onClick={() => handleIncrease(data.id, data.quantity)}
                       >
                         <AddIcon
                           fontSize="inherit"
@@ -239,6 +200,8 @@ const Cart = () => {
             size="large"
             variant="outlined"
             color="black"
+            component={Link}
+            to="/checkout"
             className={classes.checkoutButton}
           >
             Mua Hàng

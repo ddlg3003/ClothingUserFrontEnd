@@ -15,3 +15,4 @@ export const SIDEBAR_STATE = [
     "favorites",
     "orders",
 ];
+

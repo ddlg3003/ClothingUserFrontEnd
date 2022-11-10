@@ -17,41 +17,54 @@ import {
     Backdrop,
     Fade,
     selectClasses,
+    Snackbar,
 } from '@mui/material';
+import MuiAlert from '@mui/material/Alert';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart } from '../../features/cart';
 import useStyles from './styles';
 
 const ProductDetail = () => {
     const classes = useStyles();
+    const dispatch = useDispatch();
     const [quantity, setQuantity] = useState(0);
     const [open, setOpen] = useState(false);
     const [image, setImage] = useState(''); // set image for modal
     const [isSelectedImg, setIsSelectedImg] = useState(0);
+    const cartData = useSelector(state => state.cart.data);
 
-    const images = [
-        'https://media.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/August2022/DSC05295-copy_73.jpg',
-        'https://media.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/August2022/trangstrike.jpg',
-        'https://media.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/August2022/DSC05301-copy_92.jpg',
-        'https://media.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/August2022/DSC05295-copy_73.jpg'
+    const Alert = React.forwardRef(function Alert(props, ref) {
+        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+    });
 
-    ];
-
-    const colors = [
-        '#f1f1f1',
-        '#000',
-        '#5b7fd4'
-    ];
-
-    const sizes = [
-        'S', 'M', 'L',
-    ];
+    const product = {
+        images: [
+            'https://media.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/August2022/DSC05295-copy_73.jpg',
+            'https://media.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/August2022/trangstrike.jpg',
+            'https://media.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/August2022/DSC05301-copy_92.jpg',
+            'https://media.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/August2022/DSC05295-copy_73.jpg'
+    
+        ],
+        colors: [
+            '#f1f1f1',
+            '#000',
+            '#5b7fd4'
+        ],
+        sizes: [
+            'S', 'M', 'L',
+        ],
+        name: 'Áo Polo nam Pique Cotton USA thấm hút tối đa (kẻ sọc)',
+        price: 100000,
+    };
 
     // Set image state for product image
-    const [mainImg, setMainImg] = useState(images[0]);
+    const [mainImg, setMainImg] = useState(product.images[0]);
     const [currentColor, setCurrentColor] = useState('');
     const [currentSize, setCurrentSize] = useState('');
+    const [openToast, setOpenToast] = useState(false);
 
     const reduceQuantity = () => {
         if(quantity > 0) {
@@ -78,10 +91,26 @@ const ProductDetail = () => {
             size: currentSize,
             color: currentColor,
             quantity,
-        };        
+            id: cartData.length,
+            img: product.images[0],
+            name: product.name,
+            price: product.price,
+            total: product.price * quantity,
 
-        console.log(data);
+        };        
+        if(data.size && data.color && data.quantity) {
+            dispatch(addToCart(data));
+            setOpenToast(true);
+        }
     }
+
+    const handleCloseToast = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setOpenToast(false);
+      };
 
     return (
         <Grid container className={classes.container}>
@@ -93,7 +122,7 @@ const ProductDetail = () => {
                         onClick={(e) => handleImage(mainImg)}
                     />
                     <div className={classes.subImageContainer}>
-                        {images.map((image, i) => (
+                        {product.images.map((image, i) => (
                             <img 
                                 key={i}
                                 className={classes.subImage} 
@@ -113,7 +142,7 @@ const ProductDetail = () => {
                         variant="title1" 
                         fontSize={28}
                     >
-                        Áo Polo nam Pique Cotton USA thấm hút tối đa (kẻ sọc)
+                       {product.name}
                     </Typography>
                     <div>
                         <Rating readOnly value={4.5} precision={0.1} size="medium" /> 
@@ -128,7 +157,7 @@ const ProductDetail = () => {
                                 Intl.NumberFormat('vi-VN', {
                                 style: 'currency',
                                 currency: 'VND',
-                                }).format(100000)
+                                }).format(product.price)
                             }
                         </Typography>
                     </div>
@@ -141,7 +170,7 @@ const ProductDetail = () => {
                             Màu sắc:
                         </Typography>
                         <div className={classes.wrapper}>
-                            {colors.map((color, i) => (
+                            {product.colors.map((color, i) => (
                                 <div key={color} 
                                     className={classes.colorItem} 
                                     style={{ background: color, border: color === currentColor && '2px solid blue' }} 
@@ -159,7 +188,7 @@ const ProductDetail = () => {
                             Kích cỡ: 
                         </Typography>
                         <div className={classes.wrapper}>
-                            {sizes.map((size, i) => (
+                            {product.sizes.map((size, i) => (
                                 <div 
                                     className={classes.sizeItem} 
                                     style={{ border: size === currentSize && '2px solid blue' }}
@@ -208,6 +237,16 @@ const ProductDetail = () => {
                         >
                             <FavoriteBorderIcon /> &nbsp; Yêu thích
                         </Button>
+                        <Snackbar 
+                            open={openToast} 
+                            autoHideDuration={1000} 
+                            onClose={handleCloseToast}
+                            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                        >
+                            <Alert onClose={handleCloseToast} color="black" severity="success" sx={{ width: '100%' }}>
+                                THÊM VÀO GIỎ HÀNG THÀNH CÔNG
+                            </Alert>
+                        </Snackbar>
                     </div>
                 </Grid>
             </Grid>

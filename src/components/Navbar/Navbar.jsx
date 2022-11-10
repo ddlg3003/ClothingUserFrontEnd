@@ -1,21 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { BLACK_LOGO } from '../../utils/globalVariables';
-import { AppBar, Toolbar, Drawer, Button, IconButton, useMediaQuery, Menu, MenuItem, Avatar } from '@mui/material';
+import { AppBar, Toolbar, Drawer, Button, IconButton, useMediaQuery, Menu, MenuItem, Avatar, Badge } from '@mui/material';
 import { TextField, InputAdornment } from '@mui/material';
 import { Search as SearchIcon, AccountCircle, Menu as MenuIcon } from '@mui/icons-material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SecondNavbar from '../SecondNavbar/SecondNavbar';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import useStyles from './styles';
 
 
 const Navbar = () => {
     const classes = useStyles();
+    const cartData = useSelector(state => state.cart.data);
+
     let currentHovering = false;
     let currentAuthHovering = false;
+
     const logo = BLACK_LOGO;
     const isMobile = useMediaQuery('(max-width: 800px)');
-    const [isAuthenticated, setIsAuthenticated] = useState(true);
+    
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const [anchorElAuth, setAnchorElAuth] = useState(null);
@@ -98,7 +103,9 @@ const Navbar = () => {
                     />
                     <div>
                         <Button component={Link} to="/cart" color="black">
-                            <ShoppingCartIcon />
+                            <Badge badgeContent={cartData.length} color="error">
+                                <ShoppingCartIcon />
+                            </Badge>    
                         </Button>
                         {!isAuthenticated ?
                             (

@@ -1,18 +1,15 @@
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-
 import StarsIcon from "@mui/icons-material/Stars";
-import TabContext from "@mui/lab/TabContext";
-import TabList from "@mui/lab/TabList";
-import TabPanel from "@mui/lab/TabPanel";
+import { TabList, TabContext, TabPanel } from "@mui/lab";
 import {
   Box,
   Button,
   Container,
   Divider,
   Grid,
-  Typography
+  Typography,
+  Tab,
 } from "@mui/material";
-import Tab from "@mui/material/Tab";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import RatingDialog from "./RatingDialog";

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { CssBaseline } from '@mui/material';
 import { Route, Routes } from 'react-router-dom';
 import NavAndFooter from './NavAndFooter';
@@ -9,8 +9,8 @@ import ProductListMore from './ProductListMore/ProductListMore';
 import Profile from './Profile/Profile'
 import Cart from './Cart/Cart';
 import Auth from './Auth/Auth';
-import useStyles from './styles';
 import Checkout from './Checkout/Checkout';
+import useStyles from './styles';
 
 const App = () => {
     const classes = useStyles();
