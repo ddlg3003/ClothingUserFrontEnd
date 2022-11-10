@@ -48,9 +48,7 @@ const Auth = () => {
         } else {
             if(
                 formData.email && 
-                formData.password &&
-                formData.email.match(EMAIL_REGEX) &&
-                formData.password.match(PASSWORD_REGEX)
+                formData.password
             ) {
                 setEnableButton(true);
             }
@@ -62,17 +60,29 @@ const Auth = () => {
     const handleShowPassword = () => setShowPassword(prev => !prev);
 
     const handleInvalid = (e, REGEX, setInvalidData, helperText) => {
-        if(e.target.value.match(REGEX)) {
-            setInvalidData({ error: false, helperText: '' });
+        if(isRegister) {
+            if(e.target.value.match(REGEX)) {
+                setInvalidData({ error: false, helperText: '' });
+            }
+            else {
+                setInvalidData({ error: true, helperText });
+            }
         }
         else {
-            setInvalidData({ error: true, helperText });
+            if(e.target.value) {
+                setInvalidData({ error: false, helperText: '' });
+            }
+            else {
+                setInvalidData({ error: true, helperText });
+            }
         }
         setFormData({ ...formData, [e.target.name]: e.target.value });
     }
 
     const handleEmailChange = (e) => {
-        return handleInvalid(e, EMAIL_REGEX, setInvalidEmail, 'Không đúng dịnh dạng email');
+        const helperText = isRegister ? 'Không đúng dịnh dạng email' : 'Vui lòng điền vào trường này';
+
+        return handleInvalid(e, EMAIL_REGEX, setInvalidEmail, helperText);
     }
 
     const handlePhoneChange = (e) => {
@@ -80,7 +90,9 @@ const Auth = () => {
     }
 
     const handlePasswordChange = (e) => {
-        return handleInvalid(e, PASSWORD_REGEX, setInvalidPassword, 'Có 8-15 ký tự, chữ số, ký tự đặc biệt & in hoa');
+        const helperText = isRegister ? 'Có 8-15 ký tự, chữ số, ký tự đặc biệt & in hoa' : 'Vui lòng điền vào trường này';
+
+        return handleInvalid(e, PASSWORD_REGEX, setInvalidPassword, helperText);
     }
 
     const handleRetypePasswordChange = (e) => {
