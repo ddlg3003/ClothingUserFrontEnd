@@ -57,4 +57,18 @@ export default makeStyles((theme) => ({
         // background: "#cfcfe1"
     },
 
+    favoriteItems: {
+        alignItems: 'center',
+        fontWeight: 'bolder',
+        textDecoration: 'none',
+        position: 'relative',        
+        [theme.breakpoints.up('xs')]: {
+            display: 'flex',
+            flexDirection: 'column'
+        },
+        '&:hover': {
+            cursor: 'pointer',
+        },
+    },
+
 }))

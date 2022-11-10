@@ -8,10 +8,26 @@ import {
   validateEmail, validatePhoneNumber
 } from "../../utils/validateString";
 import AddressDetails from "./AddressDetails";
+import Favorites from "./Favorites";
 import PasswordChange from "./PasswordChange";
 import ProfileDetails from "./ProfileDetails";
 import SideBar from "./SideBar";
 import useStyles from "./styles";
+
+const favorites = [
+  {
+    id: 0,
+    name: "Kính chống nắng",
+    price: 150000,
+    img: "https://demo.themefisher.com/aviato/images/shop/cart/cart-1.jpg",
+  },
+  {
+    id: 1,
+    name: "Áo Polo nam Pique Cotton USA thấm hút tối đa (kẻ sọc)",
+    price: 100000,
+    img: "https://media.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/August2022/DSC05295-copy_73.jpg",
+  },
+]
 
 const address = [
   {
@@ -189,6 +205,11 @@ const Profile = () => {
                       handleComfirmNewPasswordChange
                     }
                   />
+                </div>
+
+                <div hidden={navSelection !== "favorites"}>
+                <Favorites favorites={favorites} classes={classes} />
+
                 </div>
               </div>
             </Paper>

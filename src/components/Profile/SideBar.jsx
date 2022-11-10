@@ -11,6 +11,8 @@ import {
   Typography,
 } from "@mui/material";
 import Stack from "@mui/material/Stack";
+import ReceiptIcon from '@mui/icons-material/Receipt';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import React from "react";
 
 const SideBar = (props) => {
@@ -68,7 +70,30 @@ const SideBar = (props) => {
               </ListItemIcon>
               <ListItemText primary="Đổi mật khẩu" />
             </ListItem>
+            <Divider />
+
+            <ListItem
+              button
+              onClick={() => props.handleNavSelectionChange("favorites")}
+            >
+              <ListItemIcon>
+                <FavoriteIcon />
+              </ListItemIcon>
+              <ListItemText primary="Yêu thích" />
+            </ListItem>
+            <Divider />
+            
+            <ListItem
+              button
+              onClick={() => props.handleNavSelectionChange("orders")}
+            >
+              <ListItemIcon>
+                <ReceiptIcon />
+              </ListItemIcon>
+              <ListItemText primary="Đơn mua" />
+            </ListItem>
           </List>
+          
         </Stack>
       </div>
     </>
