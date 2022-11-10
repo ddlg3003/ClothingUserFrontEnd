@@ -1,6 +1,7 @@
 import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
 import LockIcon from "@mui/icons-material/Lock";
 import PersonIcon from "@mui/icons-material/Person";
+import { PASSWORD_REGEX, SIDEBAR_STATE } from "../../utils/globalVariables";
 
 import {
   Divider,
@@ -43,7 +44,7 @@ const SideBar = (props) => {
           >
             <ListItem
               button
-              onClick={() => props.handleNavSelectionChange("profile")}
+              onClick={() => props.handleNavSelectionChange(SIDEBAR_STATE[0])}
             >
               <ListItemIcon>
                 <PersonIcon />
@@ -54,7 +55,7 @@ const SideBar = (props) => {
             <ListItem
               button
               divider
-              onClick={() => props.handleNavSelectionChange("address")}
+              onClick={() => props.handleNavSelectionChange(SIDEBAR_STATE[1])}
             >
               <ListItemIcon>
                 <EditLocationAltIcon />
@@ -63,7 +64,7 @@ const SideBar = (props) => {
             </ListItem>
             <ListItem
               button
-              onClick={() => props.handleNavSelectionChange("changePassword")}
+              onClick={() => props.handleNavSelectionChange(SIDEBAR_STATE[2])}
             >
               <ListItemIcon>
                 <LockIcon />
@@ -74,7 +75,7 @@ const SideBar = (props) => {
 
             <ListItem
               button
-              onClick={() => props.handleNavSelectionChange("favorites")}
+              onClick={() => props.handleNavSelectionChange(SIDEBAR_STATE[3])}
             >
               <ListItemIcon>
                 <FavoriteIcon />
@@ -85,7 +86,7 @@ const SideBar = (props) => {
             
             <ListItem
               button
-              onClick={() => props.handleNavSelectionChange("orders")}
+              onClick={() => props.handleNavSelectionChange(SIDEBAR_STATE[4])}
             >
               <ListItemIcon>
                 <ReceiptIcon />
