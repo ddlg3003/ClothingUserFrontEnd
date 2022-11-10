@@ -1,22 +1,22 @@
-import React from "react";
-import useStyles from "./styles";
+import AddIcon from "@mui/icons-material/Add";
+import ClearIcon from "@mui/icons-material/Clear";
+import RemoveIcon from "@mui/icons-material/Remove";
 import {
   Button,
   IconButton,
-  Typography,
+  Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
+  Typography,
 } from "@mui/material";
-import ClearIcon from "@mui/icons-material/Clear";
-import RemoveIcon from "@mui/icons-material/Remove";
-import AddIcon from "@mui/icons-material/Add";
-import { Box, Container } from "@mui/system";
-import { useState } from "react";
+import { Container } from "@mui/system";
+import React, { useState } from "react";
+import useStyles from "./styles";
+import DeleteAlertDialog from "./DeleteAlertDialog";
 
 function createData(id, name, price, amount, img, total) {
   return { id, name, price, amount, img, total };
@@ -27,7 +27,7 @@ const rows = [
     0,
     "Kính chống nắng",
     100000,
-    3,
+    300,
     "https://demo.themefisher.com/aviato/images/shop/cart/cart-1.jpg",
     300000
   ),
@@ -61,7 +61,15 @@ const Cart = () => {
   const classes = useStyles();
 
   const [datas, setDatas] = useState(rows);
+  const [openDeleteItemDialog, setOpenDeleteItemDialog] = useState("");
 
+  const handleCloseDeleteItem = () => {
+    setOpenDeleteItemDialog("");
+  };
+
+  const handleClickDeleteItem = (id) => {
+    setOpenDeleteItemDialog(id);
+  };
   const handleIncrease = (id, amount) => {
     const tempData = [...datas];
     tempData[id].amount++;
@@ -71,6 +79,11 @@ const Cart = () => {
 
   const handleDecrease = (id, amount) => {
     const tempData = [...datas];
+    if (amount === 1) {
+      handleClickDeleteItem(id);
+      return;
+    }
+
     if (amount > 0) {
       tempData[id].amount--;
       tempData[id].total = tempData[id].price * tempData[id].amount;
@@ -94,24 +107,24 @@ const Cart = () => {
         </Typography>{" "}
         <Container size="md">
           <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <Table className={classes.itemsTable} aria-label="simple table">
               <TableHead>
                 <TableRow>
                   <TableCell align="left" width={120}>
                     <Typography fontSize="17px">Sản Phẩm</Typography>
                   </TableCell>
-                  <TableCell align="left"></TableCell>
-                  <TableCell align="left">
-                    {" "} 
+                  <TableCell align="left" sx={{ width: "200px" }}></TableCell>
+                  <TableCell align="left" sx={{ width: "130px" }}>
+                    {" "}
                     <Typography fontSize="17px">Đơn Giá</Typography>
                   </TableCell>
                   <TableCell align="center">
                     <Typography fontSize="17px">Số Lượng</Typography>
                   </TableCell>
-                  <TableCell align="left">
+                  <TableCell align="left" sx={{ width: "130px" }}>
                     <Typography fontSize="17px">Số Tiền</Typography>
                   </TableCell>
-                  <TableCell align="left">
+                  <TableCell align="left" sx={{ width: "80px" }}>
                     <Typography width={80} fontSize="17px">
                       Thao Tác
                     </Typography>
@@ -176,13 +189,22 @@ const Cart = () => {
                       </Typography>
                     </TableCell>
                     <TableCell width={100} align="left">
-                      <IconButton size="large">
+                      <IconButton
+                        size="large"
+                        onClick={() => handleClickDeleteItem(data.id)}
+                      >
                         <ClearIcon
                           fontSize="inherit"
                           color="error"
                           className={classes.removeItemButton}
                         />
+                        
                       </IconButton>
+                      <DeleteAlertDialog
+                          open={openDeleteItemDialog === data.id}
+                          onClose={handleCloseDeleteItem}
+                          item={data}
+                        />
                     </TableCell>
                   </TableRow>
                 ))}
@@ -205,9 +227,11 @@ const Cart = () => {
             {Intl.NumberFormat("vi-VN", {
               style: "currency",
               currency: "VND",
-            }).format(datas.reduce((acc, data) => {
-              return acc = acc + data.total;
-            }, 0))}
+            }).format(
+              datas.reduce((acc, data) => {
+                return (acc = acc + data.total);
+              }, 0)
+            )}
           </Typography>
         </div>
         <div>

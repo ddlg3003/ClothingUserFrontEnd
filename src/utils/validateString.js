@@ -8,9 +8,3 @@ export function validateEmail(str) {
   return regExp.test(str);
 }
 
-export function validatePassword(str) {
-  return (
-    str.length > 7 &&
-    str.length < 16
-  );
-}
