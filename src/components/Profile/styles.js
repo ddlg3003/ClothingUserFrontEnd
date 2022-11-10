@@ -71,4 +71,9 @@ export default makeStyles((theme) => ({
         },
     },
 
+    hidden: {
+        display: 'none'
+    },
+    notHidden: {
+    }
 }))
