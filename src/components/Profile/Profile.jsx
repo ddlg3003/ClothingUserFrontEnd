@@ -1,18 +1,26 @@
 import { Container, Paper, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import React, { useState } from "react";
-import {
-  PASSWORD_REGEX
-} from "../../utils/globalVariables";
-import {
-  validateEmail, validatePhoneNumber
-} from "../../utils/validateString";
+import { PASSWORD_REGEX, SIDEBAR_STATE } from "../../utils/globalVariables";
+import { validateEmail, validatePhoneNumber } from "../../utils/validateString";
 import AddressDetails from "./AddressDetails";
 import Favorites from "./Favorites";
+import Orders from "./Orders";
 import PasswordChange from "./PasswordChange";
 import ProfileDetails from "./ProfileDetails";
 import SideBar from "./SideBar";
 import useStyles from "./styles";
+
+const allOrders = [
+  {
+    id: 1,
+    name: "Áo Polo nam Pique Cotton USA thấm hút tối đa (kẻ sọc)",
+    price: 100000,
+    type: "Đen, XL",
+    amount: "1",
+    img: "https://media.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/August2022/DSC05295-copy_73.jpg",
+  },
+];
 
 const favorites = [
   {
@@ -27,7 +35,7 @@ const favorites = [
     price: 100000,
     img: "https://media.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/August2022/DSC05295-copy_73.jpg",
   },
-]
+];
 
 const address = [
   {
@@ -75,10 +83,13 @@ const address = [
   },
 ];
 
+
 const Profile = () => {
   const classes = useStyles();
 
-  const [navSelection, setNavSelection] = useState("profile");
+  const [tabValue, setTabValue] = useState(false);
+
+  const [navSelection, setNavSelection] = useState(SIDEBAR_STATE[0]);
   const [userInfo, setUserInfo] = useState({
     name: "phianh",
     username: "phamphianh",
@@ -101,6 +112,8 @@ const Profile = () => {
   };
 
   const handleNavSelectionChange = (value) => {
+    if (tabValue !== "orders") setTabValue(false);
+
     setNavSelection(value);
   };
 
@@ -171,7 +184,7 @@ const Profile = () => {
             />
             <Paper elevation={10}>
               <div className={classes.profileMain}>
-                <div hidden={navSelection !== "profile"}>
+                <div hidden={navSelection !== SIDEBAR_STATE[0]}>
                   <ProfileDetails
                     classes={classes}
                     userInfo={userInfo}
@@ -187,11 +200,11 @@ const Profile = () => {
                   />
                 </div>
 
-                <div hidden={navSelection !== "address"}>
+                <div hidden={navSelection !== SIDEBAR_STATE[1]}>
                   <AddressDetails address={address} classes={classes} />
                 </div>
 
-                <div hidden={navSelection !== "changePassword"}>
+                <div hidden={navSelection !== SIDEBAR_STATE[2]}>
                   <PasswordChange
                     classes={classes}
                     currentPassword={currentPassword}
@@ -207,9 +220,18 @@ const Profile = () => {
                   />
                 </div>
 
-                <div hidden={navSelection !== "favorites"}>
-                <Favorites favorites={favorites} classes={classes} />
-
+                <div hidden={navSelection !== SIDEBAR_STATE[3]}>
+                  <Favorites favorites={favorites} classes={classes} />
+                </div>
+                <div hidden={navSelection !== SIDEBAR_STATE[4]}>
+                  <Orders
+                    tabValue={tabValue}
+                    setTabValue={setTabValue}
+                    navSelection={navSelection}
+                    setNavSelection={setNavSelection}
+                    allOrders={allOrders}
+                    classes={classes}
+                  />
                 </div>
               </div>
             </Paper>
