@@ -1,30 +1,42 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Container, Paper, Typography, Button, Divider, Grid } from '@mui/material';
-import { BLACK_LOGO, EMAIL_REGEX, PASSWORD_REGEX, PHONE_REGEX } from '../../utils/globalVariables';
+import { BLACK_LOGO, EMAIL_REGEX, PASSWORD_REGEX, PHONE_REGEX, USERNAME_REGEX } from '../../utils/globalVariables';
 import GoogleIcon from '@mui/icons-material/Google';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import Input from './Input';
-import { Link } from 'react-router-dom';
+import Alert from '../Alert/Alert';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../features/auth';
+import { getUserLogin, signup } from '../../utils/api';
 import useStyles from './styles';
 
 const Auth = () => {
     const classes = useStyles();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const initialFormState = {
+        name: '',
         email: '',
         phone: '',
+        username: '',
         password: '',
         retypePassword: '',
     };
+    const [openToast, setOpenToast] = useState(false);
     const [formData, setFormData] = useState(initialFormState);
     const [isRegister, setIsRegister] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [invalidEmail, setInvalidEmail] = useState({ error: false, helperText: '' });
+    const [invalidUsername, setInvalidUsername] = useState({ error: false, helperText: '' });
     const [invalidPhone, setInvalidPhone] = useState({ error: false, helperText: '' });
     const [invalidPassword, setInvalidPassword] = useState({ error: false, helperText: '' });
     const [invalidRetypePassword, setInvalidRetypePassword] = useState({ error: false, helperText: '' });
     const [enableButton, setEnableButton] = useState(false);
     const phoneInput = useRef();
     const emailInput = useRef();
+    const usernameInput = useRef();
     const passwordInput = useRef();
     const retypePasswordInput = useRef();
     const logo = BLACK_LOGO;
@@ -35,10 +47,12 @@ const Auth = () => {
                 formData.email && 
                 formData.password && 
                 formData.phone && 
+                formData.username && 
                 formData.retypePassword &&
                 formData.email.match(EMAIL_REGEX) &&
                 formData.password.match(PASSWORD_REGEX) &&
                 formData.phone.match(PHONE_REGEX) &&
+                formData.username.match(USERNAME_REGEX) &&
                 formData.retypePassword === formData.password
             ) {
                 setEnableButton(true);
@@ -47,7 +61,7 @@ const Auth = () => {
                 setEnableButton(false);
         } else {
             if(
-                formData.email && 
+                formData.username && 
                 formData.password
             ) {
                 setEnableButton(true);
@@ -56,6 +70,14 @@ const Auth = () => {
                 setEnableButton(false);
         }
     }, [formData, isRegister]);
+
+    const handleCloseToast = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setOpenToast(false);
+      };
 
     const handleShowPassword = () => setShowPassword(prev => !prev);
 
@@ -80,13 +102,17 @@ const Auth = () => {
     }
 
     const handleEmailChange = (e) => {
-        const helperText = isRegister ? 'Không đúng dịnh dạng email' : 'Vui lòng điền vào trường này';
-
-        return handleInvalid(e, EMAIL_REGEX, setInvalidEmail, helperText);
+        return handleInvalid(e, EMAIL_REGEX, setInvalidEmail, 'Không đúng dịnh dạng email');
     }
 
     const handlePhoneChange = (e) => {
         return handleInvalid(e, PHONE_REGEX, setInvalidPhone, 'Không đúng định dạng sđt');
+    }
+
+    const handleUsernameChange = (e) => {
+        const helperText = isRegister ? 'Username cần có 6 kí tự gổm chữ và số' : 'Vui lòng điền vào trường này';
+
+        return handleInvalid(e, USERNAME_REGEX, setInvalidUsername, helperText);
     }
 
     const handlePasswordChange = (e) => {
@@ -107,27 +133,59 @@ const Auth = () => {
         
     }
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        console.log(formData);
+
+        if(!isRegister) {
+            const { data, status } = await getUserLogin(formData);
+
+            if(status === 200) {
+                dispatch(setUser(data));
+                navigate(-1);
+                setEnableButton(false);
+            }
+            else {
+                setOpenToast(true);
+            }
+        }
+        else {
+            const { data, status } = await signup({ ...formData, name: formData.username, roles: ["USER"] });
+
+            if(status === 200) {
+                setIsRegister(prev => !prev);
+                // console.log(formData);
+            }
+            else {
+                setOpenToast(true);
+            }
+        }
+    }
+
     const switchAuthMode = () => {
         setIsRegister(prev => !prev);
         if(isRegister) {
-            if(phoneInput.current || emailInput.current || passwordInput.current || retypePasswordInput.current) {
+            if(phoneInput.current || emailInput.current || usernameInput.current || passwordInput.current || retypePasswordInput.current) {
                 setInvalidPhone({ error: false, helperText: '' });
                 setInvalidEmail({ error: false, helperText: '' });
+                setInvalidUsername({ error: false, helperText: '' });
                 setInvalidPassword({ error: false, helperText: '' }); 
                 setInvalidRetypePassword({ error: false, helperText: '' });
                 setFormData(initialFormState);
                 phoneInput.current.value = null;
                 emailInput.current.value = null;
+                usernameInput.current.value = null;
                 passwordInput.current.value = null;
                 retypePasswordInput.current.value = null;
             }
         }
         else {
-            if(emailInput.current || passwordInput.current) {
-                setInvalidEmail({ error: false, helperText: '' });
+            if(usernameInput.current || passwordInput.current) {
+                setInvalidUsername({ error: false, helperText: '' });
                 setInvalidPassword({ error: false, helperText: '' }); 
                 setFormData(initialFormState);
-                emailInput.current.value = null;
+                usernameInput.current.value = null;
                 passwordInput.current.value = null;
             }
         }
@@ -138,25 +196,35 @@ const Auth = () => {
             <Paper variant="outlined" className={classes.paper}>
                 <Typography variant="h4" marginBottom="20px">{isRegister ? 'Đăng ký' : 'Đăng nhập'}</Typography>
                 <Link to="/"><img src={logo} /></Link>
-                <form className={classes.form} onSubmit={() => {}}>
+                <form className={classes.form} onSubmit={handleSubmit}>
                     <Input 
-                        name="email" 
-                        label="Email" 
-                        handleChange={handleEmailChange} 
-                        type="email" 
-                        error={invalidEmail.error} 
-                        helperText={invalidEmail.helperText}  
-                        inputRef={emailInput} 
+                        name="username" 
+                        label="Username" 
+                        handleChange={handleUsernameChange}
+                        error={invalidUsername.error} 
+                        helperText={invalidUsername.helperText}   
+                        inputRef={usernameInput}
                     />
                     {isRegister ? 
-                        <Input 
-                            name="phone" 
-                            label="Số điện thoại" 
-                            handleChange={handlePhoneChange}
-                            error={invalidPhone.error} 
-                            helperText={invalidPhone.helperText}   
-                            inputRef={phoneInput}
-                        /> 
+                        <>
+                            <Input 
+                                name="phone" 
+                                label="Số điện thoại" 
+                                handleChange={handlePhoneChange}
+                                error={invalidPhone.error} 
+                                helperText={invalidPhone.helperText}   
+                                inputRef={phoneInput}
+                            />
+                            <Input 
+                                name="email" 
+                                label="Email" 
+                                handleChange={handleEmailChange} 
+                                type="email" 
+                                error={invalidEmail.error} 
+                                helperText={invalidEmail.helperText}  
+                                inputRef={emailInput} 
+                            />
+                        </>
                         : null 
                     }
                     <Input 
@@ -187,7 +255,7 @@ const Auth = () => {
                         color="black" 
                         style={{ color: 'white', padding: '16px', width: '100%' }} 
                         size="medium"
-                        onClick={() => console.log(formData)}
+                        type="submit"
                         disabled={!enableButton}
                     >
                         {isRegister ? 'Đăng ký' : 'Đăng nhập'}
@@ -262,6 +330,13 @@ const Auth = () => {
                     )}
                 </form>
             </Paper>
+            <Alert 
+                message="THÔNG TIN ĐĂNG NHẬP KHÔNG ĐÚNG" 
+                openToast={openToast} 
+                handleCloseToast={handleCloseToast}
+                color="error"
+                severity="error"    
+            />
         </Container>
     )
 }

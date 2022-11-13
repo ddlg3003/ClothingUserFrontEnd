@@ -3,16 +3,23 @@ import { BLACK_LOGO } from '../../utils/globalVariables';
 import { AppBar, Toolbar, Drawer, Button, IconButton, useMediaQuery, Menu, MenuItem, Avatar, Badge } from '@mui/material';
 import { TextField, InputAdornment } from '@mui/material';
 import { Search as SearchIcon, AccountCircle, Menu as MenuIcon } from '@mui/icons-material';
+import MuiAlert from '@mui/material/Alert';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SecondNavbar from '../SecondNavbar/SecondNavbar';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { useGetCategoriesQuery } from '../../services/clothing';
+import { logout } from '../../features/auth';
 import useStyles from './styles';
 
 
 const Navbar = () => {
     const classes = useStyles();
+    const dispatch = useDispatch();
     const cartData = useSelector(state => state.cart.data);
+    const { data, isFetching } = useGetCategoriesQuery();
+    const { isAuthenticated } = useSelector(state => state.auth);
+    const user = JSON.parse(localStorage.getItem('user'));
 
     let currentHovering = false;
     let currentAuthHovering = false;
@@ -20,10 +27,13 @@ const Navbar = () => {
     const logo = BLACK_LOGO;
     const isMobile = useMediaQuery('(max-width: 800px)');
     
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const [anchorElAuth, setAnchorElAuth] = useState(null);
+
+    const Alert = React.forwardRef(function Alert(props, ref) {
+        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+    });
 
     // Auth hover functions
     const handleClickAuth = (e) => {
@@ -38,6 +48,14 @@ const Navbar = () => {
 
     const handleCloseAuth = () => {
         setAnchorElAuth(null);
+    }
+
+    const handleLogout = () => {
+        setAnchorElAuth(null);
+
+        window.location.href = 'http://localhost:3000/auth';
+
+        dispatch(logout());
     }
 
     const handleCloseHoverAuth = (e) => {
@@ -113,8 +131,7 @@ const Navbar = () => {
                                     {!isMobile && <>Đăng nhập &nbsp;</>}
                                     <AccountCircle />
                                 </Button>
-                            ) :
-                            (
+                            ) : (
                                 <>
                                     <Button 
                                         color="black"
@@ -126,7 +143,7 @@ const Navbar = () => {
                                             sx={{ width: 32, height: 32 }}
                                             src={'https://yt3.ggpht.com/yti/AJo0G0mXhiLDl1CtA0Q65KQgegDt_mRqPuePpPzUk6ao=s88-c-k-c0x00ffffff-no-rj-mo'}
                                         />
-                                        {!isMobile && <>&nbsp; Gnad</>}
+                                        {!isMobile && <>&nbsp; {user?.name}</>}
                                     </Button>
                                     <Menu
                                         // className={classes.dropdown}
@@ -159,7 +176,7 @@ const Navbar = () => {
                                             to="/" 
                                             style={{ textDecoration: 'none', color: 'black' }}
                                         >
-                                            <MenuItem onClick={handleCloseAuth}>Đăng xuất</MenuItem>
+                                            <MenuItem onClick={handleLogout}>Đăng xuất</MenuItem>
                                         </Link>
                                     </Menu>
                                 </>
@@ -222,7 +239,21 @@ const Navbar = () => {
                         },
                     }}
                 >
-                    <Link to="/" style={{ textDecoration: 'none', color: 'black' }}><MenuItem onClick={handleClose}>Thời trang nam</MenuItem></Link>
+                    {
+                        isFetching ? (
+                            <MenuItem onClick={handleClose}>Đang tải danh mục...</MenuItem>
+                        ) : (
+                            data.map((category) => (
+                                <Link 
+                                    key={category.id}
+                                    to="/" 
+                                    style={{ textDecoration: 'none', color: 'black' }}
+                                >
+                                    <MenuItem onClick={handleClose}>{category.name}</MenuItem>
+                                </Link>
+                            ))
+                        )
+                    }
                 </Menu>
             </div>
         </>

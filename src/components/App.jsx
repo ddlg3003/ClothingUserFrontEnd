@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { CssBaseline } from '@mui/material';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import NavAndFooter from './NavAndFooter';
 import NotNavAndFooter from './NotNavAndFooter';
 import Home from './Home/Home';
@@ -10,10 +10,12 @@ import Profile from './Profile/Profile'
 import Cart from './Cart/Cart';
 import Auth from './Auth/Auth';
 import Checkout from './Checkout/Checkout';
+import { useSelector } from 'react-redux';
 import useStyles from './styles';
 
 const App = () => {
     const classes = useStyles();
+    const { isAuthenticated } = useSelector(state => state.auth);
 
     return (
         <div className={classes.root}>
@@ -24,13 +26,12 @@ const App = () => {
                         <Route path="/" element={<Home />} />
                         <Route path="/products/:id" element={<ProductDetail />} />
                         <Route path="/products/" element={<ProductListMore />} />
-                        <Route path="user/:id" element={<Profile />} />
-                        <Route path="/cart" element={<Cart />} />
-                        <Route path="/checkout" element={<Checkout />} />
-                        <Route path="/profile" element={<Profile />} />
+                        <Route path="/cart" element={ isAuthenticated ? <Cart /> : <Navigate replace to="/auth" /> } />
+                        <Route path="/checkout" element={ isAuthenticated ? <Checkout /> : <Navigate replace to="/auth" /> } />
+                        <Route path="/profile" element={ isAuthenticated ? <Profile /> : <Navigate replace to="/auth" /> } />
                     </Route>
                     <Route element={<NotNavAndFooter />}>
-                        <Route path="/auth" element={<Auth />} />
+                        <Route path="/auth" element={ !isAuthenticated ? <Auth /> : <Navigate replace to="/" /> } />
                     </Route>
                 </Routes>
             </main>
