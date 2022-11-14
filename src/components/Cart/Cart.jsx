@@ -76,7 +76,6 @@ const Cart = () => {
                   </TableCell>
                   <TableCell align="left" sx={{ width: "200px" }}></TableCell>
                   <TableCell align="left" sx={{ width: "130px" }}>
-                    {" "}
                     <Typography fontSize="17px">Đơn Giá</Typography>
                   </TableCell>
                   <TableCell align="center">
@@ -98,17 +97,28 @@ const Cart = () => {
                     key={data.id}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
+                    
                     <TableCell component="th" scope="row">
-                      <div>
+                    
+                              <div>
+                              <Link to="/products/1"
+                            className={classes.itemLink}>
                         <img width={80} src={data.img} alt="" />
+                        </Link>
+
                       </div>
+                      
                     </TableCell>
                     <TableCell component="th" scope="row">
                       <Stack direction="column">
+                      <Link to="/products/1"
+                      className={classes.itemLink}>
+
                       <Typography
                         fontSize="18px"
                         maxWidth={200}
                         className={classes.itemName}
+                        sx={{color: "#000"}}
                       >
                         {data.name}
                       </Typography>
@@ -120,6 +130,8 @@ const Cart = () => {
                       >
                         Đen, XL
                       </Typography>
+                      </Link>
+
                       </Stack>
                       
                     </TableCell>
