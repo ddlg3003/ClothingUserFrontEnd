@@ -12,6 +12,7 @@ import {
   TableHead,
   TableRow,
   Typography,
+  Stack
 } from "@mui/material";
 import { Container } from "@mui/system";
 import React, { useState } from "react";
@@ -21,7 +22,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { increaseItem, decreaseItem } from "../../features/cart";
 import { Link } from "react-router-dom";
 
-
 const Cart = () => {
   const classes = useStyles();
 
@@ -29,7 +29,7 @@ const Cart = () => {
 
   const dispatch = useDispatch();
 
-  const datas = useSelector(state => state.cart.data);
+  const datas = useSelector((state) => state.cart.data);
 
   const handleCloseDeleteItem = () => {
     setOpenDeleteItemDialog("");
@@ -104,6 +104,7 @@ const Cart = () => {
                       </div>
                     </TableCell>
                     <TableCell component="th" scope="row">
+                      <Stack direction="column">
                       <Typography
                         fontSize="18px"
                         maxWidth={200}
@@ -111,10 +112,26 @@ const Cart = () => {
                       >
                         {data.name}
                       </Typography>
+                      <Typography
+                        fontSize="18px"
+                        color="text.secondary"
+                        maxWidth={200}
+                        className={classes.itemName}
+                      >
+                        Đen, XL
+                      </Typography>
+                      </Stack>
+                      
                     </TableCell>
                     <TableCell align="left">
-                      <Typography fontSize="18px" className={classes.itemName}>
-                        {data.price}
+                    <Typography
+                        className={classes.itemName}
+                        fontSize={18}
+                      >
+                        {Intl.NumberFormat("vi-VN", {
+                          style: "currency",
+                          currency: "VND",
+                        }).format(data.price)}
                       </Typography>
                     </TableCell>
                     <TableCell align="center" width={170}>
@@ -145,8 +162,15 @@ const Cart = () => {
                       </IconButton>
                     </TableCell>
                     <TableCell align="left">
-                      <Typography fontSize="18px" className={classes.itemName}>
-                        {data.total}
+                      <Typography
+                        className={classes.itemName}
+                        color="error"
+                        fontSize={18}
+                      >
+                        {Intl.NumberFormat("vi-VN", {
+                          style: "currency",
+                          currency: "VND",
+                        }).format(data.total)}
                       </Typography>
                     </TableCell>
                     <TableCell width={100} align="left">
@@ -159,13 +183,12 @@ const Cart = () => {
                           color="error"
                           className={classes.removeItemButton}
                         />
-                        
                       </IconButton>
                       <DeleteAlertDialog
-                          open={openDeleteItemDialog === data.id}
-                          onClose={handleCloseDeleteItem}
-                          item={data}
-                        />
+                        open={openDeleteItemDialog === data.id}
+                        onClose={handleCloseDeleteItem}
+                        item={data}
+                      />
                     </TableCell>
                   </TableRow>
                 ))}

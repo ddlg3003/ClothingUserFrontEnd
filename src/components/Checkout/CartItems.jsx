@@ -8,6 +8,7 @@ import {
   TableHead,
   TableRow,
   Paper,
+  Stack
 } from "@mui/material";
 import { Container } from "@mui/system";
 import useStyles from "./styles";
@@ -73,7 +74,7 @@ const CartItems = () => {
                   <TableCell align="center">
                     <Typography fontSize="17px">Số Lượng</Typography>
                   </TableCell>
-                  <TableCell align="left">
+                  <TableCell align="right">
                     <Typography fontSize="17px">Thành Tiền</Typography>
                   </TableCell>
                 </TableRow>
@@ -90,6 +91,7 @@ const CartItems = () => {
                       </div>
                     </TableCell>
                     <TableCell component="th" scope="row">
+                      <Stack direction="column">
                       <Typography
                         fontSize="18px"
                         maxWidth={200}
@@ -97,20 +99,44 @@ const CartItems = () => {
                       >
                         {row.name}
                       </Typography>
+                      <Typography
+                        fontSize="18px"
+                        color="text.secondary"
+                        maxWidth={200}
+                        className={classes.itemName}
+                      >
+                        Đen, XL
+                      </Typography>
+                      </Stack>
+                      
                     </TableCell>
                     <TableCell align="left">
-                      <Typography fontSize="18px" className={classes.itemName}>
-                        {row.price}
+                      <Typography
+                        className={classes.itemName}
+                        fontSize={18}
+                      >
+                        {Intl.NumberFormat("vi-VN", {
+                          style: "currency",
+                          currency: "VND",
+                        }).format(row.price)}
                       </Typography>
+                    
                     </TableCell>
                     <TableCell align="center" width={170}>
                       <Typography fontSize="18px" className={classes.itemName}>
                         {row.amount}
                       </Typography>
                     </TableCell>
-                    <TableCell align="left">
-                      <Typography fontSize="18px" className={classes.itemName}>
-                        {row.total}
+                    <TableCell align="right">
+                    <Typography
+                        className={classes.itemName}
+                        fontSize={18}
+                        color="error"
+                      >
+                        {Intl.NumberFormat("vi-VN", {
+                          style: "currency",
+                          currency: "VND",
+                        }).format(row.total)}
                       </Typography>
                     </TableCell>
                   </TableRow>
