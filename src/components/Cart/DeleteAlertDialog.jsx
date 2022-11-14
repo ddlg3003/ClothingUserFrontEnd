@@ -11,7 +11,6 @@ const DeleteAlertDialog = (props) => {
   };
 
   const handleConfirmClick = () => {
-    console.log(item);
   };
 
   return (
