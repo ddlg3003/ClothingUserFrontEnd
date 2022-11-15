@@ -55,3 +55,20 @@ export const decreaseCartItem = async (cartItem) => {
     console.log(error);
   }
 };
+
+export const deleteCartItem = async (cartItem) => {
+  try {
+    const config = axiosConfig();
+    console.log(cartItem);
+
+    const { data, status } = await api.post(
+      "/user/cart/delete",
+      cartItem,
+      config,
+    );
+
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};

@@ -13,6 +13,7 @@ import {
   TableRow,
   Typography,
   Stack,
+  Box,
 } from "@mui/material";
 import { Container } from "@mui/system";
 import React, { useState } from "react";
@@ -22,7 +23,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { increaseItem, decreaseItem, updateCart } from "../../features/cart";
 import { axiosConfig } from "../../utils/globalVariables";
 import { Link } from "react-router-dom";
-import { increaseCartItem, decreaseCartItem } from "../../utils/api";
+import LocalMallIcon from "@mui/icons-material/LocalMall";
+import {
+  increaseCartItem,
+  decreaseCartItem,
+  deleteCartItem,
+} from "../../utils/api";
+import LocalMall from "@mui/icons-material/LocalMall";
 
 const Cart = () => {
   const classes = useStyles();
@@ -41,8 +48,9 @@ const Cart = () => {
     setOpenDeleteItemDialog(productId);
   };
 
-  const handleConfirmDeleteClick = () => {
-    console.log("xoa roi nha");
+  const handleConfirmDeleteClick = async ({ color, size, productId }) => {
+    const data = await deleteCartItem({ color, size, productId });
+    dispatch(updateCart(data));
   };
 
   const handleIncrease = async ({ color, size, product_id: productId }) => {
@@ -50,7 +58,12 @@ const Cart = () => {
     dispatch(updateCart(data));
   };
 
-  const handleDecrease = async ({ color, size, product_id: productId, quantity }) => {
+  const handleDecrease = async ({
+    color,
+    size,
+    product_id: productId,
+    quantity,
+  }) => {
     if (quantity === 1) {
       handleClickDeleteItem(productId);
       return;
@@ -98,115 +111,124 @@ const Cart = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {datas.map((data, i) => (
-                  <TableRow
-                    key={i}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell component="th" scope="row">
-                      <div>
-                        <Link to="/products/1" className={classes.itemLink}>
-                          <img width={80} src={data.proImage} alt="" />
-                        </Link>
-                      </div>
-                    </TableCell>
-                    <TableCell component="th" scope="row">
-                      <Stack direction="column">
-                        <Link to="/products/1" className={classes.itemLink}>
-                          <Typography
-                            fontSize="16px"
-                            maxWidth={300}
-                            className={classes.itemName}
-                            sx={{ color: "#000" }}
-                          >
-                            {data.proName}
-                          </Typography>
-                          <Typography
-                            fontSize="16px"
-                            color="text.secondary"
-                            maxWidth={200}
-                            className={classes.itemName}
-                          >
-                            Màu: {data.color}
-                          </Typography>
-                          <Typography
-                            fontSize="16px"
-                            color="text.secondary"
-                            maxWidth={200}
-                            className={classes.itemName}
-                          >
-                            Kích cỡ: {data.size}
-                          </Typography>
-                        </Link>
-                      </Stack>
-                    </TableCell>
-                    <TableCell align="left">
-                      <Typography className={classes.itemName} fontSize={18}>
-                        {Intl.NumberFormat("vi-VN", {
-                          style: "currency",
-                          currency: "VND",
-                        }).format(data.price)}
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="center" width={170}>
-                      <IconButton
-                        size="small"
-                        onClick={() => handleDecrease(data)}
-                      >
-                        <RemoveIcon
-                          fontSize="inherit"
-                          className={classes.removeItemButton}
+                {!datas.length ? (
+                  <Box>
+                    <LocalMallIcon sx={{ fontSize: 70, mt: 2 }}/>
+                    <Typography width={80} fontSize="17px">
+                      Không có sản phẩm
+                    </Typography>
+                  </Box>
+                ) : (
+                  datas.map((data, i) => (
+                    <TableRow
+                      key={i}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row">
+                        <div>
+                          <Link to="/products/1" className={classes.itemLink}>
+                            <img width={80} src={data.proImage} alt="" />
+                          </Link>
+                        </div>
+                      </TableCell>
+                      <TableCell component="th" scope="row">
+                        <Stack direction="column">
+                          <Link to="/products/1" className={classes.itemLink}>
+                            <Typography
+                              fontSize="16px"
+                              maxWidth={300}
+                              className={classes.itemName}
+                              sx={{ color: "#000" }}
+                            >
+                              {data.proName}
+                            </Typography>
+                            <Typography
+                              fontSize="16px"
+                              color="text.secondary"
+                              maxWidth={200}
+                              className={classes.itemName}
+                            >
+                              Màu: {data.color}
+                            </Typography>
+                            <Typography
+                              fontSize="16px"
+                              color="text.secondary"
+                              maxWidth={200}
+                              className={classes.itemName}
+                            >
+                              Kích cỡ: {data.size}
+                            </Typography>
+                          </Link>
+                        </Stack>
+                      </TableCell>
+                      <TableCell align="left">
+                        <Typography className={classes.itemName} fontSize={18}>
+                          {Intl.NumberFormat("vi-VN", {
+                            style: "currency",
+                            currency: "VND",
+                          }).format(data.price)}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="center" width={170}>
+                        <IconButton
+                          size="small"
+                          onClick={() => handleDecrease(data)}
+                        >
+                          <RemoveIcon
+                            fontSize="inherit"
+                            className={classes.removeItemButton}
+                          />
+                        </IconButton>
+                        <input
+                          disabled={true}
+                          readOnly={true}
+                          onChange={() => {}}
+                          value={data.quantity}
+                          className={classes.inputField}
                         />
-                      </IconButton>
-                      <input
-                        disabled={true}
-                        readOnly={true}
-                        onChange={() => {}}
-                        value={data.quantity}
-                        className={classes.inputField}
-                      />
-                      <IconButton
-                        size="small"
-                        onClick={() => handleIncrease(data)}
-                      >
-                        <AddIcon
-                          fontSize="inherit"
-                          className={classes.removeItemButton}
-                        />
-                      </IconButton>
-                    </TableCell>
-                    <TableCell align="left">
-                      <Typography
-                        className={classes.itemName}
-                        color="error"
-                        fontSize={18}
-                      >
-                        {Intl.NumberFormat("vi-VN", {
-                          style: "currency",
-                          currency: "VND",
-                        }).format(data.price * data.quantity)}
-                      </Typography>
-                    </TableCell>
-                    <TableCell width={100} align="left">
-                      <IconButton
-                        size="large"
-                        onClick={() => handleClickDeleteItem(data.product_id)}
-                      >
-                        <ClearIcon
-                          fontSize="inherit"
+                        <IconButton
+                          size="small"
+                          onClick={() => handleIncrease(data)}
+                        >
+                          <AddIcon
+                            fontSize="inherit"
+                            className={classes.removeItemButton}
+                          />
+                        </IconButton>
+                      </TableCell>
+                      <TableCell align="left">
+                        <Typography
+                          className={classes.itemName}
                           color="error"
-                          className={classes.removeItemButton}
+                          fontSize={18}
+                        >
+                          {Intl.NumberFormat("vi-VN", {
+                            style: "currency",
+                            currency: "VND",
+                          }).format(data.price * data.quantity)}
+                        </Typography>
+                      </TableCell>
+                      <TableCell width={100} align="left">
+                        <IconButton
+                          size="large"
+                          onClick={() => handleClickDeleteItem(data.product_id)}
+                        >
+                          <ClearIcon
+                            fontSize="inherit"
+                            color="error"
+                            className={classes.removeItemButton}
+                          />
+                        </IconButton>
+                        <DeleteAlertDialog
+                          open={openDeleteItemDialog === data.product_id}
+                          onClose={handleCloseDeleteItem}
+                          item={data}
+                          handleConfirmDeleteClick={handleConfirmDeleteClick}
                         />
-                      </IconButton>
-                      <DeleteAlertDialog
-                        open={openDeleteItemDialog === data.product_id}
-                        onClose={handleCloseDeleteItem}
-                        item={data}
-                        handleConfirmDeleteClick={handleConfirmDeleteClick}
-                      />
-                    </TableCell>
-                  </TableRow>
-                ))}
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
               </TableBody>
             </Table>
           </TableContainer>
