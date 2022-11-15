@@ -54,5 +54,19 @@ export default makeStyles((theme) => ({
 
   paymentContainer: {
       marginTop: '30px'
-  }
+  },
+
+  itemLink: {
+    alignItems: 'left',
+    fontWeight: 'bolder',
+    textDecoration: 'none',
+    position: 'relative',        
+    [theme.breakpoints.up('xs')]: {
+        display: 'flex',
+        flexDirection: 'column'
+    },
+    '&:hover': {
+        cursor: 'pointer',
+    },
+  },
 }));

@@ -9,7 +9,6 @@ const PorductList = () => {
     const classes = useStyles();
     const { data, isFetching } = useGetProductsQuery();
 
-    console.log(data);
 
     return (
         <div className={classes.container}>

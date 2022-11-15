@@ -65,7 +65,7 @@ function AddressSelectionDialog(props) {
                 <AddIcon />
               </Avatar>
             </ListItemAvatar>
-            <ListItemText primary="Thêm Địa Chỉ Mới" />
+            <ListItemText primary="Địa chỉ của tôi" />
           </ListItem>
         </List>
       </Dialog>
