@@ -4,14 +4,9 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
 import React from "react";
 
-const DeleteAlertDialog = (props) => {
-  const { onClose, open, item } = props;
+const DeleteAlertDialog = ({ onClose, open, item, handleConfirmDeleteClick }) => {
   const handleClose = () => {
     onClose();
-  };
-
-  const handleConfirmClick = () => {
-    console.log(item);
   };
 
   return (
@@ -41,7 +36,7 @@ const DeleteAlertDialog = (props) => {
             variant="contained"
             component="label"
             style={{ color: "white" }}
-            onClick={handleConfirmClick}
+            onClick={handleConfirmDeleteClick}
           >
             Xóa
           </Button>

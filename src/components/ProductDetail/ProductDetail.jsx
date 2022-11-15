@@ -19,26 +19,26 @@ import {
     selectClasses,
     Snackbar,
 } from '@mui/material';
-import MuiAlert from '@mui/material/Alert';
+import Alert from '../Alert/Alert';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../features/cart';
+import { useNavigate } from 'react-router-dom';
 import useStyles from './styles';
 
 const ProductDetail = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [quantity, setQuantity] = useState(0);
     const [open, setOpen] = useState(false);
+    const [toastData, setToastData] = useState({ message: '', severity: '' });
     const [image, setImage] = useState(''); // set image for modal
     const [isSelectedImg, setIsSelectedImg] = useState(0);
     const cartData = useSelector(state => state.cart.data);
-
-    const Alert = React.forwardRef(function Alert(props, ref) {
-        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-    });
+    const { isAuthenticated } = useSelector(state => state.auth);
 
     const product = {
         images: [
@@ -98,10 +98,17 @@ const ProductDetail = () => {
             total: product.price * quantity,
 
         };        
-        if(data.size && data.color && data.quantity) {
-            dispatch(addToCart(data));
+        if(isAuthenticated) {
+            if(data.size && data.color && data.quantity) {
+                dispatch(addToCart(data));
+                setToastData(prev => ({ ...prev, message: 'THÊM VÀO GIỎ HÀNG THÀNH CÔNG', severity: 'success' }));
+            }
+            else {
+                setToastData(prev => ({ ...prev, message: 'VUI LÒNG CHỌN ĐỦ THÔNG TIN SẢN PHẨM', severity: 'info' }));
+            }
             setOpenToast(true);
         }
+        else navigate("/auth");
     }
 
     const handleCloseToast = (event, reason) => {
@@ -237,16 +244,13 @@ const ProductDetail = () => {
                         >
                             <FavoriteBorderIcon /> &nbsp; Yêu thích
                         </Button>
-                        <Snackbar 
-                            open={openToast} 
-                            autoHideDuration={1000} 
-                            onClose={handleCloseToast}
-                            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-                        >
-                            <Alert onClose={handleCloseToast} color="black" severity="success" sx={{ width: '100%' }}>
-                                THÊM VÀO GIỎ HÀNG THÀNH CÔNG
-                            </Alert>
-                        </Snackbar>
+                        <Alert 
+                            message={toastData.message}
+                            openToast={openToast} 
+                            handleCloseToast={handleCloseToast} 
+                            color="black"
+                            severity={toastData.severity}
+                        />
                     </div>
                 </Grid>
             </Grid>

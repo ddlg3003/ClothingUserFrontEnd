@@ -33,7 +33,7 @@ const PaymentMethods = () => {
         sx={{ pb: 2 }}
       >
         <ToggleButton size="large" value="credit">
-          Liên kết tài khoản
+          Thanh toán bằng ví điện tử
         </ToggleButton>
         <ToggleButton size="large" value="COD">
           Thanh toán khi nhận hàng
@@ -57,25 +57,13 @@ const PaymentMethods = () => {
             >
               <Stack>
                 <img
-                  width="50"
-                  src="http://cdn.airpay.vn/images_v1/c134/icon_c13401_v001.png"
+                  width="80"
+                  src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_74x46.jpg"
                 />
-                VCB
+                Paypal
               </Stack>
             </ToggleButton>
-            <ToggleButton
-              onClick={() => handleCreditMethod("BIDV")}
-              value="BIDV"
-              aria-label="left aligned"
-            >
-              <Stack>
-                <img
-                  width="50"
-                  src="http://cdn.airpay.vn/images_v1/c134/icon_c13400_v001.png"
-                />
-                BIDV
-              </Stack>
-            </ToggleButton>
+            
           </ToggleButtonGroup>
         </div>
       </div>

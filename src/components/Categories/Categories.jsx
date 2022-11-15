@@ -1,10 +1,12 @@
 import React from 'react';
-import{ Grid, Typography } from '@mui/material';
+import{ Box, CircularProgress, Grid, Typography } from '@mui/material';
 import Category from '../Category/Category';
+import { useGetCategoriesQuery } from '../../services/clothing';
 import useStyles from './styles';
 
 const Categories = () => {
     const classes = useStyles();
+    const { data, isFetching } = useGetCategoriesQuery();
 
     return (
         <div className={classes.cateContainer}>
@@ -19,10 +21,17 @@ const Categories = () => {
             DANH MỤC
         </Typography>            
             <Grid container justifyContent="center" spacing={4}>                 
-                <Category />
-                <Category />
-                <Category />
-                <Category />
+                {
+                    isFetching ? (
+                        <Box display="flex" justifyContent="center">
+                            <CircularProgress color="black" size="4rem" />
+                        </Box>
+                    ) : (
+                        data.map((category) => (
+                            <Category key={category.id} category={category} />
+                        ))
+                    )
+                }
             </Grid>
         </div>
     )

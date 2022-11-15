@@ -1,18 +1,16 @@
 import React from 'react';
 import Product from '../Product/Product';
-import useStyles from './styles';
 import { Typography, Grid, Button } from '@mui/material'; 
+import useStyles from './styles';
 
-const Products = ({  }) => {
-    
+const Products = ({ data }) => {
     const classes = useStyles();
+
     return (
         <Grid container justifyContent="center" spacing={4} className={classes.productContainer}>
-            <Product />
-            <Product />
-            <Product />
-            <Product />
-            <Product />
+            {data.map((product) => (
+                <Product key={product.id} product={product} />
+            ))}
         </Grid>
     )
 }

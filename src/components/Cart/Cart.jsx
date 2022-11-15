@@ -12,45 +12,51 @@ import {
   TableHead,
   TableRow,
   Typography,
+  Stack,
 } from "@mui/material";
 import { Container } from "@mui/system";
 import React, { useState } from "react";
 import useStyles from "./styles";
 import DeleteAlertDialog from "./DeleteAlertDialog";
 import { useDispatch, useSelector } from "react-redux";
-import { increaseItem, decreaseItem } from "../../features/cart";
+import { increaseItem, decreaseItem, updateCart } from "../../features/cart";
 import { Link } from "react-router-dom";
-
+import { useGetCartQuery } from "../../services/clothing";
+import { increaseCartItem, decreaseCartItem } from "../../utils/api";
 
 const Cart = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   const [openDeleteItemDialog, setOpenDeleteItemDialog] = useState("");
 
-  const dispatch = useDispatch();
-
-  const datas = useSelector(state => state.cart.data);
+  const datas = useSelector((state) => state.cart.data);
 
   const handleCloseDeleteItem = () => {
     setOpenDeleteItemDialog("");
   };
 
-  const handleClickDeleteItem = (id) => {
-    setOpenDeleteItemDialog(id);
-  };
-  const handleIncrease = (id, quantity) => {
-    dispatch(increaseItem(id));
+  // Handle show dialog
+  const handleClickDeleteItem = (productId) => {
+    setOpenDeleteItemDialog(productId);
   };
 
-  const handleDecrease = (id, quantity) => {
+  const handleConfirmDeleteClick = () => {
+    console.log("xoa roi nha");
+  };
+
+  const handleIncrease = async ({ color, size, product_id: productId }) => {
+    const data = await increaseCartItem({ color, size, productId });
+    dispatch(updateCart(data));
+  };
+
+  const handleDecrease = async ({ color, size, product_id: productId, quantity }) => {
     if (quantity === 1) {
-      handleClickDeleteItem(id);
+      handleClickDeleteItem(productId);
       return;
     }
-
-    if (quantity > 0) {
-      dispatch(decreaseItem(id));
-    }
+    const data = await decreaseCartItem({ color, size, productId });
+    dispatch(updateCart(data));
   };
 
   return (
@@ -66,7 +72,7 @@ const Cart = () => {
         >
           GIỎ HÀNG
         </Typography>{" "}
-        <Container size="md">
+        <Container size="md" sx={{ minHeight: "400px" }}>
           <TableContainer component={Paper}>
             <Table className={classes.itemsTable} aria-label="simple table">
               <TableHead>
@@ -76,7 +82,6 @@ const Cart = () => {
                   </TableCell>
                   <TableCell align="left" sx={{ width: "200px" }}></TableCell>
                   <TableCell align="left" sx={{ width: "130px" }}>
-                    {" "}
                     <Typography fontSize="17px">Đơn Giá</Typography>
                   </TableCell>
                   <TableCell align="center">
@@ -95,32 +100,58 @@ const Cart = () => {
               <TableBody>
                 {datas.map((data, i) => (
                   <TableRow
-                    key={data.id}
+                    key={i}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
                     <TableCell component="th" scope="row">
                       <div>
-                        <img width={80} src={data.img} alt="" />
+                        <Link to="/products/1" className={classes.itemLink}>
+                          <img width={80} src={data.proImage} alt="" />
+                        </Link>
                       </div>
                     </TableCell>
                     <TableCell component="th" scope="row">
-                      <Typography
-                        fontSize="18px"
-                        maxWidth={200}
-                        className={classes.itemName}
-                      >
-                        {data.name}
-                      </Typography>
+                      <Stack direction="column">
+                        <Link to="/products/1" className={classes.itemLink}>
+                          <Typography
+                            fontSize="16px"
+                            maxWidth={300}
+                            className={classes.itemName}
+                            sx={{ color: "#000" }}
+                          >
+                            {data.proName}
+                          </Typography>
+                          <Typography
+                            fontSize="16px"
+                            color="text.secondary"
+                            maxWidth={200}
+                            className={classes.itemName}
+                          >
+                            Màu: {data.color}
+                          </Typography>
+                          <Typography
+                            fontSize="16px"
+                            color="text.secondary"
+                            maxWidth={200}
+                            className={classes.itemName}
+                          >
+                            Kích cỡ: {data.size}
+                          </Typography>
+                        </Link>
+                      </Stack>
                     </TableCell>
                     <TableCell align="left">
-                      <Typography fontSize="18px" className={classes.itemName}>
-                        {data.price}
+                      <Typography className={classes.itemName} fontSize={18}>
+                        {Intl.NumberFormat("vi-VN", {
+                          style: "currency",
+                          currency: "VND",
+                        }).format(data.price)}
                       </Typography>
                     </TableCell>
                     <TableCell align="center" width={170}>
                       <IconButton
                         size="small"
-                        onClick={() => handleDecrease(data.id, data.quantity)}
+                        onClick={() => handleDecrease(data)}
                       >
                         <RemoveIcon
                           fontSize="inherit"
@@ -136,7 +167,7 @@ const Cart = () => {
                       />
                       <IconButton
                         size="small"
-                        onClick={() => handleIncrease(data.id, data.quantity)}
+                        onClick={() => handleIncrease(data)}
                       >
                         <AddIcon
                           fontSize="inherit"
@@ -145,27 +176,34 @@ const Cart = () => {
                       </IconButton>
                     </TableCell>
                     <TableCell align="left">
-                      <Typography fontSize="18px" className={classes.itemName}>
-                        {data.total}
+                      <Typography
+                        className={classes.itemName}
+                        color="error"
+                        fontSize={18}
+                      >
+                        {Intl.NumberFormat("vi-VN", {
+                          style: "currency",
+                          currency: "VND",
+                        }).format(data.price * data.quantity)}
                       </Typography>
                     </TableCell>
                     <TableCell width={100} align="left">
                       <IconButton
                         size="large"
-                        onClick={() => handleClickDeleteItem(data.id)}
+                        onClick={() => handleClickDeleteItem(data.product_id)}
                       >
                         <ClearIcon
                           fontSize="inherit"
                           color="error"
                           className={classes.removeItemButton}
                         />
-                        
                       </IconButton>
                       <DeleteAlertDialog
-                          open={openDeleteItemDialog === data.id}
-                          onClose={handleCloseDeleteItem}
-                          item={data}
-                        />
+                        open={openDeleteItemDialog === data.product_id}
+                        onClose={handleCloseDeleteItem}
+                        item={data}
+                        handleConfirmDeleteClick={handleConfirmDeleteClick}
+                      />
                     </TableCell>
                   </TableRow>
                 ))}
@@ -190,7 +228,7 @@ const Cart = () => {
               currency: "VND",
             }).format(
               datas.reduce((acc, data) => {
-                return (acc = acc + data.total);
+                return (acc = acc + data.price * data.quantity);
               }, 0)
             )}
           </Typography>

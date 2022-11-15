@@ -3,19 +3,19 @@ import { Typography, Grid, Rating } from '@mui/material';
 import useStyles from './styles';
 import { Link } from 'react-router-dom';
 
-const Product = () => {
+const Product = ({ product }) => {
     const classes = useStyles();
 
     return (
         <>
             <Grid item>
-                <Link to="/products/1" className={classes.links}>
+                <Link to={`/products/${product.id}`} className={classes.links}>
                     <img 
-                        src={'https://media.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/August2022/DSC05295-copy_73.jpg'}
+                        src={product.image}
                         className={classes.image}
                     />
                     <div>
-                        <Rating readOnly value={4.5} precision={0.1} size="large" /> 
+                        <Rating readOnly value={product.avgRating ? product.avgRating : 0} precision={0.1} size="large" /> 
                     </div>
                     <Typography 
                         fontWeight="normal" 
@@ -23,7 +23,7 @@ const Product = () => {
                         className={classes.title} 
                         fontSize={16}
                     >
-                        Áo Polo nam Pique Cotton USA thấm hút tối đa (kẻ sọc)
+                        {product.name}
                     </Typography>
                     <Typography 
                         color="error" 
@@ -38,7 +38,6 @@ const Product = () => {
                             }).format(100000)
                         }
                     </Typography>
-
                 </Link>
             </Grid>
         </>
