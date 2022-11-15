@@ -20,8 +20,8 @@ import useStyles from "./styles";
 import DeleteAlertDialog from "./DeleteAlertDialog";
 import { useDispatch, useSelector } from "react-redux";
 import { increaseItem, decreaseItem, updateCart } from "../../features/cart";
+import { axiosConfig } from "../../utils/globalVariables";
 import { Link } from "react-router-dom";
-import { useGetCartQuery } from "../../services/clothing";
 import { increaseCartItem, decreaseCartItem } from "../../utils/api";
 
 const Cart = () => {

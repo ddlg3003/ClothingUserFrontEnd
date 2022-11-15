@@ -11,11 +11,19 @@ export const PHONE_REGEX = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{
 export const USERNAME_REGEX = /^[0-9a-zA-Z]{6,}$/;
 
 export const SIDEBAR_STATE = [
-    "profile",
-    "address",
-    "password",
-    "favorites",
-    "orders",
+    'profile',
+    'address',
+    'password',
+    'favorites',
+    'orders',
 ];
 
 export const BASE_API_URL = 'http://localhost:8099';
+
+export const axiosConfig = () => {
+    return {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+    }
+};

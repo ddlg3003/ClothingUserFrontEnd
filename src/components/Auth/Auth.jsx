@@ -135,9 +135,8 @@ const Auth = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        console.log(formData);
-
+        // console.log(formData);
+        
         if(!isRegister) {
             const { data, status } = await getUserLogin(formData);
 

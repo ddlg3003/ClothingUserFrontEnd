@@ -1,15 +1,10 @@
 import { BASE_API_URL } from "../utils/globalVariables";
 import axios from "axios";
+import { axiosConfig } from "../utils/globalVariables";
 
 const api = axios.create({
   baseURL: BASE_API_URL,
 });
-
-const axiosConfig = {
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem("token")}`,
-  },
-};
 
 export const getUserLogin = async (formData) => {
   try {
@@ -33,10 +28,12 @@ export const signup = async (formData) => {
 
 export const increaseCartItem = async (cartItem) => {
   try {
+    // console.log(axiosConfig);
+    const config = axiosConfig();
     const { data, status } = await api.post(
       "/user/cart/increase",
       cartItem,
-      axiosConfig
+      config,
     );
     return data;
   } catch (error) {
@@ -46,10 +43,11 @@ export const increaseCartItem = async (cartItem) => {
 
 export const decreaseCartItem = async (cartItem) => {
   try {
+    const config = axiosConfig();
     const { data, status } = await api.post(
       "/user/cart/decrease",
       cartItem,
-      axiosConfig
+      config,
     );
 
     return data;

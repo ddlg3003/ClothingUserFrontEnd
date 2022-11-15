@@ -35,12 +35,11 @@ const Navbar = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  
   const { isAuthenticated } = useSelector((state) => state.auth);
   const user = JSON.parse(localStorage.getItem("user"));
-  
-  const { data: dataCartList, isFetching: isFetchingCartList } = useGetCartQuery({skip: !isAuthenticated});
-  
+
+  const { data: dataCartList, isFetching: isFetchingCartList } =
+    useGetCartQuery({ skip: !isAuthenticated });
 
   useEffect(() => {
     if (!isFetchingCartList) {
@@ -178,12 +177,7 @@ const Navbar = () => {
                   onMouseOver={handleClickAuth}
                   onMouseLeave={handleCloseHoverAuth}
                 >
-                  <Avatar
-                    sx={{ width: 32, height: 32 }}
-                    src={
-                      "https://yt3.ggpht.com/yti/AJo0G0mXhiLDl1CtA0Q65KQgegDt_mRqPuePpPzUk6ao=s88-c-k-c0x00ffffff-no-rj-mo"
-                    }
-                  />
+                  <Avatar sx={{ width: 32, height: 32 }} />
                   {!isMobile && <>&nbsp; {user?.name}</>}
                 </Button>
                 <Menu
