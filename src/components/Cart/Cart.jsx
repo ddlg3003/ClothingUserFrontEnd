@@ -36,18 +36,27 @@ const Cart = () => {
     setOpenDeleteItemDialog("");
   };
 
-  const handleClickDeleteItem = (id) => {
-    setOpenDeleteItemDialog(id);
+  // Handle show dialog
+  const handleClickDeleteItem = (productId) => {
+    setOpenDeleteItemDialog(productId);
+  };
+
+  const handleConfirmDeleteClick = () => {
+    console.log("xoa roi nha");
   };
 
   const handleIncrease = async ({ color, size, product_id: productId }) => {
-    await increaseCartItem({ color, size, productId });
-    window.location.reload();
+    const data = await increaseCartItem({ color, size, productId });
+    dispatch(updateCart(data));
   };
 
-  const handleDecrease = async ({ color, size, product_id: productId }) => {
-    await decreaseCartItem({ color, size, productId });
-    window.location.reload();
+  const handleDecrease = async ({ color, size, product_id: productId, quantity }) => {
+    if (quantity === 1) {
+      handleClickDeleteItem(productId);
+      return;
+    }
+    const data = await decreaseCartItem({ color, size, productId });
+    dispatch(updateCart(data));
   };
 
   return (
@@ -181,7 +190,7 @@ const Cart = () => {
                     <TableCell width={100} align="left">
                       <IconButton
                         size="large"
-                        onClick={() => handleClickDeleteItem(i)}
+                        onClick={() => handleClickDeleteItem(data.product_id)}
                       >
                         <ClearIcon
                           fontSize="inherit"
@@ -190,9 +199,10 @@ const Cart = () => {
                         />
                       </IconButton>
                       <DeleteAlertDialog
-                        open={openDeleteItemDialog === i}
+                        open={openDeleteItemDialog === data.product_id}
                         onClose={handleCloseDeleteItem}
                         item={data}
+                        handleConfirmDeleteClick={handleConfirmDeleteClick}
                       />
                     </TableCell>
                   </TableRow>

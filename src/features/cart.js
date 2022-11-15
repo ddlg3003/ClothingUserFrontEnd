@@ -14,7 +14,6 @@ export const cart = createSlice({
         },
         updateCart: (state, action) => {
             state.data = [...action.payload];
-            console.log(Array.isArray(action.payload));
         },
     }
 });
