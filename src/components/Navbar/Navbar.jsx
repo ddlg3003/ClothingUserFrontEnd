@@ -34,17 +34,19 @@ import useStyles from "./styles";
 const Navbar = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+
   
-  const { data: dataCartList, isFetching: isFetchingCartList } = useGetCartQuery();
   const { isAuthenticated } = useSelector((state) => state.auth);
   const user = JSON.parse(localStorage.getItem("user"));
+  
+  const { data: dataCartList, isFetching: isFetchingCartList } = useGetCartQuery({skip: !isAuthenticated});
+  
 
   useEffect(() => {
     if (!isFetchingCartList) {
-        dispatch(updateCart(dataCartList));
+      dispatch(updateCart(dataCartList));
     }
   }, [isFetchingCartList]);
-
 
   const cartData = useSelector((state) => state.cart.data);
   const { data, isFetching } = useGetCategoriesQuery();

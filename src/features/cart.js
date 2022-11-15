@@ -13,7 +13,10 @@ export const cart = createSlice({
             state.data = [...state.data, action.payload];
         },
         updateCart: (state, action) => {
-            state.data = [...action.payload];
+            // check if not logged in
+            if (Array.isArray(action.payload)) {
+                state.data = [...action.payload];
+            }
         },
     }
 });
