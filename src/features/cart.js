@@ -1,17 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    data: [
-    ],
+    data: [],
 };
 
 export const cart = createSlice({
     name: 'cart',
     initialState,
     reducers: {
-        addToCart: (state, action) => {
-            state.data = [...state.data, action.payload];
-        },
         updateCart: (state, action) => {
             // check if not logged in
             if (Array.isArray(action.payload)) {

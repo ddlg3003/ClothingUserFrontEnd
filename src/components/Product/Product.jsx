@@ -1,7 +1,8 @@
 import React from 'react';
 import { Typography, Grid, Rating } from '@mui/material'; 
-import useStyles from './styles';
 import { Link } from 'react-router-dom';
+import { URL_REGEX } from '../../utils/globalVariables';
+import useStyles from './styles';
 
 const Product = ({ product }) => {
     const classes = useStyles();
@@ -9,7 +10,10 @@ const Product = ({ product }) => {
     return (
         <>
             <Grid item>
-                <Link to={`/products/${product.id}`} className={classes.links}>
+                <Link 
+                    to={`/products/${product.name.replace(URL_REGEX, '-').toLowerCase()}-i.${product.id}`} 
+                    className={classes.links}
+                >
                     <img 
                         src={product.image}
                         className={classes.image}

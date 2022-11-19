@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { 
     Typography, 
     Button, 
@@ -24,15 +24,24 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { useDispatch, useSelector } from 'react-redux';
-import { addToCart } from '../../features/cart';
-import { useNavigate } from 'react-router-dom';
+import { updateCart } from '../../features/cart';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useGetProductQuery, useGetTypesQuery, useGetTypesPropsQuery } from '../../services/clothing';
+import { addItemToCart } from '../../utils/api';
 import useStyles from './styles';
 
 const ProductDetail = () => {
     const classes = useStyles();
+    const { name } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [quantity, setQuantity] = useState(0);
+
+    const id = parseInt(name.slice(name.indexOf('.') + 1));
+    const { data, isFetching } = useGetProductQuery(id);
+    const { data: typesData, isFetching: isFetchingTypes } = useGetTypesQuery(id);
+    const { data: typePropsData, isFetching: isFetchingTypeProps } = useGetTypesPropsQuery(id);
+
+    const [quantity, setQuantity] = useState(1);
     const [open, setOpen] = useState(false);
     const [toastData, setToastData] = useState({ message: '', severity: '' });
     const [image, setImage] = useState(''); // set image for modal
@@ -40,31 +49,29 @@ const ProductDetail = () => {
     const cartData = useSelector(state => state.cart.data);
     const { isAuthenticated } = useSelector(state => state.auth);
 
-    const product = {
-        images: [
-            'https://media.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/August2022/DSC05295-copy_73.jpg',
-            'https://media.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/August2022/trangstrike.jpg',
-            'https://media.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/August2022/DSC05301-copy_92.jpg',
-            'https://media.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/August2022/DSC05295-copy_73.jpg'
-    
-        ],
-        colors: [
-            '#f1f1f1',
-            '#000',
-            '#5b7fd4'
-        ],
-        sizes: [
-            'S', 'M', 'L',
-        ],
-        name: 'Áo Polo nam Pique Cotton USA thấm hút tối đa (kẻ sọc)',
-        price: 100000,
-    };
-
     // Set image state for product image
-    const [mainImg, setMainImg] = useState(product.images[0]);
+    const [mainImg, setMainImg] = useState('');
     const [currentColor, setCurrentColor] = useState('');
-    const [currentSize, setCurrentSize] = useState('');
+    const [currentSize, setCurrentSize] = useState(null);
     const [openToast, setOpenToast] = useState(false);
+
+    // Run the callback for changing the initial main image when isFetching changes
+    useEffect(() => {
+        setMainImg(data?.image);
+    }, [isFetching]);
+
+    // Find type quantity for current color and size
+    const [type, setType] = useState(undefined);
+
+    useEffect(() => {
+        const type = typesData?.find(type => type.size === currentSize && type.color === currentColor);
+
+        setType(type);
+
+        if(type !== undefined && quantity > type.quantity) { 
+            setQuantity(type.quantity);
+        }
+    }, [currentColor, currentSize, isFetchingTypes]);
 
     const reduceQuantity = () => {
         if(quantity > 0) {
@@ -73,7 +80,9 @@ const ProductDetail = () => {
     }
 
     const increaseQuantity = () => {
-        setQuantity(prev => prev + 1);
+        if(type !== undefined && quantity < type.quantity) {
+            setQuantity(prev => prev + 1);
+        }
     }
 
     const handleImage = (value) => {
@@ -86,21 +95,19 @@ const ProductDetail = () => {
         setIsSelectedImg(index);
     }
 
-    const handleSubmit = () => {
-        const data = {
+    const handleSubmit = async () => {
+        const submitData = {
             size: currentSize,
             color: currentColor,
             quantity,
-            id: cartData.length,
-            img: product.images[0],
-            name: product.name,
-            price: product.price,
-            total: product.price * quantity,
+            product_id: id,
+            price: data?.price,
 
         };        
         if(isAuthenticated) {
-            if(data.size && data.color && data.quantity) {
-                dispatch(addToCart(data));
+            if(submitData.size && submitData.color && submitData.quantity) {
+                const data = await addItemToCart(submitData);
+                dispatch(updateCart(data));
                 setToastData(prev => ({ ...prev, message: 'THÊM VÀO GIỎ HÀNG THÀNH CÔNG', severity: 'success' }));
             }
             else {
@@ -119,6 +126,14 @@ const ProductDetail = () => {
         setOpenToast(false);
       };
 
+    if(isFetching && isFetchingTypes && isFetchingTypeProps) {
+        return (
+            <Box display="flex" justifyContent="center">
+                <CircularProgress color="black" size="6rem" />
+            </Box>
+        );
+    }  
+
     return (
         <Grid container className={classes.container}>
             <Grid item container justifyContent="center" spacing={3}>
@@ -129,7 +144,7 @@ const ProductDetail = () => {
                         onClick={(e) => handleImage(mainImg)}
                     />
                     <div className={classes.subImageContainer}>
-                        {product.images.map((image, i) => (
+                        {/* {product.images.map((image, i) => (
                             <img 
                                 key={i}
                                 className={classes.subImage} 
@@ -140,7 +155,16 @@ const ProductDetail = () => {
                                     borderColor: isSelectedImg === i && 'black',
                                 }}
                             />
-                        ))}
+                        ))} */}
+                        <img 
+                            className={classes.subImage} 
+                            src={data?.image}
+                            onClick={(e) => handleMainImg(data?.image, 0)}
+                            style={{ 
+                                opacity: isSelectedImg === 0 && '1', 
+                                borderColor: isSelectedImg === 0 && 'black',
+                            }}
+                        />
                     </div>
                 </Grid>
                 <Grid item>
@@ -149,10 +173,10 @@ const ProductDetail = () => {
                         variant="title1" 
                         fontSize={28}
                     >
-                       {product.name}
+                       {data?.name}
                     </Typography>
                     <div>
-                        <Rating readOnly value={4.5} precision={0.1} size="medium" /> 
+                        <Rating readOnly value={data?.avgRating ? data?.avgRating : 0} precision={0.1} size="medium" /> 
                     </div>
                     <div>
                         <Typography 
@@ -164,7 +188,7 @@ const ProductDetail = () => {
                                 Intl.NumberFormat('vi-VN', {
                                 style: 'currency',
                                 currency: 'VND',
-                                }).format(product.price)
+                                }).format(data?.price)
                             }
                         </Typography>
                     </div>
@@ -177,10 +201,10 @@ const ProductDetail = () => {
                             Màu sắc:
                         </Typography>
                         <div className={classes.wrapper}>
-                            {product.colors.map((color, i) => (
+                            {typePropsData?.colorList.map((color, i) => (
                                 <div key={color} 
                                     className={classes.colorItem} 
-                                    style={{ background: color, border: color === currentColor && '2px solid blue' }} 
+                                    style={{ background: `#${color}`, border: `#${color}` === `#${currentColor}` && '2px solid blue' }} 
                                     onClick={() => setCurrentColor(color)}
                                 />
                             ))}
@@ -195,7 +219,7 @@ const ProductDetail = () => {
                             Kích cỡ: 
                         </Typography>
                         <div className={classes.wrapper}>
-                            {product.sizes.map((size, i) => (
+                            {typePropsData?.sizeList.map((size, i) => (
                                 <div 
                                     className={classes.sizeItem} 
                                     style={{ border: size === currentSize && '2px solid blue' }}
@@ -214,7 +238,7 @@ const ProductDetail = () => {
                             fontSize={20}
                             marginBottom={4}
                         >
-                            Số lượng:
+                            Số lượng {type ? `(Còn ${type.quantity} sản phẩm)` : ''}:
                         </Typography>
                         <div className={classes.wrapper}>
                             <Button color="black" onClick={reduceQuantity}><RemoveIcon /></Button>
@@ -273,7 +297,7 @@ const ProductDetail = () => {
                         paddingBottom="30px" 
                         paddingTop="40px"
                     >
-                        Lorem ipsum dolor sit amet
+                        { data?.description }
                     </Typography> 
                 </Grid>
             </Grid>

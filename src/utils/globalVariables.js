@@ -10,6 +10,8 @@ export const PHONE_REGEX = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{
 
 export const USERNAME_REGEX = /^[0-9a-zA-Z]{6,}$/;
 
+export const URL_REGEX = /\s/g;
+
 export const SIDEBAR_STATE = [
     'profile',
     'address',

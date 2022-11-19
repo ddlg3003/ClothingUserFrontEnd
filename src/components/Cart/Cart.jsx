@@ -21,7 +21,7 @@ import useStyles from "./styles";
 import DeleteAlertDialog from "./DeleteAlertDialog";
 import { useDispatch, useSelector } from "react-redux";
 import { increaseItem, decreaseItem, updateCart } from "../../features/cart";
-import { axiosConfig } from "../../utils/globalVariables";
+import { axiosConfig, URL_REGEX } from "../../utils/globalVariables";
 import { Link } from "react-router-dom";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import {
@@ -126,14 +126,20 @@ const Cart = () => {
                     >
                       <TableCell component="th" scope="row">
                         <div>
-                          <Link to="/products/1" className={classes.itemLink}>
+                          <Link 
+                            to={`/products/${data.proName.replace(URL_REGEX, '-').toLowerCase()}-i.${data.product_id}`} 
+                            className={classes.itemLink}
+                          >
                             <img width={80} src={data.proImage} alt="" />
                           </Link>
                         </div>
                       </TableCell>
                       <TableCell component="th" scope="row">
                         <Stack direction="column">
-                          <Link to="/products/1" className={classes.itemLink}>
+                          <Link 
+                            to={`/products/${data.proName.replace(URL_REGEX, '-').toLowerCase()}-i.${data.product_id}`} 
+                            className={classes.itemLink}
+                          >
                             <Typography
                               fontSize="16px"
                               maxWidth={300}
