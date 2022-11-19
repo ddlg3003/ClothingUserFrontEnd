@@ -64,12 +64,13 @@ const ProductDetail = () => {
     const [type, setType] = useState(undefined);
 
     useEffect(() => {
-        const type = typesData?.find(type => type.size === currentSize && type.color === currentColor);
+        if(currentSize && currentColor) {
+            const type = typesData?.find(type => type.size === currentSize && type.color === currentColor);
+            setType(type);
 
-        setType(type);
-
-        if(type !== undefined && quantity > type.quantity) { 
-            setQuantity(type.quantity);
+            if(quantity > type.quantity) { 
+                setQuantity(type.quantity);
+            }
         }
     }, [currentColor, currentSize, isFetchingTypes]);
 
@@ -80,7 +81,7 @@ const ProductDetail = () => {
     }
 
     const increaseQuantity = () => {
-        if(type !== undefined && quantity < type.quantity) {
+        if(quantity < type.quantity) {
             setQuantity(prev => prev + 1);
         }
     }
