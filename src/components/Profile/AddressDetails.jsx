@@ -156,6 +156,7 @@ const AddressDetails = (props) => {
                         style={{ color: "white" }}
                         startIcon={<DeleteIcon />}
                         onClick={() => handleClickDeleteAddress(data.id)}
+                        sx = {{width: "100%"}}
                       >
                         Xóa
                       </Button>
