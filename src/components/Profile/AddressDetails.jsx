@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -10,12 +11,31 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
 import NewAddressDialog from "./NewAddressDialog";
 import UpdateAddressDialog from "./UpdateAddressDialog";
 import DeleteAlertDialog from "./DeleteAlertDialog";
+import { useGetUserAddressQuery } from "../../services/clothing";
+import { useSelector, useDispatch } from "react-redux";
+import { updateAddress } from "../../features/address";
 
 const AddressDetails = (props) => {
+  const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const { data: dataAddresses, isFetching: isFetchingDataAddresses } =
+    useGetUserAddressQuery({ skip: !isAuthenticated });
+
+  const datas = useSelector((state) => state.address.data);
+
+  useEffect(() => {
+    if (!isFetchingDataAddresses) {
+      dispatch(updateAddress(dataAddresses));
+    }
+  }, [isFetchingDataAddresses]);
+
+
+
   // Dialog's states
   const [openNewAddressDialog, setOpenNewAddressDialog] = useState(false);
   const [openUpdateAddressDialog, setOpenUpdateAddressDialog] = useState("");
@@ -71,79 +91,87 @@ const AddressDetails = (props) => {
       <Divider />
 
       <Container sx={{ mt: 3 }}>
-        {props.address.map((address, i) => (
-          <div key={i}>
-            <Box>
-              <Grid container spacing={2} sx={{ mb: 5, mt: 4 }}>
-                <Grid item xs container direction="column" spacing={2}>
-                  <Grid item xs>
-                    <Typography
-                      gutterBottom
-                      variant="subtitle1"
-                      component="div"
-                      fontSize={18}
-                    >
-                      {address.name}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      fontSize={18}
-                    >
-                      {address.phone}
-                    </Typography>
-                    <Typography
-                      fontSize={18}
-                      variant="body2"
-                      color="text.secondary"
-                      gutterBottom
-                    >
-                      {address.address}
-                    </Typography>
+        {!datas.length ? (
+          <Box mt={5} sx={{display:"flex", justifyContent:"center"}}>
+            <Typography width={200} fontSize="20px" fontWeight="bold">
+              Không có địa chỉ
+            </Typography>
+          </Box>
+        ) : (
+          datas.map((data, i) => (
+            <div key={i}>
+              <Box>
+                <Grid container spacing={2} sx={{ mb: 5, mt: 4 }}>
+                  <Grid item xs container direction="column" spacing={2}>
+                    <Grid item xs>
+                      <Typography
+                        gutterBottom
+                        variant="subtitle1"
+                        component="div"
+                        fontSize={18}
+                      >
+                        {data.name}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        fontSize={18}
+                      >
+                        {data.phoneNumber}
+                      </Typography>
+                      <Typography
+                        fontSize={18}
+                        variant="body2"
+                        color="text.secondary"
+                        gutterBottom
+                      >
+                        {data.address}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                  <Grid item>
+                    <Box>
+                      <Button
+                        sx={{ mb: 1 }}
+                        color="black"
+                        variant="contained"
+                        component="label"
+                        style={{ color: "white" }}
+                        startIcon={<EditIcon />}
+                        onClick={() => handleClickUpdateAddress(data.id)}
+                      >
+                        Cập nhật
+                      </Button>
+                      <UpdateAddressDialog
+                        open={openUpdateAddressDialog === data.id}
+                        onClose={handleCloseUpdateAddress}
+                        address={data}
+                      />
+                    </Box>
+                    <Box>
+                      <Button
+                        color="black"
+                        variant="contained"
+                        component="label"
+                        style={{ color: "white" }}
+                        startIcon={<DeleteIcon />}
+                        onClick={() => handleClickDeleteAddress(data.id)}
+                      >
+                        Xóa
+                      </Button>
+                      <DeleteAlertDialog
+                        open={openDeleteAddressDialog === data.id}
+                        onClose={handleCloseDeleteAddress}
+                        id={data.id}
+                      />
+                    </Box>{" "}
                   </Grid>
                 </Grid>
-                <Grid item>
-                  <Box>
-                    <Button
-                      sx={{ mb: 1 }}
-                      color="black"
-                      variant="contained"
-                      component="label"
-                      style={{ color: "white" }}
-                      startIcon={<EditIcon />}
-                      onClick={() => handleClickUpdateAddress(address.id)}
-                    >
-                      Cập nhật
-                    </Button>
-                    <UpdateAddressDialog
-                      open={openUpdateAddressDialog === address.id}
-                      onClose={handleCloseUpdateAddress}
-                      address={address}
-                    />
-                  </Box>
-                  <Box>
-                    <Button
-                      color="black"
-                      variant="contained"
-                      component="label"
-                      style={{ color: "white" }}
-                      startIcon={<DeleteIcon />}
-                      onClick={() => handleClickDeleteAddress(address.id)}
-                    >
-                      Xóa
-                    </Button>
-                    <DeleteAlertDialog
-                      open={openDeleteAddressDialog === address.id}
-                      onClose={handleCloseDeleteAddress}
-                      id={address.id}
-                    />
-                  </Box>{" "}
-                </Grid>
-              </Grid>
-            </Box>
-            <Divider />
-          </div>
-        ))}
+              </Box>
+              <Divider />
+            </div>
+          ))
+        )}
       </Container>
     </>
   );

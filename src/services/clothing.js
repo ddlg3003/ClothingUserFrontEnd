@@ -34,6 +34,9 @@ export const clothing = createApi({
         getTypesProps: builder.query({
             query: (productId) => `type/cas/${productId}`,
         }),
+        getUserAddress: builder.query({
+            query: () => `user/address/getAll`,
+        }),
     }),
 });
 
@@ -44,4 +47,5 @@ export const {
     useGetCartQuery, 
     useGetTypesQuery,
     useGetTypesPropsQuery,
+    useGetUserAddressQuery,
 } = clothing;

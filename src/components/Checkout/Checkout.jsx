@@ -76,7 +76,7 @@ const Checkout = () => {
               className={classes.checkoutButton}
               sx={{ mr: "380px" }}
             >
-              Mua Hàng
+              Đặt Hàng
             </Button>
           </div>
         </div>

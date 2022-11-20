@@ -2,13 +2,22 @@ import { Button, Dialog, DialogTitle, TextField } from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { updateAddress } from "../../features/address";
+import { addOrChangeAddress } from "../../utils/api";
+
+
 
 const UpdateAddressDialog = (props) => {
+  const dispatch = useDispatch();
+
+
   const { onClose, open, address } = props;
 
   const [addressInfo, setAddressInfo] = useState({
+    id: address.id,
     name: address.name,
-    phone: address.phone,
+    phoneNumber: address.phoneNumber,
     address: address.address,
   });
 
@@ -16,8 +25,11 @@ const UpdateAddressDialog = (props) => {
     onClose();
   };
 
-  const handleConfirmClick = () => {
-    console.log(address);
+  const handleConfirmClick = async () => {
+    const isChange = true;
+    const data = await addOrChangeAddress(addressInfo, isChange);  
+    dispatch(updateAddress(data));
+    onClose();
   };
 
   const handleNameChange = (event) => {
@@ -26,7 +38,7 @@ const UpdateAddressDialog = (props) => {
   };
   const handlePhoneChange = (event) => {
     const phone = event.target.value;
-    setAddressInfo((prev) => ({ ...prev, phone: phone }));
+    setAddressInfo((prev) => ({ ...prev, phoneNumber: phone }));
   };
   const handleAddressChange = (event) => {
     const address = event.target.value;
@@ -51,7 +63,7 @@ const UpdateAddressDialog = (props) => {
             label="Số điện thoại"
             fullWidth
             variant="standard"
-            value={addressInfo.phone}
+            value={addressInfo.phoneNumber}
             onChange={handlePhoneChange}
           />
           <TextField
