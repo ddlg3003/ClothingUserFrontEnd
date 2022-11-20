@@ -22,6 +22,9 @@ export const clothing = createApi({
         getProduct: builder.query({
             query: (id) => `product/${id}`,
         }),
+        getProductsByCat: builder.query({
+            query: (catId) => `product/category/${catId}`,
+        }),
         getCategories: builder.query({
             query: () => 'category/getAll',
         }),
@@ -40,6 +43,7 @@ export const clothing = createApi({
 export const { 
     useGetProductsQuery, 
     useGetProductQuery,
+    useGetProductsByCatQuery,
     useGetCategoriesQuery, 
     useGetCartQuery, 
     useGetTypesQuery,

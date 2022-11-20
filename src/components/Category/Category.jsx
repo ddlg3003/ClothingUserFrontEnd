@@ -8,7 +8,7 @@ const Category = ({ category }) => {
  
     return (
         <Grid item>
-            <Link to="/" className={classes.links}>
+            <Link to={`/products?cat=${category.id}`} className={classes.links}>
             <Typography 
                 fontWeight="500" 
                 position="absolute" 

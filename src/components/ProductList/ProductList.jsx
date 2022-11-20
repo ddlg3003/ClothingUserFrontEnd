@@ -9,7 +9,6 @@ const PorductList = () => {
     const classes = useStyles();
     const { data, isFetching } = useGetProductsQuery();
 
-
     return (
         <div className={classes.container}>
             <Typography letterSpacing="2px" fontSize="25px" fontWeight="normal" align="center" paddingBottom="30px" paddingTop="40px">SẢN PHẨM HOT</Typography>
