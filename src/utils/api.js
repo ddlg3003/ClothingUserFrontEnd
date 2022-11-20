@@ -88,3 +88,38 @@ export const addItemToCart = async (formData) => {
     }
 };
 
+export const addOrChangeAddress = async (formData, isChange) => {
+    try {
+        const apiString = isChange ? "user/address/change" : "user/address/create"
+        const config = axiosConfig();
+
+        const { data, status } = await api.post(
+            apiString,
+            formData,
+            config
+        );
+
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const deleteAddress = async (id) => {
+    try {
+        const config = axiosConfig();
+
+        const { data, status } = await api.delete(
+            `user/address/${id}`,
+            config
+        );
+
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+
+
+

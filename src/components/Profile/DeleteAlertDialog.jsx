@@ -1,17 +1,25 @@
+import React from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
-import React from "react";
+import { deleteAddress } from "../../utils/api";
+import { useSelector, useDispatch } from "react-redux";
+import { updateAddress } from "../../features/address";
+
 
 const DeleteAlertDialog = (props) => {
+  const dispatch = useDispatch();
+
   const { onClose, open, id } = props;
   const handleClose = () => {
     onClose();
   };
 
-  const handleConfirmClick = () => {
-    console.log(id);
+  const handleConfirmClick = async () => {
+    const data = await deleteAddress(id);
+    dispatch(updateAddress(data));
+    onClose();
   };
 
   return (
