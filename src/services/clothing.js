@@ -17,7 +17,7 @@ export const clothing = createApi({
     }),
     endpoints: (builder) => ({
         getProducts: builder.query({
-            query: () => 'product/getAll',
+            query: (pageNumber = 0, pageSize = 10, cat = '') => `product?pageNo=${pageNumber}&pageSize=${pageSize}&cat=${cat}`,
         }),
         getProduct: builder.query({
             query: (id) => `product/${id}`,
