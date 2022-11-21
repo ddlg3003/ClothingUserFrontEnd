@@ -1,6 +1,12 @@
-import { Container, Paper, Typography } from "@mui/material";
+import {
+  Container,
+  Paper,
+  Typography,
+  Box,
+  CircularProgress,
+} from "@mui/material";
 import dayjs from "dayjs";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { PASSWORD_REGEX, SIDEBAR_STATE } from "../../utils/globalVariables";
 import { validateEmail, validatePhoneNumber } from "../../utils/validateString";
 import AddressDetails from "./AddressDetails";
@@ -10,6 +16,7 @@ import PasswordChange from "./PasswordChange";
 import ProfileDetails from "./ProfileDetails";
 import SideBar from "./SideBar";
 import useStyles from "./styles";
+import { useGetProfileQuery } from "../../services/clothing";
 
 const allOrders = [
   {
@@ -37,67 +44,16 @@ const favorites = [
   },
 ];
 
-const address = [
-  {
-    id: 1,
-    name: "Phạm Phi Anh",
-    phone: "0909090909",
-    address:
-      "1 Đ. Võ Văn Ngân, Linh Chiểu, Thành Phố Thủ Đức, Thành phố Hồ Chí Minh",
-  },
-  {
-    id: 2,
-    name: "Nguyễn Hữu Đăng",
-    phone: "554122589",
-    address:
-      "484 Đ. Lê Văn Việt, Tăng Nhơn Phú A, Quận 9, Thành phố Hồ Chí Minh",
-  },
-  {
-    id: 3,
-    name: "Mai Thanh Nhã",
-    phone: "441201474",
-    address: "242 Đ. Phạm Văn Đồng, Thành phố, Thủ Đức, Thành phố Hồ Chí Minh",
-  },
-  {
-    id: 4,
-
-    name: "Phạm Phi Anh",
-    phone: "0909090909",
-    address:
-      "1 Đ. Võ Văn Ngân, Linh Chiểu, Thành Phố Thủ Đức, Thành phố Hồ Chí Minh",
-  },
-  {
-    id: 5,
-
-    name: "Nguyễn Hữu Đăng",
-    phone: "554122589",
-    address:
-      "484 Đ. Lê Văn Việt, Tăng Nhơn Phú A, Quận 9, Thành phố Hồ Chí Minh",
-  },
-  {
-    id: 6,
-
-    name: "Mai Thanh Nhã",
-    phone: "441201474",
-    address: "242 Đ. Phạm Văn Đồng, Thành phố, Thủ Đức, Thành phố Hồ Chí Minh",
-  },
-];
-
-
 const Profile = () => {
   const classes = useStyles();
 
   const [tabValue, setTabValue] = useState(false);
 
   const [navSelection, setNavSelection] = useState(SIDEBAR_STATE[0]);
-  const [userInfo, setUserInfo] = useState({
-    name: "phianh",
-    username: "phamphianh",
-    email: "pa@gmail.com",
-    phone: "03300333",
-    gender: "male",
-  });
+
+  const [userInfo, setUserInfo] = useState({});
   const [birthday, setBirthday] = useState(dayjs("2022-04-07"));
+
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
@@ -105,6 +61,13 @@ const Profile = () => {
   const [emailValid, setEmailValid] = useState(true);
   const [newPasswordValid, setNewPasswordValid] = useState(true);
   const [confirmNewPasswordValid, setConfirmNewPasswordValid] = useState(true);
+
+  const { data: userInformation, isFetching: isFetchingUserInformation } =
+    useGetProfileQuery();
+  useEffect(() => {
+    setUserInfo(userInformation);
+    setBirthday(userInformation?.dob);
+  }, [isFetchingUserInformation]);
 
   const handleGenderChange = (event) => {
     const gender = event.target.value;
@@ -119,7 +82,7 @@ const Profile = () => {
 
   const handleNameChange = (event) => {
     const name = event.target.value;
-    setUserInfo((prev) => ({ ...prev, name: name }));
+    setUserInfo((prev) => ({ ...prev, fullname: name }));
   };
 
   const handlePhoneNumberChange = (event) => {
@@ -163,6 +126,7 @@ const Profile = () => {
     }
     setConfirmNewPasswordValid(true);
   };
+
   return (
     <>
       <div className={classes.body}>
@@ -184,24 +148,30 @@ const Profile = () => {
             />
             <Paper elevation={10}>
               <div className={classes.profileMain}>
-                <div hidden={navSelection !== SIDEBAR_STATE[0]}>
-                  <ProfileDetails
-                    classes={classes}
-                    userInfo={userInfo}
-                    setUserInfo={setUserInfo}
-                    emailValid={emailValid}
-                    setEmailValid={setEmailValid}
-                    birthday={birthday}
-                    setBirthday={setBirthday}
-                    handleNameChange={handleNameChange}
-                    handlePhoneNumberChange={handlePhoneNumberChange}
-                    handleEmailChange={handleEmailChange}
-                    handleGenderChange={handleGenderChange}
-                  />
-                </div>
+                {isFetchingUserInformation ? (
+                  <Box display="flex" justifyContent="center">
+                    <CircularProgress color="black" size="4rem" />
+                  </Box>
+                ) : (
+                  <div hidden={navSelection !== SIDEBAR_STATE[0]}>
+                    <ProfileDetails
+                      classes={classes}
+                      userInfo={userInfo}
+                      setUserInfo={setUserInfo}
+                      emailValid={emailValid}
+                      setEmailValid={setEmailValid}
+                      birthday={birthday}
+                      setBirthday={setBirthday}
+                      handleNameChange={handleNameChange}
+                      handlePhoneNumberChange={handlePhoneNumberChange}
+                      handleEmailChange={handleEmailChange}
+                      handleGenderChange={handleGenderChange}
+                    />
+                  </div>
+                )}
 
                 <div hidden={navSelection !== SIDEBAR_STATE[1]}>
-                  <AddressDetails address={address} classes={classes} />
+                  <AddressDetails classes={classes} />
                 </div>
 
                 <div hidden={navSelection !== SIDEBAR_STATE[2]}>

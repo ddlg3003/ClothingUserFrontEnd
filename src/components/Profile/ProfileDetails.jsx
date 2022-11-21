@@ -12,8 +12,13 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import React from "react";
+import { changeProfile } from "../../utils/api";
 
 const ProfileDetails = (props) => {
+  const handleSubmit = async () => {
+    await changeProfile( {...props.userInfo, dob: props.birthday} );
+    window.location.reload();
+  };
   return (
     <>
       <div className={props.classes.title}>Hồ sơ của tôi</div>
@@ -37,31 +42,27 @@ const ProfileDetails = (props) => {
               <Typography>Tên đăng nhập</Typography>
             </Grid>
             <Grid item xs={8} mb="10px">
-              <Typography>{props.userInfo.username}</Typography>
+              <Typography>
+                {props.userInfo?.username}
+              </Typography>
             </Grid>
             <Grid item xs={4}>
               <Typography mt="20px">Tên</Typography>
             </Grid>
             <Grid item xs={8} mb="10px">
               <TextField
-                
                 variant="outlined"
-                value={props.userInfo.name}
+                value={props.userInfo?.fullname}
                 onChange={props.handleNameChange}
               />
             </Grid>
             <Grid item xs={4}>
-              <Typography mt="20px">Email</Typography>
+              <Typography>Email</Typography>
             </Grid>
             <Grid item xs={8}>
-              <TextField
-                
-                variant="outlined"
-                value={props.userInfo.email}
-                onChange={props.handleEmailChange}
-                error={props.emailValid === false}
-                helperText={props.emailValid === false ? "Email không hợp lệ!" : " "}
-              />
+              <Typography>
+                {props.userInfo?.email}
+              </Typography>
             </Grid>
             <Grid item xs={4}>
               <Typography width="300px" mt="20px">
@@ -72,7 +73,7 @@ const ProfileDetails = (props) => {
               <TextField
                 
                 variant="outlined"
-                value={props.userInfo.phone}
+                value={props.userInfo?.phone}
                 onChange={props.handlePhoneNumberChange}
               />
             </Grid>
@@ -82,7 +83,7 @@ const ProfileDetails = (props) => {
             <Grid item xs={8}>
               <FormControl>
                 <RadioGroup
-                  value={props.userInfo.gender}
+                  value={!props.userInfo?.gender ? "male" : props.userInfo?.gender}
                   row
                   aria-labelledby="demo-row-radio-buttons-group-label"
                   name="row-radio-buttons-group"
@@ -115,7 +116,7 @@ const ProfileDetails = (props) => {
                   disableFuture
                   openTo="year"
                   views={["year", "month", "day"]}
-                  value={props.birthday}
+                  value={props?.birthday}
                   onChange={(newValue) => {
                     props.setBirthday(newValue);
                   }}
@@ -132,6 +133,7 @@ const ProfileDetails = (props) => {
                 variant="contained"
                 color="black"
                 style={{ color: "white" }}
+                onClick={handleSubmit}
               >
                 Lưu
               </Button>
