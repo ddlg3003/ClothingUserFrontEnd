@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useGetUserAddressQuery } from "../../services/clothing";
 import { createOrder } from "../../utils/api";
 import { useNavigate } from "react-router-dom";
+import { SIDEBAR_STATE, PROFILE_QUERY_STRING } from "../../utils/globalVariables";
 import { increaseItem, decreaseItem, updateCart } from "../../features/cart";
 
 const Checkout = () => {
@@ -57,7 +58,7 @@ const Checkout = () => {
     // console.log([newSubmitData, payment]);
     await createOrder([newSubmitData, payment]);
     sessionStorage.clear();
-    navigate("/profile");
+    navigate(`/profile?${PROFILE_QUERY_STRING[0]}=${SIDEBAR_STATE[4]}`);
     dispatch(updateCart([]));
   };
 
@@ -73,7 +74,7 @@ const Checkout = () => {
           paddingTop="60px"
         >
           THANH TOÁN
-        </Typography>{" "}
+        </Typography>
         <ShippingAddresses />
         <CartItems cartItems={cartItems} />
         <Container>

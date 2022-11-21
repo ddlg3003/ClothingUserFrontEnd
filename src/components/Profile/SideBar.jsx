@@ -30,7 +30,7 @@ const SideBar = (props) => {
               className={props.classes.image}
             />
             <Typography fontWeight="bold" ml={1} mt="20px">
-              pphianh
+              {props.userInfo?.username}
             </Typography>
           </Stack>
 

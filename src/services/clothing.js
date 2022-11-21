@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { BASE_API_URL, LIMIT } from '../utils/globalVariables';
+import { BASE_API_URL } from '../utils/globalVariables';
 
 export const clothing = createApi({
     reducerPath: 'clothing',

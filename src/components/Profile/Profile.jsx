@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import dayjs from "dayjs";
 import React, { useState, useEffect } from "react";
-import { PASSWORD_REGEX, SIDEBAR_STATE } from "../../utils/globalVariables";
+import { PASSWORD_REGEX, SIDEBAR_STATE, PROFILE_QUERY_STRING } from "../../utils/globalVariables";
 import { validateEmail, validatePhoneNumber } from "../../utils/validateString";
 import AddressDetails from "./AddressDetails";
 import Favorites from "./Favorites";
@@ -15,8 +15,9 @@ import Orders from "./Orders";
 import PasswordChange from "./PasswordChange";
 import ProfileDetails from "./ProfileDetails";
 import SideBar from "./SideBar";
-import useStyles from "./styles";
+import { useSearchParams } from "react-router-dom";
 import { useGetProfileQuery } from "../../services/clothing";
+import useStyles from "./styles";
 
 const allOrders = [
   {
@@ -47,9 +48,16 @@ const favorites = [
 const Profile = () => {
   const classes = useStyles();
 
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Init tab query string for user friendly url 
+  // Main query tab
+  const tabParamInit = SIDEBAR_STATE.includes(searchParams.get(PROFILE_QUERY_STRING[0])) ? 
+    searchParams.get(PROFILE_QUERY_STRING[0]) : SIDEBAR_STATE[0];
+
   const [tabValue, setTabValue] = useState(false);
 
-  const [navSelection, setNavSelection] = useState(SIDEBAR_STATE[0]);
+  const [navSelection, setNavSelection] = useState(tabParamInit);
 
   const [userInfo, setUserInfo] = useState({});
   const [birthday, setBirthday] = useState(dayjs("2022-04-07"));
@@ -62,8 +70,7 @@ const Profile = () => {
   const [newPasswordValid, setNewPasswordValid] = useState(true);
   const [confirmNewPasswordValid, setConfirmNewPasswordValid] = useState(true);
 
-  const { data: userInformation, isFetching: isFetchingUserInformation } =
-    useGetProfileQuery();
+  const { data: userInformation, isFetching: isFetchingUserInformation } = useGetProfileQuery();
   useEffect(() => {
     setUserInfo(userInformation);
     setBirthday(userInformation?.dob);
@@ -78,6 +85,7 @@ const Profile = () => {
     if (tabValue !== "orders") setTabValue(false);
 
     setNavSelection(value);
+    setSearchParams({ [PROFILE_QUERY_STRING[0]]: value });
   };
 
   const handleNameChange = (event) => {
@@ -145,6 +153,7 @@ const Profile = () => {
             <SideBar
               classes={classes}
               handleNavSelectionChange={handleNavSelectionChange}
+              userInfo={userInfo}
             />
             <Paper elevation={10}>
               <div className={classes.profileMain}>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BLACK_LOGO, LIMIT } from '../../utils/globalVariables';
+import { BLACK_LOGO, LIMIT, PRODUCT_QUERY_STRING } from '../../utils/globalVariables';
 import {
     AppBar,
     Toolbar,
@@ -309,7 +309,7 @@ const Navbar = () => {
                         data.map((category) => (
                             <Link
                                 key={category.id}
-                                to={`/products?page=${1}&limit=${LIMIT}&cat=${category.id}`}
+                                to={`/products?${PRODUCT_QUERY_STRING[0]}=${1}&${PRODUCT_QUERY_STRING[1]}=${LIMIT}&${PRODUCT_QUERY_STRING[2]}=${category.id}`} 
                                 style={{
                                     textDecoration: 'none',
                                     color: 'black',

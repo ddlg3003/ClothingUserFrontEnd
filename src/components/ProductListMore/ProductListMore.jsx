@@ -3,7 +3,7 @@ import Products from '../Products/Products';
 import { Box, CircularProgress, Pagination, Stack } from '@mui/material';
 import { useGetProductsQuery } from '../../services/clothing';
 import { useSearchParams } from 'react-router-dom';
-import { LIMIT } from '../../utils/globalVariables';
+import { LIMIT, PRODUCT_QUERY_STRING } from '../../utils/globalVariables';
 import useStyles from './styles';
 
 const ProductListMore = () => {
@@ -11,9 +11,15 @@ const ProductListMore = () => {
     const [searchParams, setSearchParams] = useSearchParams();
 
     // Query string validation, isInteger check if the passing arg is an integer or not 
-    const pageInit = Number.isInteger(parseInt(searchParams.get('page'))) ? parseInt(searchParams.get('page')) - 1 : 0;
-    const limitInit = Number.isInteger(parseInt(searchParams.get('limit'))) ? parseInt(searchParams.get('limit')) : LIMIT;
-    const catInit = Number.isInteger(parseInt(searchParams.get('cat'))) ? parseInt(searchParams.get('cat')) : '';
+    // 3 main query: page, limit, cat
+    const pageInit = Number.isInteger(parseInt(searchParams.get(PRODUCT_QUERY_STRING[0]))) ? 
+        parseInt(searchParams.get(PRODUCT_QUERY_STRING[0])) : 0;
+
+    const limitInit = Number.isInteger(parseInt(searchParams.get(PRODUCT_QUERY_STRING[1]))) ? 
+        parseInt(searchParams.get(PRODUCT_QUERY_STRING[1])) : LIMIT;
+
+    const catInit = Number.isInteger(parseInt(searchParams.get(PRODUCT_QUERY_STRING[2]))) ? 
+        parseInt(searchParams.get(PRODUCT_QUERY_STRING[2])) : '';
 
     const [page, setPage] = useState(pageInit);
     const { data, isFetching } = useGetProductsQuery({
@@ -24,12 +30,12 @@ const ProductListMore = () => {
 
     const onPageChange = (e, value) => {
         console.log(value);
-        setPage(value - 1);
+        setPage(value);
 
-        let query = { page: value, limit: limitInit };
+        let query = { [PRODUCT_QUERY_STRING[0]]: value, [PRODUCT_QUERY_STRING[1]]: limitInit };
 
         if(searchParams.get('cat')) {
-            query = { ...query, cat: catInit };
+            query = { ...query, [PRODUCT_QUERY_STRING[2]]: catInit };
         }
 
         setSearchParams(query);
@@ -42,17 +48,19 @@ const ProductListMore = () => {
                     <CircularProgress color="black" size="4rem" />
                 </Box>
             ) : (
-                <Products data={data} />
+                <>
+                    <Products data={data} />
+                    <Stack spacing={2} className={classes.pagination}>
+                    <Pagination
+                        count={Math.ceil(data?.numberItem / limitInit)}
+                        shape="rounded"
+                        page={page}
+                        size="large"
+                        onChange={onPageChange}
+                    />
+                    </Stack>
+                </>
             )}
-            <Stack spacing={2} className={classes.pagination}>
-                <Pagination
-                    count={10}
-                    shape="rounded"
-                    page={page + 1}
-                    size="large"
-                    onChange={onPageChange}
-                />
-            </Stack>
         </div>
     );
 };

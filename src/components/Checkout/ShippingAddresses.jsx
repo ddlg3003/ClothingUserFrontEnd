@@ -21,6 +21,7 @@ import { blue } from "@mui/material/colors";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useGetUserAddressQuery } from "../../services/clothing";
+import { SIDEBAR_STATE, PROFILE_QUERY_STRING } from "../../utils/globalVariables";
 
 const address = [
   "1 Đ. Võ Văn Ngân, Linh Chiểu, Thành Phố Thủ Đức, Thành phố Hồ Chí Minh",
@@ -92,7 +93,7 @@ function AddressSelectionDialog(props) {
           ))
         )}
 
-        <ListItem autoFocus button component={Link} to="/profile">
+        <ListItem autoFocus button component={Link} to={`/profile?${PROFILE_QUERY_STRING[0]}=${SIDEBAR_STATE[1]}`}>
           <ListItemAvatar>
             <Avatar>
               <AddIcon />
