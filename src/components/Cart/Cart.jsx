@@ -30,6 +30,7 @@ import {
   deleteCartItem,
 } from "../../utils/api";
 import LocalMall from "@mui/icons-material/LocalMall";
+import { updateCheckout } from "../../features/checkout";
 
 const Cart = () => {
   const classes = useStyles();
@@ -72,6 +73,13 @@ const Cart = () => {
     dispatch(updateCart(data));
   };
 
+  const handleBuyButton = () => {
+    dispatch(updateCheckout());
+    if (datas.length) {
+      sessionStorage.setItem("cartItems", JSON.stringify(datas));
+    }
+  };
+
   return (
     <>
       <div className={classes.root}>
@@ -110,24 +118,31 @@ const Cart = () => {
                   </TableCell>
                 </TableRow>
               </TableHead>
-              <TableBody>
-                {!datas.length ? (
-                  <Box>
-                    <LocalMallIcon sx={{ fontSize: 70, mt: 2 }}/>
-                    <Typography width={80} fontSize="17px">
-                      Không có sản phẩm
-                    </Typography>
-                  </Box>
-                ) : (
-                  datas.map((data, i) => (
+
+              {!datas.length ? (
+                <TableBody>
+                  <TableRow>
+                    <TableCell colSpan={6} align="center">
+                      <LocalMallIcon sx={{ fontSize: 70, mt: 2 }} />
+                      <Typography fontWeight="bold" width={80} fontSize="20px" sx={{width:"200px", margin:"auto"}}>
+                        Không có sản phẩm
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              ) : (
+                <TableBody>
+                  {datas.map((data, i) => (
                     <TableRow
                       key={i}
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
                       <TableCell component="th" scope="row">
                         <div>
-                          <Link 
-                            to={`/products/${data.proName.replace(URL_REGEX, '-').toLowerCase()}-i.${data.product_id}`} 
+                          <Link
+                            to={`/products/${data.proName
+                              .replace(URL_REGEX, "-")
+                              .toLowerCase()}-i.${data.product_id}`}
                             className={classes.itemLink}
                           >
                             <img width={80} src={data.proImage} alt="" />
@@ -136,8 +151,10 @@ const Cart = () => {
                       </TableCell>
                       <TableCell component="th" scope="row">
                         <Stack direction="column">
-                          <Link 
-                            to={`/products/${data.proName.replace(URL_REGEX, '-').toLowerCase()}-i.${data.product_id}`} 
+                          <Link
+                            to={`/products/${data.proName
+                              .replace(URL_REGEX, "-")
+                              .toLowerCase()}-i.${data.product_id}`}
                             className={classes.itemLink}
                           >
                             <Typography
@@ -233,9 +250,9 @@ const Cart = () => {
                         />
                       </TableCell>
                     </TableRow>
-                  ))
-                )}
-              </TableBody>
+                  ))}
+                </TableBody>
+              )}
             </Table>
           </TableContainer>
         </Container>
@@ -266,8 +283,9 @@ const Cart = () => {
             size="large"
             variant="outlined"
             color="black"
+            onClick={handleBuyButton}
             component={Link}
-            to="/checkout"
+            to= {datas.length ? "/checkout" : "/products"}
             className={classes.checkoutButton}
           >
             Mua Hàng

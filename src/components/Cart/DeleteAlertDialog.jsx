@@ -5,8 +5,8 @@ import DialogTitle from "@mui/material/DialogTitle";
 import React from "react";
 
 const DeleteAlertDialog = ({ onClose, open, item, handleConfirmDeleteClick }) => {
-  console.log(item);
-  console.log(item.product_id);
+  // console.log(item);
+  // console.log(item.product_id);
   const handleClose = () => {
     onClose();
   };

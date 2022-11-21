@@ -50,8 +50,9 @@ const rows = [
   ),
 ];
 
-const CartItems = () => {
+const CartItems = ({ cartItems }) => {
   const classes = useStyles();
+
 
   return (
     <>
@@ -83,17 +84,15 @@ const CartItems = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((row) => (
+              {cartItems.map((item) => (
                 <TableRow
-                  key={row.name}
+                  key={item.product_id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell component="th" scope="row">
-                    
                     <div>
-                    <Link to="/products/1" className={classes.itemLink}>
-
-                      <img width={80} src={row.img} alt="" />
+                      <Link to="/products/1" className={classes.itemLink}>
+                        <img width={80} src={item.proImage} alt="" />
                       </Link>
                     </div>
                   </TableCell>
@@ -106,7 +105,7 @@ const CartItems = () => {
                           className={classes.itemName}
                           sx={{ color: "#000" }}
                         >
-                          {row.name}
+                          {item.proName}
                         </Typography>
                         <Typography
                           fontSize="18px"
@@ -114,7 +113,7 @@ const CartItems = () => {
                           maxWidth={200}
                           className={classes.itemName}
                         >
-                          Đen, XL
+                          {item.color}, {item.size}
                         </Typography>
                       </Link>
                     </Stack>
@@ -124,12 +123,12 @@ const CartItems = () => {
                       {Intl.NumberFormat("vi-VN", {
                         style: "currency",
                         currency: "VND",
-                      }).format(row.price)}
+                      }).format(item.price)}
                     </Typography>
                   </TableCell>
                   <TableCell align="center" width={170}>
                     <Typography fontSize="18px" className={classes.itemName}>
-                      {row.amount}
+                      {item.quantity}
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
@@ -141,7 +140,7 @@ const CartItems = () => {
                       {Intl.NumberFormat("vi-VN", {
                         style: "currency",
                         currency: "VND",
-                      }).format(row.total)}
+                      }).format(item.price * item.quantity)}
                     </Typography>
                   </TableCell>
                 </TableRow>
