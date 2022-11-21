@@ -21,7 +21,7 @@ import useStyles from "./styles";
 import DeleteAlertDialog from "./DeleteAlertDialog";
 import { useDispatch, useSelector } from "react-redux";
 import { increaseItem, decreaseItem, updateCart } from "../../features/cart";
-import { axiosConfig, URL_REGEX } from "../../utils/globalVariables";
+import { LIMIT, PRODUCT_QUERY_STRING, URL_REGEX } from "../../utils/globalVariables";
 import { Link } from "react-router-dom";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import {
@@ -285,7 +285,7 @@ const Cart = () => {
             color="black"
             onClick={handleBuyButton}
             component={Link}
-            to= {datas.length ? "/checkout" : "/products"}
+            to= {datas.length ? "/checkout" : `/products?${PRODUCT_QUERY_STRING[0]}=${1}&${PRODUCT_QUERY_STRING[1]}=${LIMIT}`}
             className={classes.checkoutButton}
           >
             Mua Hàng
