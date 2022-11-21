@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    isCheckout: false,
+    isCheckout: sessionStorage.getItem('cartItems') ? true : false,
 };
 
 export const checkout = createSlice({
