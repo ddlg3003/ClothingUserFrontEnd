@@ -120,6 +120,22 @@ export const deleteAddress = async (id) => {
     }
 };
 
+export const createOrder = async (formData) => {
+    try {
+        const config = axiosConfig();
+
+        const { data, status } = await api.post(
+            'user/order/create',
+            formData,
+            config
+        );
+
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 
 
 

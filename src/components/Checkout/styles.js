@@ -35,13 +35,6 @@ export default makeStyles((theme) => ({
     padding: "25px",
   },
 
-  buttonContainer: {
-    display: "flex",
-    justifyContent: "flex-end",
-    width: "100%",
-    marginTop: "40px",
-    marginBottom: "40px",
-  },
 
   checkoutButton: {
     color: 'white!important',

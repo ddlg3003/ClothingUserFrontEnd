@@ -1,14 +1,65 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Typography, Paper } from "@mui/material";
 import { Box, Container } from "@mui/system";
 import useStyles from "./styles";
 import CartItems from "./CartItems";
 import ShippingAddresses from "./ShippingAddresses";
 import PaymentMethods from "./PaymentMethods";
+import { useSelector, useDispatch } from "react-redux";
+import { useGetUserAddressQuery } from "../../services/clothing";
+import { createOrder } from "../../utils/api";
+import { useNavigate } from "react-router-dom";
+import { increaseItem, decreaseItem, updateCart } from "../../features/cart";
 
 const Checkout = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const classes = useStyles();
   const cartItems = [...JSON.parse(sessionStorage.getItem("cartItems"))];
+
+  const { data, isFetching } = useGetUserAddressQuery();
+
+  const submitData = [...JSON.parse(sessionStorage.getItem("cartItems"))];
+
+  const transformObject = ({
+    color,
+    price,
+    proImage,
+    proName,
+    product_id,
+    quantity,
+    size,
+  }) => {
+    return {
+      quantity: quantity.toString(),
+      unit_price: price.toString(),
+      color,
+      size: size.toString(),
+      product_id: product_id.toString(),
+    };
+  };
+
+  const newSubmitData = submitData.map((data) => {
+    return transformObject(data);
+  });
+
+  const [paymentTypeValue, setPaymentTypeValue] = useState("credit");
+  const [creditMethod, setCreditMethod] = useState("VCB");
+
+  let payment = {};
+  if (paymentTypeValue === "COD") {
+    payment.payment = "COD";
+    payment.shipping_fee = 30000;
+  }
+
+  const handleSubmit = async () => {
+    // console.log([newSubmitData, payment]);
+    await createOrder([newSubmitData, payment]);
+    sessionStorage.clear();
+    navigate("/profile");
+    dispatch(updateCart([]));
+  };
 
   return (
     <>
@@ -45,7 +96,12 @@ const Checkout = () => {
               </Typography>{" "}
             </div>
 
-            <PaymentMethods />
+            <PaymentMethods
+              paymentTypeValue={paymentTypeValue}
+              setPaymentTypeValue={setPaymentTypeValue}
+              creditMethod={creditMethod}
+              setCreditMethod={setCreditMethod}
+            />
           </Box>
         </Container>
         <div className={classes.buttonContainer}>
@@ -76,6 +132,8 @@ const Checkout = () => {
               color="black"
               className={classes.checkoutButton}
               sx={{ mr: "380px" }}
+              disabled={!isFetching && data.length ? false : true}
+              onClick={handleSubmit}
             >
               Đặt Hàng
             </Button>

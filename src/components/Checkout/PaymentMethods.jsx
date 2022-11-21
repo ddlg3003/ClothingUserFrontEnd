@@ -8,11 +8,9 @@ import {
 import useStyles from "./styles";
 import { useState } from "react";
 
-const PaymentMethods = () => {
+const PaymentMethods = ({ paymentTypeValue, setPaymentTypeValue, creditMethod, setCreditMethod }) => {
   const classes = useStyles();
 
-  const [paymentTypeValue, setPaymentTypeValue] = useState("credit");
-  const [creditMethod, setCreditMethod] = useState("VCB");
 
   const handlePaymentTypeChange = (e) => {
     setPaymentTypeValue(e.target.value);
@@ -20,7 +18,6 @@ const PaymentMethods = () => {
 
   const handleCreditMethod = (value) => {
     setCreditMethod(value);
-    console.log(value);
   };
   return (
     <>
