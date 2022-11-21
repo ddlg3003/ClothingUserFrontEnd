@@ -297,7 +297,7 @@ const Navbar = () => {
                         data.map((category) => (
                             <Link
                                 key={category.id}
-                                to="/"
+                                to={`/products?cat=${category.id}`}
                                 style={{
                                     textDecoration: 'none',
                                     color: 'black',
