@@ -8,6 +8,7 @@ import PaymentMethods from "./PaymentMethods";
 
 const Checkout = () => {
   const classes = useStyles();
+  const cartItems = [...JSON.parse(sessionStorage.getItem("cartItems"))];
 
   return (
     <>
@@ -22,11 +23,8 @@ const Checkout = () => {
         >
           THANH TOÁN
         </Typography>{" "}
-
         <ShippingAddresses />
-
-        <CartItems />
-
+        <CartItems cartItems={cartItems} />
         <Container>
           <Box
             className={classes.paymentTypeBox}
@@ -48,7 +46,6 @@ const Checkout = () => {
             </div>
 
             <PaymentMethods />
-            
           </Box>
         </Container>
         <div className={classes.buttonContainer}>
@@ -64,7 +61,11 @@ const Checkout = () => {
               {Intl.NumberFormat("vi-VN", {
                 style: "currency",
                 currency: "VND",
-              }).format(120000000)}
+              }).format(
+                cartItems.reduce((acc, data) => {
+                  return (acc = acc + data.price * data.quantity);
+                }, 0)
+              )}
             </Typography>
           </div>
 

@@ -3,6 +3,7 @@ import cartReducer from '../features/cart';
 import { clothing } from '../services/clothing';
 import authReducer from '../features/auth';
 import addressReducer from '../features/address';
+import checkoutReducer from '../features/checkout';
 
 export default configureStore({
     reducer: {
@@ -10,5 +11,6 @@ export default configureStore({
         cart: cartReducer,
         address: addressReducer,
         auth: authReducer,
+        checkout: checkoutReducer,
     }
 });
