@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { BASE_API_URL } from '../utils/globalVariables';
+import { BASE_API_URL, LIMIT } from '../utils/globalVariables';
 
 export const clothing = createApi({
     reducerPath: 'clothing',
@@ -17,7 +17,7 @@ export const clothing = createApi({
     }),
     endpoints: (builder) => ({
         getProducts: builder.query({
-            query: (pageNumber = 0, pageSize = 10, cat = '') => `product?pageNo=${pageNumber}&pageSize=${pageSize}&cat=${cat}`,
+            query: ({ pageNumber, pageSize, cat }) => `product?pageNo=${pageNumber}&pageSize=${pageSize}&cat=${cat}`,
         }),
         getProduct: builder.query({
             query: (id) => `product/${id}`,

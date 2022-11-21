@@ -2,13 +2,14 @@ import React from 'react';
 import { Grid, Typography } from '@mui/material';
 import useStyles from './styles';
 import { Link } from 'react-router-dom';
+import { LIMIT } from '../../utils/globalVariables';
 
 const Category = ({ category }) => {
     const classes = useStyles();
  
     return (
         <Grid item>
-            <Link to={`/products?cat=${category.id}`} className={classes.links}>
+            <Link to={`/products?page=${1}&limit=${LIMIT}&cat=${category.id}`} className={classes.links}>
             <Typography 
                 fontWeight="500" 
                 position="absolute" 

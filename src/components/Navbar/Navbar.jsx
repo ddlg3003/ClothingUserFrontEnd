@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BLACK_LOGO } from '../../utils/globalVariables';
+import { BLACK_LOGO, LIMIT } from '../../utils/globalVariables';
 import {
     AppBar,
     Toolbar,
@@ -309,7 +309,7 @@ const Navbar = () => {
                         data.map((category) => (
                             <Link
                                 key={category.id}
-                                to={`/products?cat=${category.id}`}
+                                to={`/products?page=${1}&limit=${LIMIT}&cat=${category.id}`}
                                 style={{
                                     textDecoration: 'none',
                                     color: 'black',

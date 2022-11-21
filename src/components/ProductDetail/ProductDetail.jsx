@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
     Typography, 
     Button, 
@@ -14,10 +14,7 @@ import {
     ListItemText,
     Avatar,
     Modal,
-    Backdrop,
     Fade,
-    selectClasses,
-    Snackbar,
 } from '@mui/material';
 import Alert from '../Alert/Alert';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -46,7 +43,6 @@ const ProductDetail = () => {
     const [toastData, setToastData] = useState({ message: '', severity: '' });
     const [image, setImage] = useState(''); // set image for modal
     const [isSelectedImg, setIsSelectedImg] = useState(0);
-    const cartData = useSelector(state => state.cart.data);
     const { isAuthenticated } = useSelector(state => state.auth);
 
     // Set image state for product image
@@ -54,11 +50,13 @@ const ProductDetail = () => {
     const [currentColor, setCurrentColor] = useState('');
     const [currentSize, setCurrentSize] = useState(null);
     const [openToast, setOpenToast] = useState(false);
+    const [currentPrice, setCurrentPrice] = useState(null);
 
     // Run the callback for changing the initial main image when isFetching changes
     useEffect(() => {
         setMainImg(data?.image);
-    }, [isFetching]);
+        setCurrentPrice(data?.price);
+    }, [isFetching, data]);
 
     // Find type quantity for current color and size
     const [type, setType] = useState(undefined);
@@ -67,12 +65,13 @@ const ProductDetail = () => {
         if(currentSize && currentColor) {
             const type = typesData?.find(type => type.size === currentSize && type.color === currentColor);
             setType(type);
+            setCurrentPrice(type.price);
 
             if(quantity > type.quantity) { 
                 setQuantity(type.quantity);
             }
         }
-    }, [currentColor, currentSize, isFetchingTypes]);
+    }, [currentColor, currentSize, isFetchingTypes, typesData, quantity]);
 
     const reduceQuantity = () => {
         if(quantity > 0) {
@@ -102,7 +101,7 @@ const ProductDetail = () => {
             color: currentColor,
             quantity,
             product_id: id,
-            price: data?.price,
+            price: currentPrice,
 
         };        
         if(isAuthenticated) {
@@ -143,6 +142,7 @@ const ProductDetail = () => {
                         className={classes.image} 
                         src={mainImg}
                         onClick={(e) => handleImage(mainImg)}
+                        alt={''}
                     />
                     <div className={classes.subImageContainer}>
                         {/* {product.images.map((image, i) => (
@@ -189,7 +189,7 @@ const ProductDetail = () => {
                                 Intl.NumberFormat('vi-VN', {
                                 style: 'currency',
                                 currency: 'VND',
-                                }).format(data?.price)
+                                }).format(currentPrice)
                             }
                         </Typography>
                     </div>

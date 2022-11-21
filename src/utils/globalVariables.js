@@ -12,6 +12,8 @@ export const USERNAME_REGEX = /^[0-9a-zA-Z]{6,}$/;
 
 export const URL_REGEX = /\s/g;
 
+export const LIMIT = 1;
+
 export const SIDEBAR_STATE = [
     'profile',
     'address',
