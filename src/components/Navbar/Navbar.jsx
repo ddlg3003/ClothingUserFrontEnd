@@ -21,7 +21,7 @@ import {
 import MuiAlert from '@mui/material/Alert';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SecondNavbar from '../SecondNavbar/SecondNavbar';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import {
     useGetCategoriesQuery,
@@ -29,11 +29,13 @@ import {
 } from '../../services/clothing';
 import { logout } from '../../features/auth';
 import { increaseItem, decreaseItem, updateCart } from '../../features/cart';
+import decode from 'jwt-decode';
 import useStyles from './styles';
 
 const Navbar = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
+    const location = useLocation();
 
     const { isAuthenticated } = useSelector((state) => state.auth);
     const user = JSON.parse(localStorage.getItem('user'));
@@ -45,6 +47,16 @@ const Navbar = () => {
             dispatch(updateCart(dataCartList));
         }
     }, [isFetchingCartList]);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+    
+        if(token) {
+          const decodedToken = decode(token);
+    
+          if(decodedToken.exp * 1000 < new Date().getTime()) dispatch(logout());; 
+        }
+      }, [location]);
 
     const cartData = useSelector((state) => state.cart.data);
     const { data, isFetching } = useGetCategoriesQuery();

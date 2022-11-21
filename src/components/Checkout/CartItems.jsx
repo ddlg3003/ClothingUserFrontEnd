@@ -12,47 +12,11 @@ import {
 } from "@mui/material";
 import { Container } from "@mui/system";
 import { Link } from "react-router-dom";
-
+import { URL_REGEX } from '../../utils/globalVariables';
 import useStyles from "./styles";
-
-function createData(name, price, amount, img, total) {
-  return { name, price, amount, img, total };
-}
-
-const rows = [
-  createData(
-    "Kính chống nắng",
-    159000,
-    2,
-    "https://demo.themefisher.com/aviato/images/shop/cart/cart-1.jpg",
-    30000
-  ),
-  createData(
-    "Váy body",
-    200000,
-    2,
-    "https://demo.themefisher.com/aviato/images/shop/cart/cart-2.jpg",
-    30000
-  ),
-  createData(
-    "Khăn choàng",
-    159000,
-    2,
-    "https://demo.themefisher.com/aviato/images/shop/cart/cart-3.jpg",
-    30000
-  ),
-  createData(
-    "Khăn choàng1",
-    159000,
-    2,
-    "https://demo.themefisher.com/aviato/images/shop/cart/cart-3.jpg",
-    30000
-  ),
-];
 
 const CartItems = ({ cartItems }) => {
   const classes = useStyles();
-
 
   return (
     <>
@@ -91,14 +55,14 @@ const CartItems = ({ cartItems }) => {
                 >
                   <TableCell component="th" scope="row">
                     <div>
-                      <Link to="/products/1" className={classes.itemLink}>
+                      <Link to={`/products/${item.proName.replace(URL_REGEX, '-').toLowerCase()}-i.${item.product_id}`} className={classes.itemLink}>
                         <img width={80} src={item.proImage} alt="" />
                       </Link>
                     </div>
                   </TableCell>
                   <TableCell component="th" scope="row">
                     <Stack direction="column">
-                      <Link to="/products/1" className={classes.itemLink}>
+                      <Link to={`/products/${item.proName.replace(URL_REGEX, '-').toLowerCase()}-i.${item.product_id}`} className={classes.itemLink}>
                         <Typography
                           fontSize="18px"
                           maxWidth={200}
