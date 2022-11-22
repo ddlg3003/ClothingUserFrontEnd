@@ -58,6 +58,7 @@ const Checkout = () => {
     // console.log([newSubmitData, payment]);
     await createOrder([newSubmitData, payment]);
     sessionStorage.clear();
+    // window.location.href = `/profile?${PROFILE_QUERY_STRING[0]}=${SIDEBAR_STATE[4]}`;
     navigate(`/profile?${PROFILE_QUERY_STRING[0]}=${SIDEBAR_STATE[4]}`);
     dispatch(updateCart([]));
   };

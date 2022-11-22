@@ -17,6 +17,9 @@ const theme = createTheme({
         },
         white: {
             main: '#fff',
+        },
+        blue: {
+            main: '#2596be',
         }
     },
     typography: {

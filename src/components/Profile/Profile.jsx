@@ -7,7 +7,11 @@ import {
 } from "@mui/material";
 import dayjs from "dayjs";
 import React, { useState, useEffect } from "react";
-import { PASSWORD_REGEX, SIDEBAR_STATE, PROFILE_QUERY_STRING } from "../../utils/globalVariables";
+import {
+  PASSWORD_REGEX,
+  SIDEBAR_STATE,
+  PROFILE_QUERY_STRING,
+} from "../../utils/globalVariables";
 import { validateEmail, validatePhoneNumber } from "../../utils/validateString";
 import AddressDetails from "./AddressDetails";
 import Favorites from "./Favorites";
@@ -16,10 +20,9 @@ import PasswordChange from "./PasswordChange";
 import ProfileDetails from "./ProfileDetails";
 import SideBar from "./SideBar";
 import { useSearchParams } from "react-router-dom";
-import { useGetProfileQuery } from "../../services/clothing";
+import { useGetProfileQuery, useGetAllOrdersQuery } from "../../services/clothing";
 import useStyles from "./styles";
 import { useFilePicker } from "use-file-picker";
-
 
 const allOrders = [
   {
@@ -76,32 +79,46 @@ const Profile = () => {
 
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // Init tab query string for user friendly url 
+  // Init tab query string for user friendly url
   // Main query tab
-  const tabParamInit = SIDEBAR_STATE.includes(searchParams.get(PROFILE_QUERY_STRING[0])) ? 
-    searchParams.get(PROFILE_QUERY_STRING[0]) : SIDEBAR_STATE[0];
+  const tabParamInit = SIDEBAR_STATE.includes(
+    searchParams.get(PROFILE_QUERY_STRING[0])
+  )
+    ? searchParams.get(PROFILE_QUERY_STRING[0])
+    : SIDEBAR_STATE[0];
 
   const [tabValue, setTabValue] = useState(false);
 
   const [navSelection, setNavSelection] = useState(tabParamInit);
 
   const [userInfo, setUserInfo] = useState({
-    fullname: '',
-    phone: '',
-    gender: '',
+    fullname: "",
+    phone: "",
+    gender: "",
   });
   const [birthday, setBirthday] = useState(dayjs("2022-04-07"));
 
-  
-
   const [emailValid, setEmailValid] = useState(true);
 
+  const [orders, setOrders] = useState();
 
-  const { data: userInformation, isFetching: isFetchingUserInformation } = useGetProfileQuery();
+  const { data: userInformation, isFetching: isFetchingUserInformation } =
+    useGetProfileQuery();
+  const { data: allUserOrders, isFetching: isFetchingUserOrders, refetch } =
+    useGetAllOrdersQuery();
+
   useEffect(() => {
     setUserInfo(userInformation);
     setBirthday(userInformation?.dob);
   }, [isFetchingUserInformation]);
+  
+  useEffect(() => {
+    setOrders(allUserOrders);
+  }, [isFetchingUserOrders]);
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   // image upload
   const [openFileSelector, { filesContent, loading, errors }] = useFilePicker({
@@ -110,9 +127,8 @@ const Profile = () => {
     multiple: true,
     limitFilesConfig: { max: 1 },
     // minFileSize: 1,
-    maxFileSize: 10 // in megabytes
+    maxFileSize: 10, // in megabytes
   });
-
 
   const handleGenderChange = (event) => {
     const gender = event.target.value;
@@ -147,8 +163,6 @@ const Profile = () => {
     setEmailValid(true);
   };
 
-  
-
   return (
     <>
       <div className={classes.body}>
@@ -171,7 +185,7 @@ const Profile = () => {
             />
             <Paper elevation={10}>
               <div className={classes.profileMain}>
-                {isFetchingUserInformation ? (
+                {(isFetchingUserInformation && isFetchingUserOrders) ? (
                   <Box display="flex" justifyContent="center">
                     <CircularProgress color="black" size="4rem" />
                   </Box>
@@ -200,9 +214,7 @@ const Profile = () => {
                 </div>
 
                 <div hidden={navSelection !== SIDEBAR_STATE[2]}>
-                  <PasswordChange
-                    classes={classes}
-                  />
+                  <PasswordChange classes={classes} />
                 </div>
 
                 <div hidden={navSelection !== SIDEBAR_STATE[3]}>
@@ -214,6 +226,7 @@ const Profile = () => {
                     setTabValue={setTabValue}
                     navSelection={navSelection}
                     setNavSelection={setNavSelection}
+                    orders={orders}
                     allOrders={allOrders}
                     classes={classes}
                   />

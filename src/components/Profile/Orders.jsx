@@ -9,13 +9,21 @@ import {
   Grid,
   Typography,
   Tab,
+  Stack,
+  Chip,
+  CircularProgress,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import RatingDialog from "./RatingDialog";
+import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
+import { useGetAllOrdersQuery } from "../../services/clothing";
+import { ORDER_STATUS, URL_REGEX } from "../../utils/globalVariables";
 
 const Orders = (props) => {
   const [openRatingDialog, setOpenRatingDialog] = useState(false);
+
+  console.log(props.orders);
 
   useEffect(() => {
     if (props.navSelection === "orders") {
@@ -51,53 +59,68 @@ const Orders = (props) => {
             </Box>
 
             <TabPanel value="1">
-              <Container sx={{ mt: 3, height: "420px", overflow: "scroll" }}>
-                {props.allOrders.map((order, i) => (
-                  <div key={i}>
-                    <Box>
-                      <Grid container spacing={2} sx={{ mb: 3, mt: 4 }}>
-                        <Grid item xs container direction="column" spacing={2}>
-                          <Link
-                            to="/products/1"
-                            className={props.classes.favoriteItems}
+              <Container sx={{ mt: 0, height: "460px", overflow: "scroll" }}>
+                {props.orders?.map((order, i) => (
+                  <div key={i} style={{ marginTop: "40px" }}>
+                    {order.transactionMapper.map((product) => (
+                      <Box>
+                        <Grid container spacing={2} sx={{ mb: 0, mt: 1 }}>
+                          <Grid
+                            item
+                            xs
+                            container
+                            direction="column"
+                            spacing={2}
                           >
-                            <Grid container spacing={2}>
-                              <Grid item>
-                                <img src={order.img} width={80} alt="" />
-                              </Grid>
-                              <Grid item xs>
-                                <Typography
-                                  fontSize={18}
-                                  gutterBottom
-                                  component="div"
-                                  sx={{ color: "black!important" }}
+                            <Link
+                              to={`/products/${product.productName.replace(URL_REGEX, '-').toLowerCase()}-i.${product.productId}`}
+                              className={props.classes.favoriteItems}
+                            >
+                              <Grid container spacing={2}>
+                                <Grid
+                                  item
+                                  sx={{ paddingLeft: "32px!important" }}
                                 >
-                                  {order.name}
-                                </Typography>
-                                <Typography color="text.secondary">
-                                  Phân loại hàng: {order.type}
-                                </Typography>
-                                <Typography color="text.secondary">
-                                  x{order.amount}
-                                </Typography>
-                                <Typography
-                                  color="error"
-                                  fontWeight="bold"
-                                  fontSize={20}
-                                >
-                                  {Intl.NumberFormat("vi-VN", {
-                                    style: "currency",
-                                    currency: "VND",
-                                  }).format(order.price)}
-                                </Typography>
+                                  <img
+                                    src={product?.productImage}
+                                    width={80}
+                                    alt=""
+                                  />
+                                </Grid>
+                                <Grid item xs>
+                                  <Typography
+                                    fontSize={18}
+                                    gutterBottom
+                                    component="div"
+                                    sx={{ color: "black!important" }}
+                                  >
+                                    {product?.productName}
+                                  </Typography>
+                                  <Typography color="text.secondary">
+                                    Phân loại hàng: {product?.color} -{" "}
+                                    {product?.size}
+                                  </Typography>
+                                  <Typography color="text.secondary">
+                                    x{product?.tranQuantity}
+                                  </Typography>
+                                  <Typography
+                                    color="error"
+                                    fontWeight="bold"
+                                    fontSize={20}
+                                  >
+                                    {Intl.NumberFormat("vi-VN", {
+                                      style: "currency",
+                                      currency: "VND",
+                                    }).format(product?.tranUnitPrice)}
+                                  </Typography>
+                                </Grid>
                               </Grid>
-                            </Grid>
-                          </Link>
-                        </Grid>
+                            </Link>
+                          </Grid>
 
-                        <Grid item>
-                          <Box>
-                            <Button
+                          <Grid item>
+                            <Box>
+                              {/* <Button
                               disabled
                               color="black"
                               variant="contained"
@@ -106,66 +129,130 @@ const Orders = (props) => {
                               startIcon={<LocalShippingIcon />}
                             >
                               Đã giao
-                            </Button>
-                          </Box>{" "}
+                            </Button> */}
+                            </Box>{" "}
+                          </Grid>
                         </Grid>
-                      </Grid>
-                    </Box>
+                        <Divider />
+                      </Box>
+                    ))}
+                    <Divider />
+                    <Stack
+                      direction="row"
+                      justifyContent="space-between"
+                      alignItems="center"
+                      sx={{ background: "#Fbf9f8" }}
+                    >
+                      <Stack p={1}>
+                        <Typography fontWeight="bold" fontSize={16}>
+                          SĐT: {order?.ordPhone}
+                        </Typography>
+                        <Typography color="text.secondary">
+                          {order?.ordAddress}
+                        </Typography>
+                        <Typography color="text.secondary">
+                          {order?.ordDate}
+                        </Typography>
+                      </Stack>
+                      <Chip
+                        color={
+                          ORDER_STATUS.find(
+                            (o) => o.status === order?.ordStatus
+                          ).color
+                        }
+                        variant="outlined"
+                        icon={<FiberManualRecordIcon />}
+                        label={
+                          ORDER_STATUS.find(
+                            (o) => o.status === order?.ordStatus
+                          ).string
+                        }
+                      />
+
+                      <Typography
+                        p={1}
+                        color="error"
+                        fontWeight="bold"
+                        fontSize={22}
+                      >
+                        {Intl.NumberFormat("vi-VN", {
+                          style: "currency",
+                          currency: "VND",
+                        }).format(order?.ordTotalPrice)}
+                      </Typography>
+                    </Stack>
                     <Divider />
                   </div>
                 ))}
-                <Typography>Test</Typography>
-
               </Container>
             </TabPanel>
             <TabPanel value="2">
-              <Container sx={{ mt: 3, height: "420px", overflow: "scroll" }}>
-                {props.allOrders.map((order, i) => (
-                  <div key={i}>
-                    <Box>
-                      <Grid container spacing={2} sx={{ mb: 3, mt: 4 }}>
-                        <Grid item xs container direction="column" spacing={2}>
-                          <Link
-                            to="/products/1"
-                            className={props.classes.favoriteItems}
-                          >
-                            <Grid container spacing={2}>
-                              <Grid item>
-                                <img src={order.img} width={80} alt="" />
-                              </Grid>
-                              <Grid item xs>
-                                <Typography
-                                  fontSize={18}
-                                  gutterBottom
-                                  component="div"
-                                  sx={{ color: "black!important" }}
-                                >
-                                  {order.name}
-                                </Typography>
-                                <Typography color="text.secondary">
-                                  Phân loại hàng: {order.type}
-                                </Typography>
-                                <Typography color="text.secondary">
-                                  x{order.amount}
-                                </Typography>
-                                <Typography
-                                  color="error"
-                                  fontWeight="bold"
-                                  fontSize={20}
-                                >
-                                  {Intl.NumberFormat("vi-VN", {
-                                    style: "currency",
-                                    currency: "VND",
-                                  }).format(order.price)}
-                                </Typography>
-                              </Grid>
+              <Container sx={{ mt: 0, height: "460px", overflow: "scroll" }}>
+                {props.orders
+                  ?.filter(
+                    (order) => order.ordStatus === ORDER_STATUS[0].status
+                  )
+                  .map((order, i) => (
+                    <div key={i} style={{ marginTop: "40px" }}>
+                      {order.transactionMapper.map((product) => (
+                        <Box>
+                          <Grid container spacing={2} sx={{ mb: 0, mt: 1 }}>
+                            <Grid
+                              item
+                              xs
+                              container
+                              direction="column"
+                              spacing={2}
+                            >
+                              <Link
+                                to={`/products/${product.productName.replace(URL_REGEX, '-').toLowerCase()}-i.${product.productId}`}
+                                className={props.classes.favoriteItems}
+                              >
+                                <Grid container spacing={2}>
+                                  <Grid
+                                    item
+                                    sx={{ paddingLeft: "32px!important" }}
+                                  >
+                                    <img
+                                      src={product?.productImage}
+                                      width={80}
+                                      alt=""
+                                    />
+                                  </Grid>
+                                  <Grid item xs>
+                                    <Typography
+                                      fontSize={18}
+                                      gutterBottom
+                                      component="div"
+                                      sx={{ color: "black!important" }}
+                                    >
+                                      {product?.productName}
+                                    </Typography>
+                                    <Typography color="text.secondary">
+                                      Phân loại hàng: {product?.color} -{" "}
+                                      {product?.size}
+                                    </Typography>
+                                    <Typography color="text.secondary">
+                                      x{product?.tranQuantity}
+                                    </Typography>
+                                    <Typography
+                                      color="error"
+                                      fontWeight="bold"
+                                      fontSize={20}
+                                    >
+                                      {Intl.NumberFormat("vi-VN", {
+                                        style: "currency",
+                                        currency: "VND",
+                                      }).format(product?.tranUnitPrice)}
+                                    </Typography>
+                                  </Grid>
+                                </Grid>
+                              </Link>
                             </Grid>
-                          </Link>
-                        </Grid>
 
-                        <Grid item>
-                          <Box>
-                            <Button
+                            <Grid item>
+                              <Box>
+                                {/* <Button
                               disabled
                               color="black"
                               variant="contained"
@@ -174,191 +261,130 @@ const Orders = (props) => {
                               startIcon={<LocalShippingIcon />}
                             >
                               Đã giao
-                            </Button>
-                          </Box>{" "}
-                        </Grid>
-                      </Grid>
-                    </Box>
-                    <Divider />
-                  </div>
-                ))}
+                            </Button> */}
+                              </Box>{" "}
+                            </Grid>
+                          </Grid>
+                          <Divider />
+                        </Box>
+                      ))}
+                      <Divider />
+                      <Stack
+                        direction="row"
+                        justifyContent="space-between"
+                        alignItems="center"
+                        sx={{ background: "#Fbf9f8" }}
+                      >
+                        <Stack p={1}>
+                          <Typography fontWeight="bold" fontSize={16}>
+                            SĐT: {order?.ordPhone}
+                          </Typography>
+                          <Typography color="text.secondary">
+                            {order?.ordAddress}
+                          </Typography>
+                          <Typography color="text.secondary">
+                            {order?.ordDate}
+                          </Typography>
+                        </Stack>
+                        <Chip
+                          color={
+                            ORDER_STATUS.find(
+                              (o) => o.status === order?.ordStatus
+                            ).color
+                          }
+                          variant="outlined"
+                          icon={<FiberManualRecordIcon />}
+                          label={
+                            ORDER_STATUS.find(
+                              (o) => o.status === order?.ordStatus
+                            ).string
+                          }
+                        />
+
+                        <Typography
+                          p={1}
+                          color="error"
+                          fontWeight="bold"
+                          fontSize={22}
+                        >
+                          {Intl.NumberFormat("vi-VN", {
+                            style: "currency",
+                            currency: "VND",
+                          }).format(order?.ordTotalPrice)}
+                        </Typography>
+                      </Stack>
+                      <Divider />
+                    </div>
+                  ))}
               </Container>
             </TabPanel>
             <TabPanel value="3">
-              <Container sx={{ mt: 3, height: "420px", overflow: "scroll" }}>
-                {props.allOrders.map((order, i) => (
-                  <div key={i}>
-                    <Box>
-                      <Grid container spacing={2} sx={{ mb: 3, mt: 4 }}>
-                        <Grid item xs container direction="column" spacing={2}>
-                          <Link
-                            to="/products/1"
-                            className={props.classes.favoriteItems}
-                          >
-                            <Grid container spacing={2}>
-                              <Grid item>
-                                <img src={order.img} width={80} alt="" />
-                              </Grid>
-                              <Grid item xs>
-                                <Typography
-                                  fontSize={18}
-                                  gutterBottom
-                                  component="div"
-                                  sx={{ color: "black!important" }}
-                                >
-                                  {order.name}
-                                </Typography>
-                                <Typography color="text.secondary">
-                                  Phân loại hàng: {order.type}
-                                </Typography>
-                                <Typography color="text.secondary">
-                                  x{order.amount}
-                                </Typography>
-                                <Typography
-                                  color="error"
-                                  fontWeight="bold"
-                                  fontSize={20}
-                                >
-                                  {Intl.NumberFormat("vi-VN", {
-                                    style: "currency",
-                                    currency: "VND",
-                                  }).format(order.price)}
-                                </Typography>
-                              </Grid>
-                            </Grid>
-                          </Link>
-                        </Grid>
-
-                        <Grid item>
-                          <Box></Box>{" "}
-                        </Grid>
-                      </Grid>
-                    </Box>
-                    <Divider />
-                  </div>
-                ))}
-              </Container>
-            </TabPanel>
-            <TabPanel value="4">
-              <Container sx={{ mt: 3, height: "420px", overflow: "scroll" }}>
-                {props.allOrders.map((order, i) => (
-                  <div key={i}>
-                    <Box>
-                      <Grid container spacing={2} sx={{ mb: 3, mt: 4 }}>
-                        <Grid item xs container direction="column" spacing={2}>
-                          <Link
-                            to="/products/1"
-                            className={props.classes.favoriteItems}
-                          >
-                            <Grid container spacing={2}>
-                              <Grid item>
-                                <img src={order.img} width={80} alt="" />
-                              </Grid>
-                              <Grid item xs>
-                                <Typography
-                                  fontSize={18}
-                                  gutterBottom
-                                  component="div"
-                                  sx={{ color: "black!important" }}
-                                >
-                                  {order.name}
-                                </Typography>
-                                <Typography color="text.secondary">
-                                  Phân loại hàng: {order.type}
-                                </Typography>
-                                <Typography color="text.secondary">
-                                  x{order.amount}
-                                </Typography>
-                                <Typography
-                                  color="error"
-                                  fontWeight="bold"
-                                  fontSize={20}
-                                >
-                                  {Intl.NumberFormat("vi-VN", {
-                                    style: "currency",
-                                    currency: "VND",
-                                  }).format(order.price)}
-                                </Typography>
-                              </Grid>
-                            </Grid>
-                          </Link>
-                        </Grid>
-
-                        <Grid item>
-                          <Box>
-                            <Button
-                              color="black"
-                              variant="contained"
-                              component="label"
-                              style={{ color: "white" }}
-                              startIcon={<StarsIcon />}
-                              onClick={handleClickRate}
+              <Container sx={{ mt: 0, height: "460px", overflow: "scroll" }}>
+                {props.orders
+                  ?.filter(
+                    (order) => order.ordStatus === ORDER_STATUS[1].status
+                  )
+                  .map((order, i) => (
+                    <div key={i} style={{ marginTop: "40px" }}>
+                      {order.transactionMapper.map((product) => (
+                        <Box>
+                          <Grid container spacing={2} sx={{ mb: 0, mt: 1 }}>
+                            <Grid
+                              item
+                              xs
+                              container
+                              direction="column"
+                              spacing={2}
                             >
-                              Đánh giá
-                            </Button>
-                            <RatingDialog
-                              classes={props.classes}
-                              open={openRatingDialog}
-                              onClose={handleCloseRatingDialog}
-                              orderDetails={order}
-                            />
-                          </Box>{" "}
-                        </Grid>
-                      </Grid>
-                    </Box>
-                    <Divider />
-                  </div>
-                ))}
-              </Container>
-            </TabPanel>
-            <TabPanel value="5">
-              <Container sx={{ mt: 3, height: "420px", overflow: "scroll" }}>
-                {props.allOrders.map((order, i) => (
-                  <div key={i}>
-                    <Box>
-                      <Grid container spacing={2} sx={{ mb: 3, mt: 4 }}>
-                        <Grid item xs container direction="column" spacing={2}>
-                          <Link
-                            to="/products/1"
-                            className={props.classes.favoriteItems}
-                          >
-                            <Grid container spacing={2}>
-                              <Grid item>
-                                <img src={order.img} width={80} alt="" />
-                              </Grid>
-                              <Grid item xs>
-                                <Typography
-                                  fontSize={18}
-                                  gutterBottom
-                                  component="div"
-                                  sx={{ color: "black!important" }}
-                                >
-                                  {order.name}
-                                </Typography>
-                                <Typography color="text.secondary">
-                                  Phân loại hàng: {order.type}
-                                </Typography>
-                                <Typography color="text.secondary">
-                                  x{order.amount}
-                                </Typography>
-                                <Typography
-                                  color="error"
-                                  fontWeight="bold"
-                                  fontSize={20}
-                                >
-                                  {Intl.NumberFormat("vi-VN", {
-                                    style: "currency",
-                                    currency: "VND",
-                                  }).format(order.price)}
-                                </Typography>
-                              </Grid>
+                              <Link
+                                to={`/products/${product.productName.replace(URL_REGEX, '-').toLowerCase()}-i.${product.productId}`}
+                                className={props.classes.favoriteItems}
+                              >
+                                <Grid container spacing={2}>
+                                  <Grid
+                                    item
+                                    sx={{ paddingLeft: "32px!important" }}
+                                  >
+                                    <img
+                                      src={product?.productImage}
+                                      width={80}
+                                      alt=""
+                                    />
+                                  </Grid>
+                                  <Grid item xs>
+                                    <Typography
+                                      fontSize={18}
+                                      gutterBottom
+                                      component="div"
+                                      sx={{ color: "black!important" }}
+                                    >
+                                      {product?.productName}
+                                    </Typography>
+                                    <Typography color="text.secondary">
+                                      Phân loại hàng: {product?.color} -{" "}
+                                      {product?.size}
+                                    </Typography>
+                                    <Typography color="text.secondary">
+                                      x{product?.tranQuantity}
+                                    </Typography>
+                                    <Typography
+                                      color="error"
+                                      fontWeight="bold"
+                                      fontSize={20}
+                                    >
+                                      {Intl.NumberFormat("vi-VN", {
+                                        style: "currency",
+                                        currency: "VND",
+                                      }).format(product?.tranUnitPrice)}
+                                    </Typography>
+                                  </Grid>
+                                </Grid>
+                              </Link>
                             </Grid>
-                          </Link>
-                        </Grid>
 
-                        <Grid item>
-                          <Box>
-                            <Button
+                            <Grid item>
+                              <Box>
+                                {/* <Button
                               disabled
                               color="black"
                               variant="contained"
@@ -367,14 +393,331 @@ const Orders = (props) => {
                               startIcon={<LocalShippingIcon />}
                             >
                               Đã giao
-                            </Button>
-                          </Box>{" "}
-                        </Grid>
-                      </Grid>
-                    </Box>
-                    <Divider />
-                  </div>
-                ))}
+                            </Button> */}
+                              </Box>{" "}
+                            </Grid>
+                          </Grid>
+                          <Divider />
+                        </Box>
+                      ))}
+                      <Divider />
+                      <Stack
+                        direction="row"
+                        justifyContent="space-between"
+                        alignItems="center"
+                        sx={{ background: "#Fbf9f8" }}
+                      >
+                        <Stack p={1}>
+                          <Typography fontWeight="bold" fontSize={16}>
+                            SĐT: {order?.ordPhone}
+                          </Typography>
+                          <Typography color="text.secondary">
+                            {order?.ordAddress}
+                          </Typography>
+                          <Typography color="text.secondary">
+                            {order?.ordDate}
+                          </Typography>
+                        </Stack>
+                        <Chip
+                          color={
+                            ORDER_STATUS.find(
+                              (o) => o.status === order?.ordStatus
+                            ).color
+                          }
+                          variant="outlined"
+                          icon={<FiberManualRecordIcon />}
+                          label={
+                            ORDER_STATUS.find(
+                              (o) => o.status === order?.ordStatus
+                            ).string
+                          }
+                        />
+
+                        <Typography
+                          p={1}
+                          color="error"
+                          fontWeight="bold"
+                          fontSize={22}
+                        >
+                          {Intl.NumberFormat("vi-VN", {
+                            style: "currency",
+                            currency: "VND",
+                          }).format(order?.ordTotalPrice)}
+                        </Typography>
+                      </Stack>
+                      <Divider />
+                    </div>
+                  ))}
+              </Container>
+            </TabPanel>
+            <TabPanel value="4">
+              <Container sx={{ mt: 0, height: "460px", overflow: "scroll" }}>
+                {props.orders
+                  ?.filter(
+                    (order) => order.ordStatus === ORDER_STATUS[2].status
+                  )
+                  .map((order, i) => (
+                    <div key={i} style={{ marginTop: "40px" }}>
+                      {order.transactionMapper.map((product) => (
+                        <Box>
+                          <Grid container spacing={2} sx={{ mb: 0, mt: 1 }}>
+                            <Grid
+                              item
+                              xs
+                              container
+                              direction="column"
+                              spacing={2}
+                            >
+                              <Link
+                                to={`/products/${product.productName.replace(URL_REGEX, '-').toLowerCase()}-i.${product.productId}`}
+                                className={props.classes.favoriteItems}
+                              >
+                                <Grid container spacing={2}>
+                                  <Grid
+                                    item
+                                    sx={{ paddingLeft: "32px!important" }}
+                                  >
+                                    <img
+                                      src={product?.productImage}
+                                      width={80}
+                                      alt=""
+                                    />
+                                  </Grid>
+                                  <Grid item xs>
+                                    <Typography
+                                      fontSize={18}
+                                      gutterBottom
+                                      component="div"
+                                      sx={{ color: "black!important" }}
+                                    >
+                                      {product?.productName}
+                                    </Typography>
+                                    <Typography color="text.secondary">
+                                      Phân loại hàng: {product?.color} -{" "}
+                                      {product?.size}
+                                    </Typography>
+                                    <Typography color="text.secondary">
+                                      x{product?.tranQuantity}
+                                    </Typography>
+                                    <Typography
+                                      color="error"
+                                      fontWeight="bold"
+                                      fontSize={20}
+                                    >
+                                      {Intl.NumberFormat("vi-VN", {
+                                        style: "currency",
+                                        currency: "VND",
+                                      }).format(product?.tranUnitPrice)}
+                                    </Typography>
+                                  </Grid>
+                                </Grid>
+                              </Link>
+                            </Grid>
+
+                            <Grid item>
+                              <Box>
+                                <Button
+                                  color="black"
+                                  variant="contained"
+                                  component="label"
+                                  style={{ color: "white" }}
+                                  startIcon={<StarsIcon />}
+                                  onClick={handleClickRate}
+                                >
+                                  Đánh giá
+                                </Button>
+                                <RatingDialog
+                                  classes={props.classes}
+                                  open={openRatingDialog}
+                                  onClose={handleCloseRatingDialog}
+                                  orderDetails={product}
+                                />
+                              </Box>{" "}
+                            </Grid>
+                          </Grid>
+                          <Divider />
+                        </Box>
+                      ))}
+                      <Divider />
+                      <Stack
+                        direction="row"
+                        justifyContent="space-between"
+                        alignItems="center"
+                        sx={{ background: "#Fbf9f8" }}
+                      >
+                        <Stack p={1}>
+                          <Typography fontWeight="bold" fontSize={16}>
+                            SĐT: {order?.ordPhone}
+                          </Typography>
+                          <Typography color="text.secondary">
+                            {order?.ordAddress}
+                          </Typography>
+                          <Typography color="text.secondary">
+                            {order?.ordDate}
+                          </Typography>
+                        </Stack>
+                        <Chip
+                          color={
+                            ORDER_STATUS.find(
+                              (o) => o.status === order?.ordStatus
+                            ).color
+                          }
+                          variant="outlined"
+                          icon={<FiberManualRecordIcon />}
+                          label={
+                            ORDER_STATUS.find(
+                              (o) => o.status === order?.ordStatus
+                            ).string
+                          }
+                        />
+
+                        <Typography
+                          p={1}
+                          color="error"
+                          fontWeight="bold"
+                          fontSize={22}
+                        >
+                          {Intl.NumberFormat("vi-VN", {
+                            style: "currency",
+                            currency: "VND",
+                          }).format(order?.ordTotalPrice)}
+                        </Typography>
+                      </Stack>
+                      <Divider />
+                    </div>
+                  ))}
+              </Container>
+            </TabPanel>
+            <TabPanel value="5">
+              <Container sx={{ mt: 0, height: "460px", overflow: "scroll" }}>
+                {props.orders
+                  ?.filter(
+                    (order) => order.ordStatus === ORDER_STATUS[3].status
+                  )
+                  .map((order, i) => (
+                    <div key={i} style={{ marginTop: "40px" }}>
+                      {order.transactionMapper.map((product) => (
+                        <Box>
+                          <Grid container spacing={2} sx={{ mb: 0, mt: 1 }}>
+                            <Grid
+                              item
+                              xs
+                              container
+                              direction="column"
+                              spacing={2}
+                            >
+                              <Link
+                                to={`/products/${product.productName.replace(URL_REGEX, '-').toLowerCase()}-i.${product.productId}`}
+                                className={props.classes.favoriteItems}
+                              >
+                                <Grid container spacing={2}>
+                                  <Grid
+                                    item
+                                    sx={{ paddingLeft: "32px!important" }}
+                                  >
+                                    <img
+                                      src={product?.productImage}
+                                      width={80}
+                                      alt=""
+                                    />
+                                  </Grid>
+                                  <Grid item xs>
+                                    <Typography
+                                      fontSize={18}
+                                      gutterBottom
+                                      component="div"
+                                      sx={{ color: "black!important" }}
+                                    >
+                                      {product?.productName}
+                                    </Typography>
+                                    <Typography color="text.secondary">
+                                      Phân loại hàng: {product?.color} -{" "}
+                                      {product?.size}
+                                    </Typography>
+                                    <Typography color="text.secondary">
+                                      x{product?.tranQuantity}
+                                    </Typography>
+                                    <Typography
+                                      color="error"
+                                      fontWeight="bold"
+                                      fontSize={20}
+                                    >
+                                      {Intl.NumberFormat("vi-VN", {
+                                        style: "currency",
+                                        currency: "VND",
+                                      }).format(product?.tranUnitPrice)}
+                                    </Typography>
+                                  </Grid>
+                                </Grid>
+                              </Link>
+                            </Grid>
+
+                            <Grid item>
+                              <Box>
+                                {/* <Button
+                              disabled
+                              color="black"
+                              variant="contained"
+                              component="label"
+                              style={{ color: "black" }}
+                              startIcon={<LocalShippingIcon />}
+                            >
+                              Đã giao
+                            </Button> */}
+                              </Box>{" "}
+                            </Grid>
+                          </Grid>
+                          <Divider />
+                        </Box>
+                      ))}
+                      <Divider />
+                      <Stack
+                        direction="row"
+                        justifyContent="space-between"
+                        alignItems="center"
+                        sx={{ background: "#Fbf9f8" }}
+                      >
+                        <Stack p={1}>
+                          <Typography fontWeight="bold" fontSize={16}>
+                            SĐT: {order?.ordPhone}
+                          </Typography>
+                          <Typography color="text.secondary">
+                            {order?.ordAddress}
+                          </Typography>
+                          <Typography color="text.secondary">
+                            {order?.ordDate}
+                          </Typography>
+                        </Stack>
+                        <Chip
+                          color={
+                            ORDER_STATUS.find(
+                              (o) => o.status === order?.ordStatus
+                            ).color
+                          }
+                          variant="outlined"
+                          icon={<FiberManualRecordIcon />}
+                          label={
+                            ORDER_STATUS.find(
+                              (o) => o.status === order?.ordStatus
+                            ).string
+                          }
+                        />
+
+                        <Typography
+                          p={1}
+                          color="error"
+                          fontWeight="bold"
+                          fontSize={22}
+                        >
+                          {Intl.NumberFormat("vi-VN", {
+                            style: "currency",
+                            currency: "VND",
+                          }).format(order?.ordTotalPrice)}
+                        </Typography>
+                      </Stack>
+                      <Divider />
+                    </div>
+                  ))}
               </Container>
             </TabPanel>
           </TabContext>

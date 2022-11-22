@@ -43,6 +43,9 @@ export const clothing = createApi({
         getProfile: builder.query({
             query: () => `user/profile`,
         }),
+        getAllOrders: builder.query({
+            query: () => `user/order/getAll`,
+        }),
     }),
 });
 
@@ -56,4 +59,5 @@ export const {
     useGetTypesPropsQuery,
     useGetUserAddressQuery,
     useGetProfileQuery,
+    useGetAllOrdersQuery,
 } = clothing;

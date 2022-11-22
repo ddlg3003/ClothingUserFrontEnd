@@ -47,14 +47,15 @@ const RatingDialog = (props) => {
                 <Link to="/products/1" className={props.classes.favoriteItems}>
                   <Grid container spacing={2}>
                     <Grid item>
-                      <img src={orderDetails.img} width={80} alt="" />
+                      <img src={orderDetails?.productImage} width={80} alt="" />
                     </Grid>
                     <Grid item xs>
-                      <Typography fontSize={18} gutterBottom component="div">
-                        {orderDetails.name}
+                      <Typography fontSize={18} gutterBottom component="div" sx={{ color: "black!important" }}
+>
+                        {orderDetails?.productName}
                       </Typography>
                       <Typography color="text.secondary">
-                        Phân loại hàng: {orderDetails.type}
+                        Phân loại hàng: {orderDetails.color} - {orderDetails.size}
                       </Typography>
                     </Grid>
                   </Grid>

@@ -18,16 +18,10 @@ import { Box, Container } from "@mui/system";
 import useStyles from "./styles";
 import PropTypes from "prop-types";
 import { blue } from "@mui/material/colors";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useGetUserAddressQuery } from "../../services/clothing";
 import { SIDEBAR_STATE, PROFILE_QUERY_STRING } from "../../utils/globalVariables";
-
-const address = [
-  "1 Đ. Võ Văn Ngân, Linh Chiểu, Thành Phố Thủ Đức, Thành phố Hồ Chí Minh",
-  "484 Đ. Lê Văn Việt, Tăng Nhơn Phú A, Quận 9, Thành phố Hồ Chí Minh",
-  "242 Đ. Phạm Văn Đồng, Thành phố, Thủ Đức, Thành phố Hồ Chí Minh",
-];
 
 function AddressSelectionDialog(props) {
   const { onClose, selectedValue, open } = props;
@@ -93,7 +87,7 @@ function AddressSelectionDialog(props) {
           ))
         )}
 
-        <ListItem autoFocus button component={Link} to={`/profile?${PROFILE_QUERY_STRING[0]}=${SIDEBAR_STATE[1]}`}>
+        <ListItem autoFocus button onClick={() => {window.location.href=`/profile?${PROFILE_QUERY_STRING[0]}=${SIDEBAR_STATE[1]}`}}>
           <ListItemAvatar>
             <Avatar>
               <AddIcon />
@@ -113,7 +107,7 @@ AddressSelectionDialog.propTypes = {
 };
 
 const ShippingAddresses = () => {
-  const { data, isFetching } = useGetUserAddressQuery();
+  const { data, isFetching, refetch } = useGetUserAddressQuery();
 
   const defaultAddress = data?.find((address) => address.add_default === true);
   // console.log(defaultAddress);
@@ -124,10 +118,15 @@ const ShippingAddresses = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
 
-  const [selectedValue, setSelectedValue] = useState(address[0]);
+  const [selectedValue, setSelectedValue] = useState();
   const handleClickChangeAddress = () => {
     setOpen(true);
   };
+
+  useEffect(() => {
+    refetch();
+  }, []);
+
   return (
     <>
       <Container>
