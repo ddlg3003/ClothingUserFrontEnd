@@ -1,16 +1,16 @@
 import {
-  Container,
-  Paper,
-  Typography,
   Box,
-  CircularProgress,
+  CircularProgress, Container,
+  Paper,
+  Typography
 } from "@mui/material";
 import dayjs from "dayjs";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { useFilePicker } from "use-file-picker";
+import { useGetAllOrdersQuery, useGetProfileQuery } from "../../services/clothing";
 import {
-  PASSWORD_REGEX,
-  SIDEBAR_STATE,
-  PROFILE_QUERY_STRING,
+  PROFILE_QUERY_STRING, SIDEBAR_STATE
 } from "../../utils/globalVariables";
 import { validateEmail, validatePhoneNumber } from "../../utils/validateString";
 import AddressDetails from "./AddressDetails";
@@ -19,45 +19,7 @@ import Orders from "./Orders";
 import PasswordChange from "./PasswordChange";
 import ProfileDetails from "./ProfileDetails";
 import SideBar from "./SideBar";
-import { useSearchParams } from "react-router-dom";
-import { useGetProfileQuery, useGetAllOrdersQuery } from "../../services/clothing";
 import useStyles from "./styles";
-import { useFilePicker } from "use-file-picker";
-
-const allOrders = [
-  {
-    id: 1,
-    name: "Áo Polo nam Pique Cotton USA thấm hút tối đa (kẻ sọc)",
-    price: 100000,
-    type: "Đen, XL",
-    amount: "1",
-    img: "https://media.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/August2022/DSC05295-copy_73.jpg",
-  },
-  {
-    id: 1,
-    name: "Áo Polo nam Pique Cotton USA thấm hút tối đa (kẻ sọc)",
-    price: 100000,
-    type: "Đen, XL",
-    amount: "1",
-    img: "https://media.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/August2022/DSC05295-copy_73.jpg",
-  },
-  {
-    id: 1,
-    name: "Áo Polo nam Pique Cotton USA thấm hút tối đa (kẻ sọc)",
-    price: 100000,
-    type: "Đen, XL",
-    amount: "1",
-    img: "https://media.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/August2022/DSC05295-copy_73.jpg",
-  },
-  {
-    id: 1,
-    name: "Áo Polo nam Pique Cotton USA thấm hút tối đa (kẻ sọc)",
-    price: 100000,
-    type: "Đen, XL",
-    amount: "1",
-    img: "https://media.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/August2022/DSC05295-copy_73.jpg",
-  },
-];
 
 const favorites = [
   {
@@ -227,7 +189,6 @@ const Profile = () => {
                     navSelection={navSelection}
                     setNavSelection={setNavSelection}
                     orders={orders}
-                    allOrders={allOrders}
                     classes={classes}
                   />
                 </div>

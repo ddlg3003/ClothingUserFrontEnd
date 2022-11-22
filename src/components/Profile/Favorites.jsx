@@ -1,12 +1,12 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import {
-    Box,
-    Button,
-    Container,
-    Divider,
-    Grid,
-    Typography
+  Box,
+  Button,
+  Container,
+  Divider,
+  Grid,
+  Typography
 } from "@mui/material";
 import { Link } from 'react-router-dom';
 

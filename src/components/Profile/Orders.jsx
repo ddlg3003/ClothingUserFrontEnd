@@ -1,24 +1,16 @@
-import LocalShippingIcon from "@mui/icons-material/LocalShipping";
+import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import StarsIcon from "@mui/icons-material/Stars";
-import { TabList, TabContext, TabPanel } from "@mui/lab";
+import { TabContext, TabList, TabPanel } from "@mui/lab";
 import {
   Box,
-  Button,
-  Container,
+  Button, Chip, Container,
   Divider,
-  Grid,
-  Typography,
-  Tab,
-  Stack,
-  Chip,
-  CircularProgress,
+  Grid, Stack, Tab, Typography
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import RatingDialog from "./RatingDialog";
-import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
-import { useGetAllOrdersQuery } from "../../services/clothing";
 import { ORDER_STATUS, URL_REGEX } from "../../utils/globalVariables";
+import RatingDialog from "./RatingDialog";
 
 const Orders = (props) => {
   const [openRatingDialog, setOpenRatingDialog] = useState(false);

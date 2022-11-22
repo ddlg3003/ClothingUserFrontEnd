@@ -1,19 +1,19 @@
 import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
 import LockIcon from "@mui/icons-material/Lock";
 import PersonIcon from "@mui/icons-material/Person";
-import { PASSWORD_REGEX, SIDEBAR_STATE } from "../../utils/globalVariables";
+import { SIDEBAR_STATE } from "../../utils/globalVariables";
 
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ReceiptIcon from '@mui/icons-material/Receipt';
 import {
   Divider,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
-  Typography,
+  Typography
 } from "@mui/material";
 import Stack from "@mui/material/Stack";
-import ReceiptIcon from '@mui/icons-material/Receipt';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import React from "react";
 
 const SideBar = (props) => {
