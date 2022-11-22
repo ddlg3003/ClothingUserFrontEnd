@@ -18,8 +18,34 @@ import SideBar from "./SideBar";
 import { useSearchParams } from "react-router-dom";
 import { useGetProfileQuery } from "../../services/clothing";
 import useStyles from "./styles";
+import { useFilePicker } from "use-file-picker";
+
 
 const allOrders = [
+  {
+    id: 1,
+    name: "Áo Polo nam Pique Cotton USA thấm hút tối đa (kẻ sọc)",
+    price: 100000,
+    type: "Đen, XL",
+    amount: "1",
+    img: "https://media.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/August2022/DSC05295-copy_73.jpg",
+  },
+  {
+    id: 1,
+    name: "Áo Polo nam Pique Cotton USA thấm hút tối đa (kẻ sọc)",
+    price: 100000,
+    type: "Đen, XL",
+    amount: "1",
+    img: "https://media.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/August2022/DSC05295-copy_73.jpg",
+  },
+  {
+    id: 1,
+    name: "Áo Polo nam Pique Cotton USA thấm hút tối đa (kẻ sọc)",
+    price: 100000,
+    type: "Đen, XL",
+    amount: "1",
+    img: "https://media.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/August2022/DSC05295-copy_73.jpg",
+  },
   {
     id: 1,
     name: "Áo Polo nam Pique Cotton USA thấm hút tối đa (kẻ sọc)",
@@ -59,22 +85,34 @@ const Profile = () => {
 
   const [navSelection, setNavSelection] = useState(tabParamInit);
 
-  const [userInfo, setUserInfo] = useState({});
+  const [userInfo, setUserInfo] = useState({
+    fullname: '',
+    phone: '',
+    gender: '',
+  });
   const [birthday, setBirthday] = useState(dayjs("2022-04-07"));
 
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  
 
   const [emailValid, setEmailValid] = useState(true);
-  const [newPasswordValid, setNewPasswordValid] = useState(true);
-  const [confirmNewPasswordValid, setConfirmNewPasswordValid] = useState(true);
+
 
   const { data: userInformation, isFetching: isFetchingUserInformation } = useGetProfileQuery();
   useEffect(() => {
     setUserInfo(userInformation);
     setBirthday(userInformation?.dob);
   }, [isFetchingUserInformation]);
+
+  // image upload
+  const [openFileSelector, { filesContent, loading, errors }] = useFilePicker({
+    readAs: "DataURL",
+    accept: "image/*",
+    multiple: true,
+    limitFilesConfig: { max: 1 },
+    // minFileSize: 1,
+    maxFileSize: 10 // in megabytes
+  });
+
 
   const handleGenderChange = (event) => {
     const gender = event.target.value;
@@ -109,31 +147,7 @@ const Profile = () => {
     setEmailValid(true);
   };
 
-  const handleCurrentPasswordChange = (event) => {
-    const curPassword = event.target.value;
-    setCurrentPassword(curPassword);
-  };
-
-  const handleNewPasswordChange = (event) => {
-    const newPass = event.target.value;
-    setNewPassword(newPass);
-    if (!newPass.match(PASSWORD_REGEX)) {
-      setNewPasswordValid(false);
-      return;
-    }
-    setNewPasswordValid(true);
-  };
-
-  const handleComfirmNewPasswordChange = (event) => {
-    const confirmNewPass = event.target.value;
-    setConfirmNewPassword(confirmNewPass);
-
-    if (confirmNewPass !== newPassword) {
-      setConfirmNewPasswordValid(false);
-      return;
-    }
-    setConfirmNewPasswordValid(true);
-  };
+  
 
   return (
     <>
@@ -175,6 +189,8 @@ const Profile = () => {
                       handlePhoneNumberChange={handlePhoneNumberChange}
                       handleEmailChange={handleEmailChange}
                       handleGenderChange={handleGenderChange}
+                      openFileSelector={openFileSelector}
+                      filesContent={filesContent}
                     />
                   </div>
                 )}
@@ -186,16 +202,6 @@ const Profile = () => {
                 <div hidden={navSelection !== SIDEBAR_STATE[2]}>
                   <PasswordChange
                     classes={classes}
-                    currentPassword={currentPassword}
-                    newPassword={newPassword}
-                    newPasswordValid={newPasswordValid}
-                    confirmNewPassword={confirmNewPassword}
-                    confirmNewPasswordValid={confirmNewPasswordValid}
-                    handleCurrentPasswordChange={handleCurrentPasswordChange}
-                    handleNewPasswordChange={handleNewPasswordChange}
-                    handleComfirmNewPasswordChange={
-                      handleComfirmNewPasswordChange
-                    }
                   />
                 </div>
 

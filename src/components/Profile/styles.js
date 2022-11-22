@@ -29,7 +29,7 @@ export default makeStyles((theme) => ({
         position: 'relative',
         flexGrow: '1',
         width: '900px',
-        minHeight: "500px",
+        height: "600px",
         boxSizing: 'border-box',
         display: 'block',
         padding: "30px"

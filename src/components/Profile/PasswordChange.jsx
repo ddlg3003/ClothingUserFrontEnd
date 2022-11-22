@@ -1,12 +1,72 @@
-
+import React, { useState } from "react";
 import {
     Button, Divider,
     Grid, Typography
 } from "@mui/material";
 import TextField from "@mui/material/TextField";
-import React from "react";
+import { changePassword } from "../../utils/api";
+import { PASSWORD_REGEX } from "../../utils/globalVariables";
+import { logout } from "../../features/auth";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
 
 const PasswordChange = (props) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+
+  const handleCurrentPasswordChange = (event) => {
+    const curPassword = event.target.value;
+    setCurrentPassword(curPassword);
+  };
+
+  const handleNewPasswordChange = (event) => {
+    const newPass = event.target.value;
+    setNewPassword(newPass);
+    if (!newPass.match(PASSWORD_REGEX)) {
+      setNewPasswordValid(false);
+      return;
+    }
+    setNewPasswordValid(true);
+  };
+
+  const handleComfirmNewPasswordChange = (event) => {
+    const confirmNewPass = event.target.value;
+    setConfirmNewPassword(confirmNewPass);
+
+    if (confirmNewPass !== newPassword) {
+      setConfirmNewPasswordValid(false);
+      return;
+    }
+    setConfirmNewPasswordValid(true);
+  };
+
+  const [newPasswordValid, setNewPasswordValid] = useState(true);
+  const [confirmNewPasswordValid, setConfirmNewPasswordValid] = useState(true);
+
+   
+  const handleSubmit = async () => {
+    if (!newPasswordValid || !confirmNewPasswordValid) {
+      alert("Không đúng định dạng mật khẩu!");
+      return;
+    }
+
+    const status = await changePassword({curPassword: currentPassword, newPassword , rePassword: confirmNewPassword})
+
+    if (status === 200) {
+      alert("Đổi mật khẩu thành công, vui lòng đăng nhập lại bằng mật khẩu mới!");
+      dispatch(logout());
+      navigate(-1);
+    }
+    else {
+      alert("Mật khẩu không chính xác!");
+    }
+  };
+
   return (
     <>
       <div className={props.classes.title}>Đổi mật khẩu</div>
@@ -30,8 +90,8 @@ const PasswordChange = (props) => {
               width="1000px"
               
               variant="outlined"
-              value={props.currentPassword}
-              onChange={props.handleCurrentPasswordChange}
+              value={currentPassword}
+              onChange={handleCurrentPasswordChange}
               type="password"
             />
           </Grid>
@@ -43,11 +103,11 @@ const PasswordChange = (props) => {
               type="password"
               
               variant="outlined"
-              value={props.newPassword}
-              onChange={props.handleNewPasswordChange}
-              error={props.newPasswordValid === false}
+              value={newPassword}
+              onChange={handleNewPasswordChange}
+              error={newPasswordValid === false}
             />
-            <Typography color="red" hidden={props.newPasswordValid === true}>
+            <Typography color="red" hidden={newPasswordValid === true}>
               Có 8-15 ký tự, chữ số, ký tự đặc biệt & in hoa
             </Typography>
           </Grid>
@@ -61,11 +121,11 @@ const PasswordChange = (props) => {
               type="password"
               
               variant="outlined"
-              value={props.confirmNewPassword}
-              onChange={props.handleComfirmNewPasswordChange}
-              error={props.confirmNewPasswordValid === false}
+              value={confirmNewPassword}
+              onChange={handleComfirmNewPasswordChange}
+              error={confirmNewPasswordValid === false}
             />
-            <Typography color="red" hidden={props.confirmNewPasswordValid === true}>
+            <Typography color="red" hidden={confirmNewPasswordValid === true}>
               Mật khẩu không trùng khớp
             </Typography>
           </Grid>
@@ -78,6 +138,7 @@ const PasswordChange = (props) => {
               variant="contained"
               color="black"
               style={{ color: "white" }}
+              onClick={handleSubmit}
             >
               Xác nhận
             </Button>

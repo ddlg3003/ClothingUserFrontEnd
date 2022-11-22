@@ -140,3 +140,19 @@ export const changeProfile = async (formData) => {
     console.log(error);
   }
 };
+
+export const changePassword = async (formData) => {
+  try {
+    const config = axiosConfig();
+
+    const { data, status } = await api.post(
+      "user/changepassword",
+      formData,
+      config
+    );
+
+    return status;
+  } catch (error) {
+    console.log(error);
+  }
+};

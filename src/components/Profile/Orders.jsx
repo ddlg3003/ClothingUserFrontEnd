@@ -19,7 +19,7 @@ const Orders = (props) => {
 
   useEffect(() => {
     if (props.navSelection === "orders") {
-        props.setTabValue("1");
+      props.setTabValue("1");
     }
   }, [props.navSelection]);
 
@@ -43,13 +43,15 @@ const Orders = (props) => {
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
               <TabList onChange={handleChangeTab}>
                 <Tab label="Tất cả" value="1" />
-                <Tab label="Đang giao" value="2" />
-                <Tab label="Đã giao" value="3" />
+                <Tab label="Chờ xác nhận" value="2" />
+                <Tab label="Đang giao" value="3" />
+                <Tab label="Đã giao" value="4" />
+                <Tab label="Đã hủy" value="5" />
               </TabList>
             </Box>
 
             <TabPanel value="1">
-              <Container sx={{ mt: 3 }}>
+              <Container sx={{ mt: 3, height: "420px", overflow: "scroll" }}>
                 {props.allOrders.map((order, i) => (
                   <div key={i}>
                     <Box>
@@ -68,6 +70,75 @@ const Orders = (props) => {
                                   fontSize={18}
                                   gutterBottom
                                   component="div"
+                                  sx={{ color: "black!important" }}
+                                >
+                                  {order.name}
+                                </Typography>
+                                <Typography color="text.secondary">
+                                  Phân loại hàng: {order.type}
+                                </Typography>
+                                <Typography color="text.secondary">
+                                  x{order.amount}
+                                </Typography>
+                                <Typography
+                                  color="error"
+                                  fontWeight="bold"
+                                  fontSize={20}
+                                >
+                                  {Intl.NumberFormat("vi-VN", {
+                                    style: "currency",
+                                    currency: "VND",
+                                  }).format(order.price)}
+                                </Typography>
+                              </Grid>
+                            </Grid>
+                          </Link>
+                        </Grid>
+
+                        <Grid item>
+                          <Box>
+                            <Button
+                              disabled
+                              color="black"
+                              variant="contained"
+                              component="label"
+                              style={{ color: "black" }}
+                              startIcon={<LocalShippingIcon />}
+                            >
+                              Đã giao
+                            </Button>
+                          </Box>{" "}
+                        </Grid>
+                      </Grid>
+                    </Box>
+                    <Divider />
+                  </div>
+                ))}
+                <Typography>Test</Typography>
+
+              </Container>
+            </TabPanel>
+            <TabPanel value="2">
+              <Container sx={{ mt: 3, height: "420px", overflow: "scroll" }}>
+                {props.allOrders.map((order, i) => (
+                  <div key={i}>
+                    <Box>
+                      <Grid container spacing={2} sx={{ mb: 3, mt: 4 }}>
+                        <Grid item xs container direction="column" spacing={2}>
+                          <Link
+                            to="/products/1"
+                            className={props.classes.favoriteItems}
+                          >
+                            <Grid container spacing={2}>
+                              <Grid item>
+                                <img src={order.img} width={80} alt="" />
+                              </Grid>
+                              <Grid item xs>
+                                <Typography
+                                  fontSize={18}
+                                  gutterBottom
+                                  component="div"
+                                  sx={{ color: "black!important" }}
                                 >
                                   {order.name}
                                 </Typography>
@@ -113,8 +184,8 @@ const Orders = (props) => {
                 ))}
               </Container>
             </TabPanel>
-            <TabPanel value="2">
-              <Container sx={{ mt: 3 }}>
+            <TabPanel value="3">
+              <Container sx={{ mt: 3, height: "420px", overflow: "scroll" }}>
                 {props.allOrders.map((order, i) => (
                   <div key={i}>
                     <Box>
@@ -133,6 +204,7 @@ const Orders = (props) => {
                                   fontSize={18}
                                   gutterBottom
                                   component="div"
+                                  sx={{ color: "black!important" }}
                                 >
                                   {order.name}
                                 </Typography>
@@ -167,8 +239,8 @@ const Orders = (props) => {
                 ))}
               </Container>
             </TabPanel>
-            <TabPanel value="3">
-              <Container sx={{ mt: 3 }}>
+            <TabPanel value="4">
+              <Container sx={{ mt: 3, height: "420px", overflow: "scroll" }}>
                 {props.allOrders.map((order, i) => (
                   <div key={i}>
                     <Box>
@@ -187,6 +259,7 @@ const Orders = (props) => {
                                   fontSize={18}
                                   gutterBottom
                                   component="div"
+                                  sx={{ color: "black!important" }}
                                 >
                                   {order.name}
                                 </Typography>
@@ -229,6 +302,72 @@ const Orders = (props) => {
                               onClose={handleCloseRatingDialog}
                               orderDetails={order}
                             />
+                          </Box>{" "}
+                        </Grid>
+                      </Grid>
+                    </Box>
+                    <Divider />
+                  </div>
+                ))}
+              </Container>
+            </TabPanel>
+            <TabPanel value="5">
+              <Container sx={{ mt: 3, height: "420px", overflow: "scroll" }}>
+                {props.allOrders.map((order, i) => (
+                  <div key={i}>
+                    <Box>
+                      <Grid container spacing={2} sx={{ mb: 3, mt: 4 }}>
+                        <Grid item xs container direction="column" spacing={2}>
+                          <Link
+                            to="/products/1"
+                            className={props.classes.favoriteItems}
+                          >
+                            <Grid container spacing={2}>
+                              <Grid item>
+                                <img src={order.img} width={80} alt="" />
+                              </Grid>
+                              <Grid item xs>
+                                <Typography
+                                  fontSize={18}
+                                  gutterBottom
+                                  component="div"
+                                  sx={{ color: "black!important" }}
+                                >
+                                  {order.name}
+                                </Typography>
+                                <Typography color="text.secondary">
+                                  Phân loại hàng: {order.type}
+                                </Typography>
+                                <Typography color="text.secondary">
+                                  x{order.amount}
+                                </Typography>
+                                <Typography
+                                  color="error"
+                                  fontWeight="bold"
+                                  fontSize={20}
+                                >
+                                  {Intl.NumberFormat("vi-VN", {
+                                    style: "currency",
+                                    currency: "VND",
+                                  }).format(order.price)}
+                                </Typography>
+                              </Grid>
+                            </Grid>
+                          </Link>
+                        </Grid>
+
+                        <Grid item>
+                          <Box>
+                            <Button
+                              disabled
+                              color="black"
+                              variant="contained"
+                              component="label"
+                              style={{ color: "black" }}
+                              startIcon={<LocalShippingIcon />}
+                            >
+                              Đã giao
+                            </Button>
                           </Box>{" "}
                         </Grid>
                       </Grid>

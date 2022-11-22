@@ -38,7 +38,7 @@ const Favorites = (props) => {
                     <Grid item xs={12} sm container>
                       <Grid item xs container direction="column" spacing={2}>
                         <Grid item xs>
-                          <Typography gutterBottom fontSize={18} sx={{ textDecoration:"none" }}>
+                          <Typography gutterBottom fontSize={18} sx={{ textDecoration:"none", color: "black!important" }}>
                             {favorite.name}
                           </Typography>
                           <Typography 
