@@ -12,14 +12,14 @@ const ProductListMore = () => {
 
     // Query string validation, isInteger check if the passing arg is an integer or not 
     // 3 main query: page, limit, cat
-    const pageInit = Number.isInteger(parseInt(searchParams.get(PRODUCT_QUERY_STRING[0]))) ? 
-        parseInt(searchParams.get(PRODUCT_QUERY_STRING[0])) : 0;
+    const pageNum = parseInt(searchParams.get(PRODUCT_QUERY_STRING[0])); // Get the query of page for validation
+    const pageInit = Number.isInteger(pageNum) && pageNum > 0 ? pageNum : 1;
 
-    const limitInit = Number.isInteger(parseInt(searchParams.get(PRODUCT_QUERY_STRING[1]))) ? 
-        parseInt(searchParams.get(PRODUCT_QUERY_STRING[1])) : LIMIT;
+    const limitNum = parseInt(searchParams.get(PRODUCT_QUERY_STRING[1])); // Get the query of limit for validation
+    const limitInit = Number.isInteger(limitNum) && limitNum > 0 ? limitNum : LIMIT;
 
-    const catInit = Number.isInteger(parseInt(searchParams.get(PRODUCT_QUERY_STRING[2]))) ? 
-        parseInt(searchParams.get(PRODUCT_QUERY_STRING[2])) : '';
+    const catNum = parseInt(searchParams.get(PRODUCT_QUERY_STRING[2])); // Get the query of cat for validation
+    const catInit = Number.isInteger(catNum) ? catNum : '';
 
     const [page, setPage] = useState(pageInit);
     const { data, isFetching } = useGetProductsQuery({
