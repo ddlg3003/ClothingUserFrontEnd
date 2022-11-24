@@ -51,8 +51,6 @@ const Profile = () => {
 
   const [tabValue, setTabValue] = useState(false);
 
-  const [navSelection, setNavSelection] = useState(tabParamInit);
-
   const [userInfo, setUserInfo] = useState({
     fullname: "",
     phone: "",
@@ -98,9 +96,8 @@ const Profile = () => {
   };
 
   const handleNavSelectionChange = (value) => {
-    if (tabValue !== "orders") setTabValue(false);
+    if (tabValue !== SIDEBAR_STATE[4]) setTabValue(false);
 
-    setNavSelection(value);
     setSearchParams({ [PROFILE_QUERY_STRING[0]]: value });
   };
 
@@ -152,7 +149,7 @@ const Profile = () => {
                     <CircularProgress color="black" size="4rem" />
                   </Box>
                 ) : (
-                  <div hidden={navSelection !== SIDEBAR_STATE[0]}>
+                  <div hidden={tabParamInit !== SIDEBAR_STATE[0]}>
                     <ProfileDetails
                       classes={classes}
                       userInfo={userInfo}
@@ -171,23 +168,22 @@ const Profile = () => {
                   </div>
                 )}
 
-                <div hidden={navSelection !== SIDEBAR_STATE[1]}>
+                <div hidden={tabParamInit !== SIDEBAR_STATE[1]}>
                   <AddressDetails classes={classes} />
                 </div>
 
-                <div hidden={navSelection !== SIDEBAR_STATE[2]}>
+                <div hidden={tabParamInit !== SIDEBAR_STATE[2]}>
                   <PasswordChange classes={classes} />
                 </div>
 
-                <div hidden={navSelection !== SIDEBAR_STATE[3]}>
+                <div hidden={tabParamInit !== SIDEBAR_STATE[3]}>
                   <Favorites favorites={favorites} classes={classes} />
                 </div>
-                <div hidden={navSelection !== SIDEBAR_STATE[4]}>
+                <div hidden={tabParamInit !== SIDEBAR_STATE[4]}>
                   <Orders
                     tabValue={tabValue}
                     setTabValue={setTabValue}
-                    navSelection={navSelection}
-                    setNavSelection={setNavSelection}
+                    navSelection={tabParamInit}
                     orders={orders}
                     classes={classes}
                   />
