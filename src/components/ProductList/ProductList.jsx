@@ -1,7 +1,7 @@
 import React from 'react';
 import { Typography, Button, CircularProgress, Box } from '@mui/material'; 
 import { Link } from 'react-router-dom';
-import { useGetProductsQuery } from '../../services/clothing';
+import { useGetProductsQuery } from '../../services/productApis';
 import useStyles from './styles';
 import Products from '../Products/Products'
 import { LIMIT, PRODUCT_QUERY_STRING } from '../../utils/globalVariables';

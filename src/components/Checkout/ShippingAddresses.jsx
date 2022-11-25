@@ -20,7 +20,7 @@ import PropTypes from "prop-types";
 import { blue } from "@mui/material/colors";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useGetUserAddressQuery } from "../../services/clothing";
+import { useGetUserAddressQuery } from "../../services/userApis";
 import { SIDEBAR_STATE, PROFILE_QUERY_STRING } from "../../utils/globalVariables";
 
 function AddressSelectionDialog(props) {

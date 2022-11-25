@@ -14,7 +14,7 @@ import {
 import NewAddressDialog from "./NewAddressDialog";
 import UpdateAddressDialog from "./UpdateAddressDialog";
 import DeleteAlertDialog from "./DeleteAlertDialog";
-import { useGetUserAddressQuery } from "../../services/clothing";
+import { useGetUserAddressQuery } from "../../services/userApis";
 import { useSelector, useDispatch } from "react-redux";
 import { updateAddress } from "../../features/address";
 

@@ -6,11 +6,11 @@ import CartItems from "./CartItems";
 import ShippingAddresses from "./ShippingAddresses";
 import PaymentMethods from "./PaymentMethods";
 import { useSelector, useDispatch } from "react-redux";
-import { useGetUserAddressQuery } from "../../services/clothing";
+import { useGetUserAddressQuery } from "../../services/userApis";
 import { createOrder } from "../../utils/api";
 import { useNavigate } from "react-router-dom";
 import { SIDEBAR_STATE, PROFILE_QUERY_STRING } from "../../utils/globalVariables";
-import { increaseItem, decreaseItem, updateCart } from "../../features/cart";
+import { updateCart } from "../../features/cart";
 
 const Checkout = () => {
   const navigate = useNavigate();

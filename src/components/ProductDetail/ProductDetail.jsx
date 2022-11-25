@@ -23,8 +23,8 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateCart } from '../../features/cart';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useGetProductQuery, useGetTypesQuery, useGetTypesPropsQuery } from '../../services/clothing';
-import { addItemToCart } from '../../utils/api';
+import { useGetProductQuery, useGetTypesQuery, useGetTypesPropsQuery } from '../../services/productApis';
+import { useAddItemToCartMutation } from '../../services/cartApis';
 import useStyles from './styles';
 
 const ProductDetail = () => {
@@ -51,6 +51,8 @@ const ProductDetail = () => {
     const [currentSize, setCurrentSize] = useState(null);
     const [openToast, setOpenToast] = useState(false);
     const [currentPrice, setCurrentPrice] = useState(null);
+
+    const [addItemToCart] = useAddItemToCartMutation();
 
     // Run the callback for changing the initial main image when isFetching changes
     useEffect(() => {
@@ -80,7 +82,7 @@ const ProductDetail = () => {
     }
 
     const increaseQuantity = () => {
-        if(quantity < type.quantity) {
+        if(quantity < type?.quantity) {
             setQuantity(prev => prev + 1);
         }
     }
@@ -106,8 +108,8 @@ const ProductDetail = () => {
         };        
         if(isAuthenticated) {
             if(submitData.size && submitData.color && submitData.quantity) {
-                const data = await addItemToCart(submitData);
-                dispatch(updateCart(data));
+                await addItemToCart(submitData);
+                // dispatch(updateCart(data));
                 setToastData(prev => ({ ...prev, message: 'THÊM VÀO GIỎ HÀNG THÀNH CÔNG', severity: 'success' }));
             }
             else {

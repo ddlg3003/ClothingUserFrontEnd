@@ -1,7 +1,7 @@
 import React from 'react';
 import{ Box, CircularProgress, Grid, Typography } from '@mui/material';
 import Category from '../Category/Category';
-import { useGetCategoriesQuery } from '../../services/clothing';
+import { useGetCategoriesQuery } from '../../services/catApis';
 import useStyles from './styles';
 
 const Categories = () => {

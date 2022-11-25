@@ -18,17 +18,13 @@ import {
     AccountCircle,
     Menu as MenuIcon,
 } from '@mui/icons-material';
-import MuiAlert from '@mui/material/Alert';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SecondNavbar from '../SecondNavbar/SecondNavbar';
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-    useGetCategoriesQuery,
-    useGetCartQuery,
-} from '../../services/clothing';
+import { useGetCategoriesQuery } from '../../services/catApis';
+import { useGetCartQuery } from '../../services/cartApis';
 import { logout } from '../../features/auth';
-import { increaseItem, decreaseItem, updateCart } from '../../features/cart';
 import decode from 'jwt-decode';
 import useStyles from './styles';
 
@@ -43,12 +39,6 @@ const Navbar = () => {
     const { data: dataCartList, isFetching: isFetchingCartList } = useGetCartQuery({ skip: !isAuthenticated });
 
     useEffect(() => {
-        if (!isFetchingCartList) {
-            dispatch(updateCart(dataCartList));
-        }
-    }, [isFetchingCartList]);
-
-    useEffect(() => {
         const token = localStorage.getItem('token');
     
         if(token) {
@@ -56,9 +46,13 @@ const Navbar = () => {
     
           if(decodedToken.exp * 1000 < new Date().getTime()) dispatch(logout());; 
         }
-      }, [location]);
+    }, [location]);
 
-    const cartData = useSelector((state) => state.cart.data);
+    useEffect(() => {
+        console.log(dataCartList);
+    }, [isFetchingCartList]);
+
+    // const cartData = useSelector((state) => state.cart.data);
     const { data, isFetching } = useGetCategoriesQuery();
 
     let currentHovering = false;
@@ -166,7 +160,7 @@ const Navbar = () => {
                     />
                     <div>
                         <Button component={Link} to="/cart" color="black">
-                            <Badge badgeContent={cartData.length} color="error">
+                            <Badge badgeContent={dataCartList?.length} color="error">
                                 <ShoppingCartIcon />
                             </Badge>
                         </Button>

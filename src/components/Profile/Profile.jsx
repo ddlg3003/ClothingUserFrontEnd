@@ -6,9 +6,10 @@ import {
 } from "@mui/material";
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { useFilePicker } from "use-file-picker";
-import { useGetAllOrdersQuery, useGetProfileQuery } from "../../services/clothing";
+import { useGetAllOrdersQuery } from "../../services/orderApis";
+import { useGetProfileQuery } from "../../services/userApis";
 import {
   PROFILE_QUERY_STRING, SIDEBAR_STATE
 } from "../../utils/globalVariables";
@@ -38,7 +39,7 @@ const favorites = [
 
 const Profile = () => {
   const classes = useStyles();
-
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
   // Init tab query string for user friendly url
@@ -66,6 +67,10 @@ const Profile = () => {
     useGetProfileQuery();
   const { data: allUserOrders, isFetching: isFetchingUserOrders, refetch } =
     useGetAllOrdersQuery();
+
+  window.onpopstate = () => {
+    window.location.href = "/";
+  }
 
   useEffect(() => {
     setUserInfo(userInformation);

@@ -20,16 +20,15 @@ import React, { useState } from "react";
 import useStyles from "./styles";
 import DeleteAlertDialog from "./DeleteAlertDialog";
 import { useDispatch, useSelector } from "react-redux";
-import { increaseItem, decreaseItem, updateCart } from "../../features/cart";
+import { updateCart } from "../../features/cart";
 import { LIMIT, PRODUCT_QUERY_STRING, URL_REGEX } from "../../utils/globalVariables";
 import { Link } from "react-router-dom";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
-import {
-  increaseCartItem,
-  decreaseCartItem,
-  deleteCartItem,
-} from "../../utils/api";
-import LocalMall from "@mui/icons-material/LocalMall";
+import { useGetCartQuery, 
+  useIncreaseCartItemMutation, 
+  useDecreaseCartItemMutation,
+  useDeleteCartItemMutation,
+} from "../../services/cartApis";
 import { updateCheckout } from "../../features/checkout";
 
 const Cart = () => {
@@ -38,7 +37,13 @@ const Cart = () => {
 
   const [openDeleteItemDialog, setOpenDeleteItemDialog] = useState("");
 
-  const datas = useSelector((state) => state.cart.data);
+  const { data: dataCartList, isFetching: isFetchingCartList } = useGetCartQuery();
+
+  const [increaseCartItem] = useIncreaseCartItemMutation();
+  const [decreaseCartItem] = useDecreaseCartItemMutation();
+  const [deleteCartItem] = useDeleteCartItemMutation();
+
+  // const datas = useSelector((state) => state.cart.data);
 
   const handleCloseDeleteItem = () => {
     setOpenDeleteItemDialog("");
@@ -50,13 +55,11 @@ const Cart = () => {
   };
 
   const handleConfirmDeleteClick = async ({ color, size, productId }) => {
-    const data = await deleteCartItem({ color, size, productId });
-    dispatch(updateCart(data));
+    await deleteCartItem({ color, size, productId }).unwrap();
   };
 
   const handleIncrease = async ({ color, size, product_id: productId }) => {
-    const data = await increaseCartItem({ color, size, productId });
-    dispatch(updateCart(data));
+    await increaseCartItem({ color, size, productId }).unwrap();
   };
 
   const handleDecrease = async ({
@@ -69,14 +72,14 @@ const Cart = () => {
       handleClickDeleteItem(productId);
       return;
     }
-    const data = await decreaseCartItem({ color, size, productId });
-    dispatch(updateCart(data));
+    await decreaseCartItem({ color, size, productId }).unwrap();
   };
 
   const handleBuyButton = () => {
-    dispatch(updateCheckout());
-    if (datas.length) {
-      sessionStorage.setItem("cartItems", JSON.stringify(datas));
+    if (dataCartList?.length) {
+      dispatch(updateCheckout());
+      console.log('hehe')
+      sessionStorage.setItem("cartItems", JSON.stringify(dataCartList));
     }
   };
 
@@ -119,7 +122,7 @@ const Cart = () => {
                 </TableRow>
               </TableHead>
 
-              {!datas.length ? (
+              {!dataCartList?.length ? (
                 <TableBody>
                   <TableRow>
                     <TableCell colSpan={6} align="center">
@@ -132,7 +135,7 @@ const Cart = () => {
                 </TableBody>
               ) : (
                 <TableBody>
-                  {datas.map((data, i) => (
+                  {dataCartList.map((data, i) => (
                     <TableRow
                       key={i}
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -268,14 +271,15 @@ const Cart = () => {
             fontWeight="bold"
             fontSize={20}
           >
-            {Intl.NumberFormat("vi-VN", {
-              style: "currency",
-              currency: "VND",
-            }).format(
-              datas.reduce((acc, data) => {
-                return (acc = acc + data.price * data.quantity);
-              }, 0)
-            )}
+            {
+                Intl.NumberFormat("vi-VN", {
+                  style: "currency",
+                  currency: "VND",
+                }).format(isFetchingCartList ? 0 :
+                  dataCartList?.reduce((acc, data) => {
+                    return (acc = acc + data.price * data.quantity);
+                }, 0))
+            }
           </Typography>
         </div>
         <div>
@@ -285,7 +289,8 @@ const Cart = () => {
             color="black"
             onClick={handleBuyButton}
             component={Link}
-            to= {datas.length ? "/checkout" : `/products?${PRODUCT_QUERY_STRING[0]}=${1}&${PRODUCT_QUERY_STRING[1]}=${LIMIT}`}
+            disabled={isFetchingCartList}
+            to= {dataCartList?.length ? "/checkout" : `/products?${PRODUCT_QUERY_STRING[0]}=${1}&${PRODUCT_QUERY_STRING[1]}=${LIMIT}`}
             className={classes.checkoutButton}
           >
             Mua Hàng

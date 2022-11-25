@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Products from '../Products/Products';
 import { Box, CircularProgress, Pagination, Stack } from '@mui/material';
-import { useGetProductsQuery } from '../../services/clothing';
+import { useGetProductsQuery } from '../../services/productApis';
 import { useSearchParams } from 'react-router-dom';
 import { LIMIT, PRODUCT_QUERY_STRING } from '../../utils/globalVariables';
 import useStyles from './styles';
@@ -13,14 +13,14 @@ const ProductListMore = () => {
 
     // Query string validation, isInteger check if the passing arg is an integer or not 
     // 3 main query: page, limit, cat
+    const pageNum = parseInt(searchParams.get(PRODUCT_QUERY_STRING[0])); // Get the query of page for validation
+    const pageInit = Number.isInteger(pageNum) && pageNum > 0 ? pageNum : 1;
+
     const limitNum = parseInt(searchParams.get(PRODUCT_QUERY_STRING[1])); // Get the query of limit for validation
     const limitInit = Number.isInteger(limitNum) && limitNum > 0 ? limitNum : LIMIT;
 
     const catNum = parseInt(searchParams.get(PRODUCT_QUERY_STRING[2])); // Get the query of cat for validation
     const catInit = Number.isInteger(catNum) ? catNum : '';
-
-    const pageNum = parseInt(searchParams.get(PRODUCT_QUERY_STRING[0])); // Get the query of page for validation
-    const pageInit = Number.isInteger(pageNum) && pageNum > 0 ? pageNum : 1;
 
     const { data, isFetching } = useGetProductsQuery({
         pageNumber: pageInit,
