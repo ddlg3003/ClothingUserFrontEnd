@@ -7,3 +7,14 @@ export const clothing = createApi({
     tagTypes: ['Cart', 'Address', 'Order'],
     endpoints: () => ({}),
 });
+
+export const onQueryStartedHandler = async (dispatch, queryFulfilled, query) => {
+    try {
+        const { data } = await queryFulfilled;
+        dispatch(
+          clothing.util.updateQueryData(query, undefined, () => {
+              return data;
+          })
+        );
+    } catch {}
+}

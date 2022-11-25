@@ -14,15 +14,9 @@ import NewAddressDialog from "./NewAddressDialog";
 import UpdateAddressDialog from "./UpdateAddressDialog";
 import DeleteAlertDialog from "./DeleteAlertDialog";
 import { useGetUserAddressQuery } from "../../services/userApis";
-import { useSelector, useDispatch } from "react-redux";
 
 const AddressDetails = (props) => {
-  const dispatch = useDispatch();
-  const user = JSON.parse(localStorage.getItem("user"));
-
   const { data: dataAddresses, isFetching: isFetchingDataAddresses } = useGetUserAddressQuery();
-
-  const datas = useSelector((state) => state.address.data);
 
   // Dialog's states
   const [openNewAddressDialog, setOpenNewAddressDialog] = useState(false);

@@ -1,4 +1,4 @@
-import { clothing } from './clothingBaseApis';
+import { clothing, onQueryStartedHandler } from './clothingBaseApis';
 
 const cart = clothing.injectEndpoints({
     endpoints: (builder) => ({
@@ -13,14 +13,7 @@ const cart = clothing.injectEndpoints({
                 body: formData,
             }),
             async onQueryStarted(body, { dispatch, queryFulfilled }) {
-                try {
-                  const { data: updatedCart } = await queryFulfilled;
-                  dispatch(
-                    clothing.util.updateQueryData('getCart', undefined, () => {
-                        return updatedCart;
-                    })
-                  );
-                } catch {}
+                return onQueryStartedHandler(dispatch, queryFulfilled, 'getCart');
             },
         }),
         decreaseCartItem: builder.mutation({
@@ -30,14 +23,7 @@ const cart = clothing.injectEndpoints({
                 body: formData,
             }),
             async onQueryStarted(body, { dispatch, queryFulfilled }) {
-                try {
-                  const { data: updatedCart } = await queryFulfilled;
-                  dispatch(
-                    clothing.util.updateQueryData('getCart', undefined, () => {
-                        return updatedCart;
-                    })
-                  );
-                } catch {}
+                return onQueryStartedHandler(dispatch, queryFulfilled, 'getCart');
             },
         }),
         deleteCartItem: builder.mutation({
@@ -48,14 +34,7 @@ const cart = clothing.injectEndpoints({
             }),
             invalidatesTags: ['Cart'],
             async onQueryStarted(body, { dispatch, queryFulfilled }) {
-                try {
-                  const { data: updatedCart } = await queryFulfilled;
-                  dispatch(
-                    clothing.util.updateQueryData('getCart', undefined, () => {
-                        return updatedCart;
-                    })
-                  );
-                } catch {}
+                return onQueryStartedHandler(dispatch, queryFulfilled, 'getCart');
             },
         }),
         addItemToCart: builder.mutation({
@@ -66,14 +45,7 @@ const cart = clothing.injectEndpoints({
             }),
             invalidatesTags: ['Cart'],
             async onQueryStarted(body, { dispatch, queryFulfilled }) {
-                try {
-                  const { data: updatedCart } = await queryFulfilled;
-                  dispatch(
-                    clothing.util.updateQueryData('getCart', undefined, () => {
-                        return updatedCart;
-                    })
-                  );
-                } catch {}
+                return onQueryStartedHandler(dispatch, queryFulfilled, 'getCart');
             },
         }),
     }),

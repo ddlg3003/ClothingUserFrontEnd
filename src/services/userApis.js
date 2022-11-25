@@ -1,4 +1,4 @@
-import { clothing } from './clothingBaseApis';
+import { clothing, onQueryStartedHandler } from './clothingBaseApis';
 
 const user = clothing.injectEndpoints({
     endpoints: (builder) => ({
@@ -17,14 +17,7 @@ const user = clothing.injectEndpoints({
             }),
             invalidatesTags: ['Address'],
             async onQueryStarted(body, { dispatch, queryFulfilled }) {
-                try {
-                  const { data: updatedAddress } = await queryFulfilled;
-                  dispatch(
-                    clothing.util.updateQueryData('getUserAddress', undefined, () => {
-                        return updatedAddress;
-                    })
-                  );
-                } catch {}
+                return onQueryStartedHandler(dispatch, queryFulfilled, 'getUserAddress');
             },
         }),
         updateAddress: builder.mutation({
@@ -35,14 +28,7 @@ const user = clothing.injectEndpoints({
             }),
             invalidatesTags: ['Address'],
             async onQueryStarted(body, { dispatch, queryFulfilled }) {
-                try {
-                  const { data: updatedAddress } = await queryFulfilled;
-                  dispatch(
-                    clothing.util.updateQueryData('getUserAddress', undefined, () => {
-                        return updatedAddress;
-                    })
-                  );
-                } catch {}
+                return onQueryStartedHandler(dispatch, queryFulfilled, 'getUserAddress');
             },
         }),
         deleteAddress: builder.mutation({
@@ -52,14 +38,7 @@ const user = clothing.injectEndpoints({
             }),
             invalidatesTags: ['Address'],
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
-                try {
-                  const { data: updatedAddress } = await queryFulfilled;
-                  dispatch(
-                    clothing.util.updateQueryData('getUserAddress', undefined, () => {
-                        return updatedAddress;
-                    })
-                  );
-                } catch {}
+                return onQueryStartedHandler(dispatch, queryFulfilled, 'getUserAddress');
             },
         }),
         changeProfile: builder.mutation({
