@@ -20,7 +20,6 @@ import React, { useState } from "react";
 import useStyles from "./styles";
 import DeleteAlertDialog from "./DeleteAlertDialog";
 import { useDispatch, useSelector } from "react-redux";
-import { updateCart } from "../../features/cart";
 import { LIMIT, PRODUCT_QUERY_STRING, URL_REGEX } from "../../utils/globalVariables";
 import { Link } from "react-router-dom";
 import LocalMallIcon from "@mui/icons-material/LocalMall";

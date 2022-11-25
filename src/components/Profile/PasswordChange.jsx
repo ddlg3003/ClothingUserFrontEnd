@@ -4,7 +4,7 @@ import {
     Grid, Typography
 } from "@mui/material";
 import TextField from "@mui/material/TextField";
-import { changePassword } from "../../utils/api";
+import { useChangePasswordMutation } from "../../services/userApis";
 import { PASSWORD_REGEX } from "../../utils/globalVariables";
 import { logout } from "../../features/auth";
 import { useDispatch } from "react-redux";
@@ -47,7 +47,7 @@ const PasswordChange = (props) => {
 
   const [newPasswordValid, setNewPasswordValid] = useState(true);
   const [confirmNewPasswordValid, setConfirmNewPasswordValid] = useState(true);
-
+  const [changePassword] = useChangePasswordMutation();
    
   const handleSubmit = async () => {
     if (!newPasswordValid || !confirmNewPasswordValid) {
@@ -55,12 +55,16 @@ const PasswordChange = (props) => {
       return;
     }
 
-    const status = await changePassword({curPassword: currentPassword, newPassword , rePassword: confirmNewPassword})
-
-    if (status === 200) {
+    const { error: { originalStatus } } = await changePassword({ 
+      curPassword: currentPassword, newPassword , 
+      rePassword: confirmNewPassword 
+    });
+    console.log(originalStatus);
+    
+    if (originalStatus === 200) {
       alert("Đổi mật khẩu thành công, vui lòng đăng nhập lại bằng mật khẩu mới!");
       dispatch(logout());
-      navigate(-1);
+      navigate("/auth");
     }
     else {
       alert("Mật khẩu không chính xác!");

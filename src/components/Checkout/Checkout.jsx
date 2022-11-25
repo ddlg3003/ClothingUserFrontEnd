@@ -1,20 +1,17 @@
 import React, { useState } from "react";
 import { Button, Typography, Paper } from "@mui/material";
 import { Box, Container } from "@mui/system";
-import useStyles from "./styles";
 import CartItems from "./CartItems";
 import ShippingAddresses from "./ShippingAddresses";
 import PaymentMethods from "./PaymentMethods";
-import { useSelector, useDispatch } from "react-redux";
 import { useGetUserAddressQuery } from "../../services/userApis";
-import { createOrder } from "../../utils/api";
+import { useCreateOrderMutation } from "../../services/orderApis";
 import { useNavigate } from "react-router-dom";
 import { SIDEBAR_STATE, PROFILE_QUERY_STRING } from "../../utils/globalVariables";
-import { updateCart } from "../../features/cart";
+import useStyles from "./styles";
 
 const Checkout = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const classes = useStyles();
   const cartItems = [...JSON.parse(sessionStorage.getItem("cartItems"))];
@@ -26,8 +23,6 @@ const Checkout = () => {
   const transformObject = ({
     color,
     price,
-    proImage,
-    proName,
     product_id,
     quantity,
     size,
@@ -54,13 +49,15 @@ const Checkout = () => {
     payment.shipping_fee = 30000;
   }
 
+  const [createOrder] = useCreateOrderMutation();
+
   const handleSubmit = async () => {
     // console.log([newSubmitData, payment]);
     await createOrder([newSubmitData, payment]);
     sessionStorage.clear();
     // window.location.href = `/profile?${PROFILE_QUERY_STRING[0]}=${SIDEBAR_STATE[4]}`;
     navigate(`/profile?${PROFILE_QUERY_STRING[0]}=${SIDEBAR_STATE[4]}`);
-    dispatch(updateCart([]));
+    // dispatch(updateCart([]));
   };
 
   return (
@@ -126,8 +123,7 @@ const Checkout = () => {
               )}
             </Typography>
           </div>
-
-          <div>
+          <div>AddressSelectionDialog
             <Button
               size="large"
               variant="outlined"

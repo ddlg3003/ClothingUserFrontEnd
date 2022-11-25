@@ -5,8 +5,15 @@ const order = clothing.injectEndpoints({
         getAllOrders: builder.query({
             query: () => `user/order/getAll`,
         }),
+        createOrder: builder.mutation({
+            query: (formData) => ({
+                url: 'user/order/create',
+                method: 'POST',
+                body: formData,
+            }),
+        }),
     }),
     overrideExisting: false,
 });
 
-export const { useGetAllOrdersQuery } = order;
+export const { useGetAllOrdersQuery, useCreateOrderMutation } = order;

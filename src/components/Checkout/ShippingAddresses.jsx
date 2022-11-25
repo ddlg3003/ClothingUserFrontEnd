@@ -19,7 +19,6 @@ import useStyles from "./styles";
 import PropTypes from "prop-types";
 import { blue } from "@mui/material/colors";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { useGetUserAddressQuery } from "../../services/userApis";
 import { SIDEBAR_STATE, PROFILE_QUERY_STRING } from "../../utils/globalVariables";
 
@@ -107,9 +106,9 @@ AddressSelectionDialog.propTypes = {
 };
 
 const ShippingAddresses = () => {
-  const { data, isFetching, refetch } = useGetUserAddressQuery();
+  const { data, isFetching } = useGetUserAddressQuery();
 
-  const defaultAddress = data?.find((address) => address.add_default === true);
+  const defaultAddress = data?.find((address) => address?.add_default === 1);
   // console.log(defaultAddress);
   const handleCloseChangeAddress = (value) => {
     setOpen(false);
@@ -122,10 +121,6 @@ const ShippingAddresses = () => {
   const handleClickChangeAddress = () => {
     setOpen(true);
   };
-
-  useEffect(() => {
-    refetch();
-  }, []);
 
   return (
     <>

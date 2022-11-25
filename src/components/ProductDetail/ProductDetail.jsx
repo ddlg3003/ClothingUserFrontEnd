@@ -21,7 +21,6 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateCart } from '../../features/cart';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGetProductQuery, useGetTypesQuery, useGetTypesPropsQuery } from '../../services/productApis';
 import { useAddItemToCartMutation } from '../../services/cartApis';
@@ -50,7 +49,7 @@ const ProductDetail = () => {
     const [currentColor, setCurrentColor] = useState('');
     const [currentSize, setCurrentSize] = useState(null);
     const [openToast, setOpenToast] = useState(false);
-    const [currentPrice, setCurrentPrice] = useState(null);
+    const [currentPrice, setCurrentPrice] = useState(0);
 
     const [addItemToCart] = useAddItemToCartMutation();
 

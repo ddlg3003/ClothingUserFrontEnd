@@ -3,22 +3,19 @@ import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
-import { deleteAddress } from "../../utils/api";
-import { useSelector, useDispatch } from "react-redux";
-import { updateAddress } from "../../features/address";
-
+import { useDeleteAddressMutation } from "../../services/userApis";
 
 const DeleteAlertDialog = (props) => {
-  const dispatch = useDispatch();
-
   const { onClose, open, id } = props;
+
   const handleClose = () => {
     onClose();
   };
 
+  const [deleteAddress] = useDeleteAddressMutation();
+
   const handleConfirmClick = async () => {
-    const data = await deleteAddress(id);
-    dispatch(updateAddress(data));
+    await deleteAddress(id);
     onClose();
   };
 

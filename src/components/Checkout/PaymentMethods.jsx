@@ -6,11 +6,9 @@ import {
   ToggleButtonGroup,
 } from "@mui/material";
 import useStyles from "./styles";
-import { useState } from "react";
 
 const PaymentMethods = ({ paymentTypeValue, setPaymentTypeValue, creditMethod, setCreditMethod }) => {
   const classes = useStyles();
-
 
   const handlePaymentTypeChange = (e) => {
     setPaymentTypeValue(e.target.value);

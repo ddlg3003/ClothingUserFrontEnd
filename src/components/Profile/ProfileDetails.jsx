@@ -1,3 +1,4 @@
+import React from "react";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import {
@@ -11,11 +12,12 @@ import {
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import React from "react";
-import { changeProfile } from "../../utils/api";
+import { useChangeProfileMutation } from "../../services/userApis";
 import dayjs from "dayjs";
 
 const ProfileDetails = (props) => {
+  const [changeProfile] = useChangeProfileMutation();
+
   const handleSubmit = async () => {
     const dob = dayjs(props.birthday).add(1, 'day');
     await changeProfile( {...props.userInfo, dob} );

@@ -2,19 +2,16 @@ import React, { useState } from "react";
 import { Button, Dialog, DialogTitle, TextField } from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import { updateAddress } from "../../features/address";
-import { addOrChangeAddress } from "../../utils/api";
-import { useDispatch } from "react-redux";
+import { useAddAddressMutation } from "../../services/userApis";
 
 const NewAddressDialog = (props) => {
-  const dispatch = useDispatch();
-
   const initialState = {
     name: "",
     phoneNumber: "",
     address: "",
   };
 
+  const [addAddress] = useAddAddressMutation();
   const { onClose, open } = props;
   const [addressInfo, setAddressInfo] = useState({
     name: "",
@@ -30,10 +27,8 @@ const NewAddressDialog = (props) => {
   const handleConfirmClick = async () => {
     setAddressInfo(initialState);
     onClose();
-    
-    const isChange = false;
-    const data = await addOrChangeAddress(addressInfo, isChange);
-    dispatch(updateAddress(data));
+        
+    await addAddress(addressInfo);
   };
 
   const handleNameChange = (event) => {

@@ -48,10 +48,6 @@ const Navbar = () => {
         }
     }, [location]);
 
-    useEffect(() => {
-        console.log(dataCartList);
-    }, [isFetchingCartList]);
-
     // const cartData = useSelector((state) => state.cart.data);
     const { data, isFetching } = useGetCategoriesQuery();
 

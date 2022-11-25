@@ -8,7 +8,7 @@ import Alert from '../Alert/Alert';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../../features/auth';
-import { getUserLogin, signup } from '../../utils/api';
+import { getUserLogin, signup } from '../../utils/auth';
 import useStyles from './styles';
 
 const Auth = () => {

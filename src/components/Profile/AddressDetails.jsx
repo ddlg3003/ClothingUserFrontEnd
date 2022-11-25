@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-
 import {
   Box,
   Button,
@@ -16,25 +15,14 @@ import UpdateAddressDialog from "./UpdateAddressDialog";
 import DeleteAlertDialog from "./DeleteAlertDialog";
 import { useGetUserAddressQuery } from "../../services/userApis";
 import { useSelector, useDispatch } from "react-redux";
-import { updateAddress } from "../../features/address";
 
 const AddressDetails = (props) => {
   const dispatch = useDispatch();
-  const { isAuthenticated } = useSelector((state) => state.auth);
   const user = JSON.parse(localStorage.getItem("user"));
 
-  const { data: dataAddresses, isFetching: isFetchingDataAddresses } =
-    useGetUserAddressQuery({ skip: !isAuthenticated });
+  const { data: dataAddresses, isFetching: isFetchingDataAddresses } = useGetUserAddressQuery();
 
   const datas = useSelector((state) => state.address.data);
-
-  useEffect(() => {
-    if (!isFetchingDataAddresses) {
-      dispatch(updateAddress(dataAddresses));
-    }
-  }, [isFetchingDataAddresses]);
-
-
 
   // Dialog's states
   const [openNewAddressDialog, setOpenNewAddressDialog] = useState(false);
@@ -91,14 +79,14 @@ const AddressDetails = (props) => {
       <Divider />
 
       <Container sx={{ mt: 3 }}>
-        {!datas.length ? (
+        {!dataAddresses?.length ? (
           <Box mt={5} sx={{display:"flex", justifyContent:"center"}}>
             <Typography width={200} fontSize="20px" fontWeight="bold">
               Không có địa chỉ
             </Typography>
           </Box>
         ) : (
-          datas.map((data, i) => (
+          dataAddresses?.map((data, i) => (
             <div key={i}>
               <Box>
                 <Grid container spacing={2} sx={{ mb: 5, mt: 4 }}>
@@ -110,14 +98,14 @@ const AddressDetails = (props) => {
                         component="div"
                         fontSize={18}
                       >
-                        {data.name}
+                        {data?.name}
                       </Typography>
                       <Typography
                         variant="body2"
                         color="text.secondary"
                         fontSize={18}
                       >
-                        {data.phoneNumber}
+                        {data?.phoneNumber}
                       </Typography>
                       <Typography
                         fontSize={18}
@@ -125,7 +113,7 @@ const AddressDetails = (props) => {
                         color="text.secondary"
                         gutterBottom
                       >
-                        {data.address}
+                        {data?.address}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -163,7 +151,7 @@ const AddressDetails = (props) => {
                       <DeleteAlertDialog
                         open={openDeleteAddressDialog === data.id}
                         onClose={handleCloseDeleteAddress}
-                        id={data.id}
+                        id={data?.id}
                       />
                     </Box>{" "}
                   </Grid>
