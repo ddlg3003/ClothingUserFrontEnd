@@ -15,16 +15,20 @@ import {
     Avatar,
     Modal,
     Fade,
+    useMediaQuery,
+    Stack,
 } from '@mui/material';
 import Alert from '../Alert/Alert';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGetProductQuery, useGetTypesQuery, useGetTypesPropsQuery } from '../../services/productApis';
 import { useAddItemToCartMutation } from '../../services/cartApis';
 import useStyles from './styles';
+import { updateCheckout } from '../../features/checkout';
 
 const ProductDetail = () => {
     const classes = useStyles();
@@ -43,6 +47,8 @@ const ProductDetail = () => {
     const [image, setImage] = useState(''); // set image for modal
     const [isSelectedImg, setIsSelectedImg] = useState(0);
     const { isAuthenticated } = useSelector(state => state.auth);
+
+    const isMobile = useMediaQuery('(max-width: 800px)');
 
     // Set image state for product image
     const [mainImg, setMainImg] = useState('');
@@ -96,15 +102,16 @@ const ProductDetail = () => {
         setIsSelectedImg(index);
     }
 
-    const handleSubmit = async () => {
+    const handleSubmit = async () => {     
         const submitData = {
             size: currentSize,
             color: currentColor,
             quantity,
             product_id: id,
             price: currentPrice,
+    
+        };  
 
-        };        
         if(isAuthenticated) {
             if(submitData.size && submitData.color && submitData.quantity) {
                 await addItemToCart(submitData);
@@ -125,7 +132,29 @@ const ProductDetail = () => {
         }
     
         setOpenToast(false);
-      };
+    };
+
+    const handleBuyNow = () => {
+        const submitData = {
+            size: currentSize,
+            color: currentColor,
+            quantity,
+            product_id: id,
+            price: currentPrice,
+            proImage: mainImg,
+            proName: data?.name,
+        };
+
+        dispatch(updateCheckout());
+        if(submitData.size && submitData.color && submitData.quantity) {
+            sessionStorage.setItem("cartItems", JSON.stringify([submitData]));
+            navigate('/checkout');
+        }
+        else {
+            setToastData(prev => ({ ...prev, message: 'VUI LÒNG CHỌN ĐỦ THÔNG TIN SẢN PHẨM', severity: 'info' }));
+            setOpenToast(true);
+        }
+    }
 
     if(isFetching && isFetchingTypes && isFetchingTypeProps) {
         return (
@@ -253,23 +282,34 @@ const ProductDetail = () => {
                         </div>
                     </div>
                     <div style={{ marginTop: '40px' }}>
-                        <Button 
-                            variant="contained" 
-                            color="black" 
-                            style={{ color: 'white', padding: '20px' }} 
-                            size="large"
-                            onClick={handleSubmit}
-                        >
-                            Thêm vào giỏ
-                        </Button>
-                        <Button 
-                            variant="contained" 
-                            color="error" 
-                            style={{ color: 'white', padding: '20px', marginLeft: '8px' }} 
-                            size="large"
-                        >
-                            <FavoriteBorderIcon /> &nbsp; Yêu thích
-                        </Button>
+                        <Stack spacing={2} direction={isMobile ? 'column' : 'row'}>
+                            <Button 
+                                variant="contained" 
+                                color="black" 
+                                style={{ color: 'white', padding: '20px' }} 
+                                size="large"
+                                onClick={handleSubmit}
+                            >
+                                Thêm vào giỏ
+                            </Button>
+                            <Button 
+                                variant="contained" 
+                                color="error" 
+                                style={{ color: 'white', padding: '20px'}} 
+                                size="large"
+                                onClick={handleBuyNow}
+                            >
+                                Mua ngay
+                            </Button>
+                            <Button 
+                                variant="outlined" 
+                                color="error"
+                                style={{ padding: '20px'}} 
+                                size="large"
+                            >
+                                <FavoriteBorderIcon />
+                            </Button>
+                        </Stack>
                         <Alert 
                             message={toastData.message}
                             openToast={openToast} 
