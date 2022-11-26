@@ -16,9 +16,6 @@ const user = clothing.injectEndpoints({
                 body: addressInfo,
             }),
             invalidatesTags: ['Address'],
-            async onQueryStarted(body, { dispatch, queryFulfilled }) {
-                return onQueryStartedHandler(dispatch, queryFulfilled, 'getUserAddress');
-            },
         }),
         updateAddress: builder.mutation({
             query: (addressInfo) => ({
@@ -27,9 +24,6 @@ const user = clothing.injectEndpoints({
                 body: addressInfo,
             }),
             invalidatesTags: ['Address'],
-            async onQueryStarted(body, { dispatch, queryFulfilled }) {
-                return onQueryStartedHandler(dispatch, queryFulfilled, 'getUserAddress');
-            },
         }),
         deleteAddress: builder.mutation({
             query: (id) => ({
@@ -37,9 +31,6 @@ const user = clothing.injectEndpoints({
                 method: 'DELETE',
             }),
             invalidatesTags: ['Address'],
-            async onQueryStarted(id, { dispatch, queryFulfilled }) {
-                return onQueryStartedHandler(dispatch, queryFulfilled, 'getUserAddress');
-            },
         }),
         selectDefaultAddress: builder.mutation({
             query: (id) => ({
@@ -47,9 +38,6 @@ const user = clothing.injectEndpoints({
                 method: 'POST',
             }),
             invalidatesTags: ['Address'],
-            async onQueryStarted(id, { dispatch, queryFulfilled }) {
-                return onQueryStartedHandler(dispatch, queryFulfilled, 'getUserAddress');
-            },
         }),
         changeProfile: builder.mutation({
             query: (formData) => ({
