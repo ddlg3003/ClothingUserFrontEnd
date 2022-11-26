@@ -19,17 +19,21 @@ import useStyles from "./styles";
 import PropTypes from "prop-types";
 import { blue } from "@mui/material/colors";
 import { useState, useEffect } from "react";
-import { useGetUserAddressQuery } from "../../services/userApis";
+import { useGetUserAddressQuery, useSelectDefaultAddressMutation } from "../../services/userApis";
 import { SIDEBAR_STATE, PROFILE_QUERY_STRING } from "../../utils/globalVariables";
 
 function AddressSelectionDialog(props) {
   const { onClose, selectedValue, open } = props;
 
+  const [selectDefaultAddress] = useSelectDefaultAddressMutation();
+
+
   const handleClose = () => {
     onClose(selectedValue);
   };
 
-  const handleListItemClick = (value) => {
+  const handleListItemClick = async (value) => {
+    await selectDefaultAddress(value.id);
     onClose(value);
   };
 
@@ -99,27 +103,23 @@ function AddressSelectionDialog(props) {
   );
 }
 
-AddressSelectionDialog.propTypes = {
-  onClose: PropTypes.func.isRequired,
-  open: PropTypes.bool.isRequired,
-  selectedValue: PropTypes.string.isRequired,
-};
-
 const ShippingAddresses = () => {
   const { data, isFetching } = useGetUserAddressQuery();
 
-  const defaultAddress = data?.find((address) => address?.add_default === 1);
+  const defaultAddress = data?.find((address) => address?.add_default === true);
   // console.log(defaultAddress);
-  const handleCloseChangeAddress = (value) => {
-    setOpen(false);
-    setSelectedValue(value);
-  };
+
   const classes = useStyles();
   const [open, setOpen] = useState(false);
 
   const [selectedValue, setSelectedValue] = useState();
   const handleClickChangeAddress = () => {
     setOpen(true);
+  };
+
+  const handleCloseChangeAddress = (value) => {
+    setOpen(false);
+    setSelectedValue(value);
   };
 
   return (

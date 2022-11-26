@@ -20,7 +20,7 @@ const CartItems = ({ cartItems }) => {
 
   return (
     <>
-      <Container sx="md">
+      <Container>
         <TableContainer
           className={classes.TableContainer}
           component={Paper}

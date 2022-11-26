@@ -123,7 +123,7 @@ const Checkout = () => {
               )}
             </Typography>
           </div>
-          <div>AddressSelectionDialog
+          <div>
             <Button
               size="large"
               variant="outlined"

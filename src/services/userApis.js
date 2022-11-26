@@ -41,6 +41,16 @@ const user = clothing.injectEndpoints({
                 return onQueryStartedHandler(dispatch, queryFulfilled, 'getUserAddress');
             },
         }),
+        selectDefaultAddress: builder.mutation({
+            query: (id) => ({
+                url: `user/address/setDefault/${id}`,
+                method: 'POST',
+            }),
+            invalidatesTags: ['Address'],
+            async onQueryStarted(id, { dispatch, queryFulfilled }) {
+                return onQueryStartedHandler(dispatch, queryFulfilled, 'getUserAddress');
+            },
+        }),
         changeProfile: builder.mutation({
             query: (formData) => ({
                 url: 'user/profile/change',
@@ -65,6 +75,7 @@ export const {
     useAddAddressMutation,
     useUpdateAddressMutation,
     useDeleteAddressMutation,
+    useSelectDefaultAddressMutation,
     useChangeProfileMutation,
     useChangePasswordMutation,
 } = user;

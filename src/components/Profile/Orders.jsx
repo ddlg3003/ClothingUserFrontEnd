@@ -3,9 +3,14 @@ import StarsIcon from "@mui/icons-material/Stars";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import {
   Box,
-  Button, Chip, Container,
+  Button,
+  Chip,
+  Container,
   Divider,
-  Grid, Stack, Tab, Typography
+  Grid,
+  Stack,
+  Tab,
+  Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -55,7 +60,7 @@ const Orders = (props) => {
                 {props.orders?.map((order, i) => (
                   <div key={i} style={{ marginTop: "40px" }}>
                     {order.transactionMapper.map((product) => (
-                      <Box>
+                      <Box key={i}>
                         <Grid container spacing={2} sx={{ mb: 0, mt: 1 }}>
                           <Grid
                             item
@@ -65,7 +70,9 @@ const Orders = (props) => {
                             spacing={2}
                           >
                             <Link
-                              to={`/products/${product.productName.replace(URL_REGEX, '-').toLowerCase()}-i.${product.productId}`}
+                              to={`/products/${product.productName
+                                .replace(URL_REGEX, "-")
+                                .toLowerCase()}-i.${product.productId}`}
                               className={props.classes.favoriteItems}
                             >
                               <Grid container spacing={2}>
@@ -187,7 +194,7 @@ const Orders = (props) => {
                   .map((order, i) => (
                     <div key={i} style={{ marginTop: "40px" }}>
                       {order.transactionMapper.map((product) => (
-                        <Box>
+                        <Box key={i}>
                           <Grid container spacing={2} sx={{ mb: 0, mt: 1 }}>
                             <Grid
                               item
@@ -197,7 +204,9 @@ const Orders = (props) => {
                               spacing={2}
                             >
                               <Link
-                                to={`/products/${product.productName.replace(URL_REGEX, '-').toLowerCase()}-i.${product.productId}`}
+                                to={`/products/${product.productName
+                                  .replace(URL_REGEX, "-")
+                                  .toLowerCase()}-i.${product.productId}`}
                                 className={props.classes.favoriteItems}
                               >
                                 <Grid container spacing={2}>
@@ -319,7 +328,7 @@ const Orders = (props) => {
                   .map((order, i) => (
                     <div key={i} style={{ marginTop: "40px" }}>
                       {order.transactionMapper.map((product) => (
-                        <Box>
+                        <Box key={i}>
                           <Grid container spacing={2} sx={{ mb: 0, mt: 1 }}>
                             <Grid
                               item
@@ -329,7 +338,9 @@ const Orders = (props) => {
                               spacing={2}
                             >
                               <Link
-                                to={`/products/${product.productName.replace(URL_REGEX, '-').toLowerCase()}-i.${product.productId}`}
+                                to={`/products/${product.productName
+                                  .replace(URL_REGEX, "-")
+                                  .toLowerCase()}-i.${product.productId}`}
                                 className={props.classes.favoriteItems}
                               >
                                 <Grid container spacing={2}>
@@ -451,7 +462,7 @@ const Orders = (props) => {
                   .map((order, i) => (
                     <div key={i} style={{ marginTop: "40px" }}>
                       {order.transactionMapper.map((product) => (
-                        <Box>
+                        <Box key={i}>
                           <Grid container spacing={2} sx={{ mb: 0, mt: 1 }}>
                             <Grid
                               item
@@ -461,7 +472,9 @@ const Orders = (props) => {
                               spacing={2}
                             >
                               <Link
-                                to={`/products/${product.productName.replace(URL_REGEX, '-').toLowerCase()}-i.${product.productId}`}
+                                to={`/products/${product.productName
+                                  .replace(URL_REGEX, "-")
+                                  .toLowerCase()}-i.${product.productId}`}
                                 className={props.classes.favoriteItems}
                               >
                                 <Grid container spacing={2}>
@@ -589,7 +602,7 @@ const Orders = (props) => {
                   .map((order, i) => (
                     <div key={i} style={{ marginTop: "40px" }}>
                       {order.transactionMapper.map((product) => (
-                        <Box>
+                        <Box key={i}>
                           <Grid container spacing={2} sx={{ mb: 0, mt: 1 }}>
                             <Grid
                               item
@@ -599,7 +612,9 @@ const Orders = (props) => {
                               spacing={2}
                             >
                               <Link
-                                to={`/products/${product.productName.replace(URL_REGEX, '-').toLowerCase()}-i.${product.productId}`}
+                                to={`/products/${product.productName
+                                  .replace(URL_REGEX, "-")
+                                  .toLowerCase()}-i.${product.productId}`}
                                 className={props.classes.favoriteItems}
                               >
                                 <Grid container spacing={2}>
