@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Products from '../Products/Products';
-import { Box, CircularProgress, Pagination, Stack } from '@mui/material';
+import { Box, CircularProgress, Pagination, Stack, useMediaQuery } from '@mui/material';
 import { useGetProductsQuery } from '../../services/productApis';
 import { useSearchParams } from 'react-router-dom';
 import { LIMIT, PRODUCT_QUERY_STRING } from '../../utils/globalVariables';
@@ -28,6 +28,8 @@ const ProductListMore = () => {
         cat: catInit,
     });
 
+    const isMobile = useMediaQuery('(max-width: 800px)');
+
     const onPageChange = (e, value) => {
         let query = { [PRODUCT_QUERY_STRING[0]]: value, [PRODUCT_QUERY_STRING[1]]: limitInit };
 
@@ -53,7 +55,8 @@ const ProductListMore = () => {
                             count={Math.ceil(data?.numberItem / limitInit)}
                             shape="rounded"
                             page={pageInit}
-                            size="large"
+                            size={isMobile ? 'small' : 'large'}
+                            siblingCount={isMobile ? -1 : 2}
                             onChange={onPageChange}
                         />
                     </Stack>

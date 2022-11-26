@@ -9,7 +9,7 @@ import {
   Typography,
   CircularProgress
 } from "@mui/material";
-import { useGetUserWishlistQuery } from "../../services/wishlistApis";
+import { useGetUserWishlistQuery, useToggleWishlistMutation } from "../../services/wishlistApis";
 import { URL_REGEX } from "../../utils/globalVariables";
 import { Link } from "react-router-dom";
 
@@ -18,6 +18,11 @@ import React from "react";
 const Favorites = (props) => {
   const { data, isFetching } = useGetUserWishlistQuery();
 
+  const [toggleWishlist] = useToggleWishlistMutation();
+
+  const handleDeleteFav = async (productId) => {
+    await toggleWishlist(productId);
+  }
 
   return (
     <>
@@ -33,7 +38,7 @@ const Favorites = (props) => {
           <CircularProgress color="black" size="4rem" />
         </Box>
       ) : (
-        <Container sx={{ mt: 3 }}>
+        <Container sx={{ mt: 3, height: "460px", overflow: "scroll" }}>
           {data?.map((favorite, i) => (
             <div key={i}>
               <Box>
@@ -91,6 +96,7 @@ const Favorites = (props) => {
                         component="label"
                         style={{ color: "white" }}
                         startIcon={<DeleteIcon />}
+                        onClick={() => handleDeleteFav(favorite?.productId)}
                       >
                         Bỏ thích
                       </Button>

@@ -58,7 +58,14 @@ const Cart = () => {
   };
 
   const handleIncrease = async ({ color, size, product_id: productId }) => {
-    await increaseCartItem({ color, size, productId }).unwrap();
+    const product = dataCartList?.find(item => (
+      item?.color === color && 
+      item?.size === size && 
+      item?.product_id === productId));
+      
+    if (product.quantity < product.availableQuantity) {
+      await increaseCartItem({ color, size, productId }).unwrap();
+    }
   };
 
   const handleDecrease = async ({

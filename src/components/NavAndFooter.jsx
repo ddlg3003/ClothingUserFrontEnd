@@ -11,7 +11,9 @@ const NavAndFooter = ({ cartData, setCartData }) => {
         <>
             <Navbar cartData={cartData} setCartData={setCartData} />
             <div className={classes.toolbar}/>
-            <Outlet />
+            <main className={classes.content}>
+                <Outlet />
+            </main>
             <Footer />
         </>
     )

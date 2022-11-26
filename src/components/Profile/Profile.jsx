@@ -69,7 +69,7 @@ const Profile = () => {
     useGetAllOrdersQuery();
 
   window.onpopstate = () => {
-    window.location.href = "/";
+    if(window.location.href === "http://localhost:3000/profile?tab=orders") window.location.href = "/";
   }
 
   useEffect(() => {

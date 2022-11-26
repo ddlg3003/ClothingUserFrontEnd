@@ -17,6 +17,7 @@ import {
     Fade,
     useMediaQuery,
     Stack,
+    Tooltip,
 } from '@mui/material';
 import Alert from '../Alert/Alert';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -26,9 +27,10 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGetProductQuery, useGetTypesQuery, useGetTypesPropsQuery } from '../../services/productApis';
-import { useAddItemToCartMutation } from '../../services/cartApis';
-import useStyles from './styles';
+import { useAddItemToCartMutation, useGetCartQuery } from '../../services/cartApis';
 import { updateCheckout } from '../../features/checkout';
+import { useToggleWishlistMutation, useGetUserWishlistQuery } from '../../services/wishlistApis';
+import useStyles from './styles';
 
 const ProductDetail = () => {
     const classes = useStyles();
@@ -37,16 +39,23 @@ const ProductDetail = () => {
     const navigate = useNavigate();
 
     const id = parseInt(name.slice(name.indexOf('.') + 1));
+
+    const { isAuthenticated } = useSelector(state => state.auth);
+
     const { data, isFetching } = useGetProductQuery(id);
     const { data: typesData, isFetching: isFetchingTypes } = useGetTypesQuery(id);
     const { data: typePropsData, isFetching: isFetchingTypeProps } = useGetTypesPropsQuery(id);
+    const { data: wishlistData, isFetching: isFetchingWishlist } = useGetUserWishlistQuery({ skip: !isAuthenticated });
+    const { data: dataCartList } = useGetCartQuery();
+
+    const [toggleWishlist] = useToggleWishlistMutation();
 
     const [quantity, setQuantity] = useState(1);
     const [open, setOpen] = useState(false);
-    const [toastData, setToastData] = useState({ message: '', severity: '' });
+    const [toastData, setToastData] = useState({ message: '', severity: '', color: '' });
     const [image, setImage] = useState(''); // set image for modal
     const [isSelectedImg, setIsSelectedImg] = useState(0);
-    const { isAuthenticated } = useSelector(state => state.auth);
+    const [fav, setFav] = useState(false);
 
     const isMobile = useMediaQuery('(max-width: 800px)');
 
@@ -64,6 +73,14 @@ const ProductDetail = () => {
         setMainImg(data?.image);
         setCurrentPrice(data?.price);
     }, [isFetching, data]);
+
+    useEffect(() => {
+        if(isAuthenticated) {
+            // Set fav on or off base on product in fav list, if product is in the list, then true, if
+            // not then false
+            setFav(!!wishlistData?.find(wishlist => id === wishlist?.productId));
+        }
+    }, [wishlistData, isFetchingWishlist, isAuthenticated]);
 
     // Find type quantity for current color and size
     const [type, setType] = useState(undefined);
@@ -115,15 +132,40 @@ const ProductDetail = () => {
         if(isAuthenticated) {
             if(submitData.size && submitData.color && submitData.quantity) {
                 await addItemToCart(submitData);
-                // dispatch(updateCart(data));
-                setToastData(prev => ({ ...prev, message: 'THÊM VÀO GIỎ HÀNG THÀNH CÔNG', severity: 'success' }));
+
+                // find the current product type in cart
+                const product = dataCartList?.find(item => (
+                  item?.size === currentSize && item?.product_id && item?.color === currentColor  
+                ));
+
+                // Check if current quantity + added quantity > max quantity --> show error message
+                if(product?.quantity + quantity > product?.availableQuantity) {
+                    setToastData(prev => ({ 
+                        ...prev, 
+                        message: `TRONG GIỎ HÀNG HIỆN ĐÃ CÓ ${product?.quantity} SẢN PHẨM. KHÔNG THỂ THÊM VÌ SẼ VƯỢT SỐ LƯỢNG MUA HÀNG`, 
+                        severity: 'error', 
+                        color: 'error' 
+                    }));
+                } else {
+                    setToastData(prev => ({ 
+                        ...prev, 
+                        message: 'THÊM SẢN PHẨM VÀO GIỎ HÀNG THÀNH CÔNG', 
+                        severity: 'success', 
+                        color: 'black' 
+                    }));
+                }
             }
             else {
-                setToastData(prev => ({ ...prev, message: 'VUI LÒNG CHỌN ĐỦ THÔNG TIN SẢN PHẨM', severity: 'info' }));
+                setToastData(prev => ({ 
+                    ...prev, 
+                    message: 'VUI LÒNG CHỌN ĐỦ THÔNG TIN SẢN PHẨM', 
+                    severity: 'info', 
+                    color: 'error' 
+                }));
             }
             setOpenToast(true);
         }
-        else navigate("/auth");
+        else navigate('/auth');
     }
 
     const handleCloseToast = (event, reason) => {
@@ -146,14 +188,22 @@ const ProductDetail = () => {
         };
 
         dispatch(updateCheckout());
-        if(submitData.size && submitData.color && submitData.quantity) {
-            sessionStorage.setItem("cartItems", JSON.stringify([submitData]));
-            navigate('/checkout');
-        }
-        else {
-            setToastData(prev => ({ ...prev, message: 'VUI LÒNG CHỌN ĐỦ THÔNG TIN SẢN PHẨM', severity: 'info' }));
-            setOpenToast(true);
-        }
+        if(isAuthenticated) {
+            if(submitData.size && submitData.color && submitData.quantity) {
+                sessionStorage.setItem("cartItems", JSON.stringify([submitData]));
+                navigate('/checkout');
+            }
+            else {
+                setToastData(prev => ({ ...prev, message: 'VUI LÒNG CHỌN ĐỦ THÔNG TIN SẢN PHẨM', severity: 'info', color: 'error' }));
+                setOpenToast(true);
+            }
+        } else navigate('/auth');
+    }
+
+    const handleFavorite = async () => {
+        if(isAuthenticated) {
+            await toggleWishlist(id);
+        } else navigate('/auth');
     }
 
     if(isFetching && isFetchingTypes && isFetchingTypeProps) {
@@ -301,20 +351,23 @@ const ProductDetail = () => {
                             >
                                 Mua ngay
                             </Button>
-                            <Button 
-                                variant="outlined" 
-                                color="error"
-                                style={{ padding: '20px'}} 
-                                size="large"
-                            >
-                                <FavoriteBorderIcon />
-                            </Button>
+                            <Tooltip title={!fav ? 'Thích' : 'Bỏ thích'}>
+                                <Button 
+                                    variant="outlined" 
+                                    color="error"
+                                    style={{ padding: '20px'}} 
+                                    size="large"
+                                    onClick={handleFavorite}
+                                >
+                                    {!fav ? <FavoriteBorderIcon /> : <FavoriteIcon />}
+                                </Button>
+                            </Tooltip>
                         </Stack>
                         <Alert 
                             message={toastData.message}
                             openToast={openToast} 
                             handleCloseToast={handleCloseToast} 
-                            color="black"
+                            color={toastData.color}
                             severity={toastData.severity}
                         />
                     </div>

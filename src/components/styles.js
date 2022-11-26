@@ -2,7 +2,16 @@ import { makeStyles } from '@mui/styles';
 
 export default makeStyles((theme) => ({
     root: {
-        height: '100%',
+        minHeight: '100vh',
+        position: 'relative',
+        '&::after': {
+            content: '""',
+            height: '91px',
+            display: 'block',
+            [theme.breakpoints.down('md')]: {
+                height: '180px',
+            },
+        },
     },
     toolbar: {
         height: '144px',

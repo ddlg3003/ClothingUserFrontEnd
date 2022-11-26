@@ -22,67 +22,59 @@ const App = () => {
     return (
         <div className={classes.root}>
             <CssBaseline />
-            <main className={classes.content}>
-                <Routes>
-                    <Route element={<NavAndFooter />}>
-                        <Route path="/" element={<Home />} />
-                        <Route
-                            path="/products/:name"
-                            element={<ProductDetail />}
-                        />
-                        <Route
-                            path="/products/"
-                            element={<ProductListMore />}
-                        />
-                        <Route
-                            path="/cart"
-                            element={
-                                isAuthenticated ? (
-                                    <Cart />
+            <Routes>
+                <Route element={<NavAndFooter />}>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/products/:name" element={<ProductDetail />} />
+                    <Route path="/products/" element={<ProductListMore />} />
+                    <Route
+                        path="/cart"
+                        element={
+                            isAuthenticated ? (
+                                <Cart />
+                            ) : (
+                                <Navigate replace to="/auth" />
+                            )
+                        }
+                    />
+                    <Route
+                        path="/checkout"
+                        element={
+                            isAuthenticated ? (
+                                !isCheckout ? (
+                                    <Navigate replace to="/cart" />
                                 ) : (
-                                    <Navigate replace to="/auth" />
+                                    <Checkout />
                                 )
-                            }
-                        />
-                        <Route
-                            path="/checkout"
-                            element={
-                                isAuthenticated ? (
-                                    !isCheckout ? (
-                                        <Navigate replace to="/cart" />
-                                    ) : (
-                                        <Checkout />
-                                    )
-                                ) : (
-                                    <Navigate replace to="/auth" />
-                                )
-                            }
-                        />
-                        <Route
-                            path="/profile"
-                            element={
-                                isAuthenticated ? (
-                                    <Profile />
-                                ) : (
-                                    <Navigate replace to="/auth" />
-                                )
-                            }
-                        />
-                    </Route>
-                    <Route element={<NotNavAndFooter />}>
-                        <Route
-                            path="/auth"
-                            element={
-                                !isAuthenticated ? (
-                                    <Auth />
-                                ) : (
-                                    <Navigate replace to="/" />
-                                )
-                            }
-                        />
-                    </Route>
-                </Routes>
-            </main>
+                            ) : (
+                                <Navigate replace to="/auth" />
+                            )
+                        }
+                    />
+                    <Route
+                        path="/profile"
+                        element={
+                            isAuthenticated ? (
+                                <Profile />
+                            ) : (
+                                <Navigate replace to="/auth" />
+                            )
+                        }
+                    />
+                </Route>
+                <Route element={<NotNavAndFooter />}>
+                    <Route
+                        path="/auth"
+                        element={
+                            !isAuthenticated ? (
+                                <Auth />
+                            ) : (
+                                <Navigate replace to="/" />
+                            )
+                        }
+                    />
+                </Route>
+            </Routes>
         </div>
     );
 };

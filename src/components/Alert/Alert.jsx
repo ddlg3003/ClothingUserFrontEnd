@@ -10,7 +10,7 @@ const Alert = ({ message, openToast, handleCloseToast, severity, color }) => {
     return (
         <Snackbar 
             open={openToast} 
-            autoHideDuration={1000} 
+            autoHideDuration={2000} 
             onClose={handleCloseToast}
             anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         >

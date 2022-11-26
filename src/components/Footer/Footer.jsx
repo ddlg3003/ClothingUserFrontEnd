@@ -12,7 +12,7 @@ const Footer = () => {
 
     return (
         <>
-        <Container disableGutters maxWidth={false} >
+        <Container disableGutters maxWidth={false} sx={{ position: 'absolute', bottom: 0 }} >
           <Box className={classes.rootBox}>
             <Link href="#" color="inherit" underline="none">
               <img src={logo} alt="ADNCloth" width='110'  />
