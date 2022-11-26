@@ -8,13 +8,13 @@ export const clothing = createApi({
     endpoints: () => ({}),
 });
 
-// export const onQueryStartedHandler = async (dispatch, queryFulfilled, query) => {
-//     try {
-//         const { data } = await queryFulfilled;
-//         dispatch(
-//           clothing.util.updateQueryData(query, undefined, () => {
-//               return data;
-//           })
-//         );
-//     } catch {}
-// }
+export const onQueryStartedHandler = async (dispatch, queryFulfilled, query) => {
+    try {
+        const { data } = await queryFulfilled;
+        dispatch(
+          clothing.util.updateQueryData(query, undefined, () => {
+              return data;
+          })
+        );
+    } catch {}
+}

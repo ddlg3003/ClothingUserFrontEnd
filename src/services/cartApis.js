@@ -12,7 +12,9 @@ const cart = clothing.injectEndpoints({
                 method: 'POST',
                 body: formData,
             }),
-            providesTags: ['Cart'],
+            async onQueryStarted(body, { dispatch, queryFulfilled }) {
+                return onQueryStartedHandler(dispatch, queryFulfilled, 'getCart');
+            },
         }),
         decreaseCartItem: builder.mutation({
             query: (formData) => ({
@@ -20,7 +22,9 @@ const cart = clothing.injectEndpoints({
                 method: 'POST',
                 body: formData,
             }),
-            providesTags: ['Cart'],
+            async onQueryStarted(body, { dispatch, queryFulfilled }) {
+                return onQueryStartedHandler(dispatch, queryFulfilled, 'getCart');
+            },
         }),
         deleteCartItem: builder.mutation({
             query: (formData) => ({
