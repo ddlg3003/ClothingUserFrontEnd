@@ -11,6 +11,7 @@ const order = clothing.injectEndpoints({
                 method: 'POST',
                 body: formData,
             }),
+            invalidatesTags: ['Cart'],
         }),
     }),
     overrideExisting: false,
