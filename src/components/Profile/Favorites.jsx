@@ -6,13 +6,19 @@ import {
   Container,
   Divider,
   Grid,
-  Typography
+  Typography,
+  CircularProgress
 } from "@mui/material";
-import { Link } from 'react-router-dom';
+import { useGetUserWishlistQuery } from "../../services/wishlistApis";
+import { URL_REGEX } from "../../utils/globalVariables";
+import { Link } from "react-router-dom";
 
 import React from "react";
 
 const Favorites = (props) => {
+  const { data, isFetching } = useGetUserWishlistQuery();
+
+
   return (
     <>
       <Box sx={{ display: "flex", mb: 1 }}>
@@ -22,63 +28,81 @@ const Favorites = (props) => {
       </Box>
 
       <Divider />
-
-      <Container sx={{ mt: 3 }}>
-        {props.favorites.map((favorite, i) => (
-          <div key={i}>
-            <Box>
-              <Grid container spacing={2} sx={{ mb: 3, mt: 4 }}>
-              <Grid item xs container direction="column" spacing={2}  >
-              <Link to="/products/1" className={props.classes.favoriteItems}> 
-
-                  <Grid container spacing={2}>
-                    <Grid item>
-                      <img src={favorite.img} width={80} alt="" />
-                    </Grid>
-                    <Grid item xs={12} sm container>
-                      <Grid item xs container direction="column" spacing={2}>
-                        <Grid item xs>
-                          <Typography gutterBottom fontSize={18} sx={{ textDecoration:"none", color: "black!important" }}>
-                            {favorite.name}
-                          </Typography>
-                          <Typography 
-                            color="error" 
-                            fontWeight="bold"
-                            fontSize={20}
-                        >
-                            {
-                                Intl.NumberFormat('vi-VN', {
-                                style: 'currency',
-                                currency: 'VND',
-                                }).format(favorite.price)
-                            }
-                        </Typography>
+      {isFetching ? (
+        <Box display="flex" justifyContent="center">
+          <CircularProgress color="black" size="4rem" />
+        </Box>
+      ) : (
+        <Container sx={{ mt: 3 }}>
+          {data?.map((favorite, i) => (
+            <div key={i}>
+              <Box>
+                <Grid container spacing={2} sx={{ mb: 3, mt: 4 }}>
+                  <Grid item xs container direction="column" spacing={2}>
+                    <Link
+                      to={`/products/${favorite.name.replace(URL_REGEX, '-').toLowerCase()}-i.${favorite.productId}`} 
+                      className={props.classes.favoriteItems}
+                    >
+                      <Grid container spacing={2}>
+                        <Grid item>
+                          <img src={favorite?.image} width={80} alt="" />
+                        </Grid>
+                        <Grid item xs={12} sm container>
+                          <Grid
+                            item
+                            xs
+                            container
+                            direction="column"
+                            spacing={2}
+                          >
+                            <Grid item xs>
+                              <Typography
+                                gutterBottom
+                                fontSize={18}
+                                sx={{
+                                  textDecoration: "none",
+                                  color: "black!important",
+                                }}
+                              >
+                                {favorite?.name}
+                              </Typography>
+                              <Typography
+                                color="error"
+                                fontWeight="bold"
+                                fontSize={20}
+                              >
+                                {Intl.NumberFormat("vi-VN", {
+                                  style: "currency",
+                                  currency: "VND",
+                                }).format(favorite?.price)}
+                              </Typography>
+                            </Grid>
+                          </Grid>
                         </Grid>
                       </Grid>
-                    </Grid>
+                    </Link>
                   </Grid>
-              </Link>
+
+                  <Grid item>
+                    <Box>
+                      <Button
+                        color="black"
+                        variant="contained"
+                        component="label"
+                        style={{ color: "white" }}
+                        startIcon={<DeleteIcon />}
+                      >
+                        Bỏ thích
+                      </Button>
+                    </Box>{" "}
+                  </Grid>
                 </Grid>
-                
-                <Grid item>
-                  <Box>
-                    <Button
-                      color="black"
-                      variant="contained"
-                      component="label"
-                      style={{ color: "white" }}
-                      startIcon={<DeleteIcon />}
-                    >
-                      Bỏ thích
-                    </Button>
-                  </Box>{" "}
-                </Grid>
-              </Grid>
-            </Box>
-            <Divider />
-          </div>
-        ))}
-      </Container>
+              </Box>
+              <Divider />
+            </div>
+          ))}
+        </Container>
+      )}
     </>
   );
 };
