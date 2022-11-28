@@ -38,7 +38,7 @@ const Favorites = (props) => {
           <CircularProgress color="black" size="4rem" />
         </Box>
       ) : (
-        <Container sx={{ mt: 3, height: "460px", overflow: "scroll" }}>
+        <Container sx={{ mt: 3, height: "460px", overflow: data?.length > 2 ? "scroll" : "none" }}>
           {data?.map((favorite, i) => (
             <div key={i}>
               <Box>

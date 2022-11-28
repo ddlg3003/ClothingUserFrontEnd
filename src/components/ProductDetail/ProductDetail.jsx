@@ -490,7 +490,6 @@ const ProductDetail = () => {
                     <Typography
                         letterSpacing="2px"
                         fontSize="22px"
-                        fontWeight="normal"
                         paddingTop="36px"
                         display="block"
                     >
