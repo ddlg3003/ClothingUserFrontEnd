@@ -1,36 +1,43 @@
 import React, { useState, useEffect } from 'react';
-import { 
-    Typography, 
-    Button, 
-    Grid, 
-    Box, 
+import {
+    Typography,
+    Button,
+    Grid,
+    Box,
     CircularProgress,
-    Rating, 
-    TextField, 
-    Divider,
-    List,
-    ListItem,
-    ListItemAvatar,
-    ListItemText,
-    Avatar,
+    Rating,
+    TextField,
     Modal,
     Fade,
     useMediaQuery,
     Stack,
     Tooltip,
+    Divider,
 } from '@mui/material';
 import Alert from '../Alert/Alert';
+import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useGetProductQuery, useGetTypesQuery, useGetTypesPropsQuery } from '../../services/productApis';
-import { useAddItemToCartMutation, useGetCartQuery } from '../../services/cartApis';
+import {
+    useGetProductQuery,
+    useGetTypesQuery,
+    useGetTypesPropsQuery,
+} from '../../services/productApis';
+import {
+    useAddItemToCartMutation,
+    useGetCartQuery,
+} from '../../services/cartApis';
 import { updateCheckout } from '../../features/checkout';
-import { useToggleWishlistMutation, useGetUserWishlistQuery } from '../../services/wishlistApis';
+import {
+    useToggleWishlistMutation,
+    useGetUserWishlistQuery,
+} from '../../services/wishlistApis';
 import useStyles from './styles';
+import Comment from '../Comment/Comment';
 
 const ProductDetail = () => {
     const classes = useStyles();
@@ -38,21 +45,30 @@ const ProductDetail = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const testLength = 0;
+
     const id = parseInt(name.slice(name.indexOf('.') + 1));
 
-    const { isAuthenticated } = useSelector(state => state.auth);
+    const { isAuthenticated } = useSelector((state) => state.auth);
 
     const { data, isFetching } = useGetProductQuery(id);
-    const { data: typesData, isFetching: isFetchingTypes } = useGetTypesQuery(id);
-    const { data: typePropsData, isFetching: isFetchingTypeProps } = useGetTypesPropsQuery(id);
-    const { data: wishlistData, isFetching: isFetchingWishlist } = useGetUserWishlistQuery({ skip: !isAuthenticated });
+    const { data: typesData, isFetching: isFetchingTypes } =
+        useGetTypesQuery(id);
+    const { data: typePropsData, isFetching: isFetchingTypeProps } =
+        useGetTypesPropsQuery(id);
+    const { data: wishlistData, isFetching: isFetchingWishlist } =
+        useGetUserWishlistQuery({ skip: !isAuthenticated });
     const { data: dataCartList } = useGetCartQuery();
 
     const [toggleWishlist] = useToggleWishlistMutation();
 
     const [quantity, setQuantity] = useState(1);
     const [open, setOpen] = useState(false);
-    const [toastData, setToastData] = useState({ message: '', severity: '', color: '' });
+    const [toastData, setToastData] = useState({
+        message: '',
+        severity: '',
+        color: '',
+    });
     const [image, setImage] = useState(''); // set image for modal
     const [isSelectedImg, setIsSelectedImg] = useState(0);
     const [fav, setFav] = useState(false);
@@ -75,10 +91,12 @@ const ProductDetail = () => {
     }, [isFetching, data]);
 
     useEffect(() => {
-        if(isAuthenticated) {
+        if (isAuthenticated) {
             // Set fav on or off base on product in fav list, if product is in the list, then true, if
             // not then false
-            setFav(!!wishlistData?.find(wishlist => id === wishlist?.productId));
+            setFav(
+                !!wishlistData?.find((wishlist) => id === wishlist?.productId)
+            );
         }
     }, [wishlistData, isFetchingWishlist, isAuthenticated]);
 
@@ -86,93 +104,96 @@ const ProductDetail = () => {
     const [type, setType] = useState(undefined);
 
     useEffect(() => {
-        if(currentSize && currentColor) {
-            const type = typesData?.find(type => type.size === currentSize && type.color === currentColor);
+        if (currentSize && currentColor) {
+            const type = typesData?.find(
+                (type) =>
+                    type.size === currentSize && type.color === currentColor
+            );
             setType(type);
             setCurrentPrice(type.price);
 
-            if(quantity > type.quantity) { 
+            if (quantity > type.quantity) {
                 setQuantity(type.quantity);
             }
         }
     }, [currentColor, currentSize, isFetchingTypes, typesData, quantity]);
 
     const reduceQuantity = () => {
-        if(quantity > 0) {
-            setQuantity(prev => prev - 1);
+        if (quantity > 0) {
+            setQuantity((prev) => prev - 1);
         }
-    }
+    };
 
     const increaseQuantity = () => {
-        if(quantity < type?.quantity) {
-            setQuantity(prev => prev + 1);
+        if (quantity < type?.quantity) {
+            setQuantity((prev) => prev + 1);
         }
-    }
+    };
 
     const handleImage = (value) => {
         setImage(value);
         setOpen(true);
-    }
+    };
 
     const handleMainImg = (value, index) => {
         setMainImg(value);
         setIsSelectedImg(index);
-    }
+    };
 
-    const handleSubmit = async () => {     
+    const handleSubmit = async () => {
         const submitData = {
             size: currentSize,
             color: currentColor,
             quantity,
             product_id: id,
             price: currentPrice,
-    
-        };  
+        };
 
-        if(isAuthenticated) {
-            if(submitData.size && submitData.color && submitData.quantity) {
+        if (isAuthenticated) {
+            if (submitData.size && submitData.color && submitData.quantity) {
                 await addItemToCart(submitData);
 
                 // find the current product type in cart
-                const product = dataCartList?.find(item => (
-                  item?.size === currentSize && item?.product_id && item?.color === currentColor  
-                ));
+                const product = dataCartList?.find(
+                    (item) =>
+                        item?.size === currentSize &&
+                        item?.product_id &&
+                        item?.color === currentColor
+                );
 
                 // Check if current quantity + added quantity > max quantity --> show error message
-                if(product?.quantity + quantity > product?.availableQuantity) {
-                    setToastData(prev => ({ 
-                        ...prev, 
-                        message: `TRONG GIỎ HÀNG HIỆN ĐÃ CÓ ${product?.quantity} SẢN PHẨM. KHÔNG THỂ THÊM VÌ SẼ VƯỢT SỐ LƯỢNG MUA HÀNG`, 
-                        severity: 'error', 
-                        color: 'error' 
+                if (product?.quantity + quantity > product?.availableQuantity) {
+                    setToastData((prev) => ({
+                        ...prev,
+                        message: `TRONG GIỎ HÀNG HIỆN ĐÃ CÓ ${product?.quantity} SẢN PHẨM. KHÔNG THỂ THÊM VÌ SẼ VƯỢT SỐ LƯỢNG MUA HÀNG`,
+                        severity: 'error',
+                        color: 'error',
                     }));
                 } else {
-                    setToastData(prev => ({ 
-                        ...prev, 
-                        message: 'THÊM SẢN PHẨM VÀO GIỎ HÀNG THÀNH CÔNG', 
-                        severity: 'success', 
-                        color: 'black' 
+                    setToastData((prev) => ({
+                        ...prev,
+                        message: 'THÊM SẢN PHẨM VÀO GIỎ HÀNG THÀNH CÔNG',
+                        severity: 'success',
+                        color: 'black',
                     }));
                 }
-            }
-            else {
-                setToastData(prev => ({ 
-                    ...prev, 
-                    message: 'VUI LÒNG CHỌN ĐỦ THÔNG TIN SẢN PHẨM', 
-                    severity: 'info', 
-                    color: 'error' 
+            } else {
+                setToastData((prev) => ({
+                    ...prev,
+                    message: 'VUI LÒNG CHỌN ĐỦ THÔNG TIN SẢN PHẨM',
+                    severity: 'info',
+                    color: 'error',
                 }));
             }
             setOpenToast(true);
-        }
-        else navigate('/auth');
-    }
+        } else navigate('/auth');
+    };
 
     const handleCloseToast = (event, reason) => {
         if (reason === 'clickaway') {
-          return;
+            return;
         }
-    
+
         setOpenToast(false);
     };
 
@@ -188,41 +209,48 @@ const ProductDetail = () => {
         };
 
         dispatch(updateCheckout());
-        if(isAuthenticated) {
-            if(submitData.size && submitData.color && submitData.quantity) {
-                sessionStorage.setItem("cartItems", JSON.stringify([submitData]));
+        if (isAuthenticated) {
+            if (submitData.size && submitData.color && submitData.quantity) {
+                sessionStorage.setItem(
+                    'cartItems',
+                    JSON.stringify([submitData])
+                );
                 navigate('/checkout');
-            }
-            else {
-                setToastData(prev => ({ ...prev, message: 'VUI LÒNG CHỌN ĐỦ THÔNG TIN SẢN PHẨM', severity: 'info', color: 'error' }));
+            } else {
+                setToastData((prev) => ({
+                    ...prev,
+                    message: 'VUI LÒNG CHỌN ĐỦ THÔNG TIN SẢN PHẨM',
+                    severity: 'info',
+                    color: 'error',
+                }));
                 setOpenToast(true);
             }
         } else navigate('/auth');
-    }
+    };
 
     const handleFavorite = async () => {
-        if(isAuthenticated) {
+        if (isAuthenticated) {
             await toggleWishlist(id);
         } else navigate('/auth');
-    }
+    };
 
-    if(isFetching && isFetchingTypes && isFetchingTypeProps) {
+    if (isFetching && isFetchingTypes && isFetchingTypeProps) {
         return (
             <Box display="flex" justifyContent="center">
                 <CircularProgress color="black" size="6rem" />
             </Box>
         );
-    }  
+    }
 
     return (
         <Grid container className={classes.container}>
             <Grid item container justifyContent="center" spacing={3}>
                 <Grid item style={{ position: 'relative' }}>
-                    <img 
-                        className={classes.image} 
+                    <img
+                        className={classes.image}
                         src={mainImg}
                         onClick={(e) => handleImage(mainImg)}
-                        alt={''}
+                        alt={'product'}
                     />
                     <div className={classes.subImageContainer}>
                         {/* {product.images.map((image, i) => (
@@ -237,12 +265,13 @@ const ProductDetail = () => {
                                 }}
                             />
                         ))} */}
-                        <img 
-                            className={classes.subImage} 
+                        <img
+                            className={classes.subImage}
                             src={data?.image}
+                            alt={'product'}
                             onClick={(e) => handleMainImg(data?.image, 0)}
-                            style={{ 
-                                opacity: isSelectedImg === 0 && '1', 
+                            style={{
+                                opacity: isSelectedImg === 0 && '1',
                                 borderColor: isSelectedImg === 0 && 'black',
                             }}
                         />
@@ -250,42 +279,52 @@ const ProductDetail = () => {
                 </Grid>
                 <Grid item>
                     <Typography
-                        fontWeight="normal" 
-                        variant="title1" 
+                        fontWeight="normal"
+                        variant="title1"
                         fontSize={28}
                     >
-                       {data?.name}
+                        {data?.name}
                     </Typography>
                     <div>
-                        <Rating readOnly value={data?.avgRating ? data?.avgRating : 0} precision={0.1} size="medium" /> 
+                        <Rating
+                            readOnly
+                            value={data?.avgRating ? data?.avgRating : 0}
+                            precision={0.1}
+                            size="medium"
+                        />
                     </div>
                     <div>
-                        <Typography 
-                            color="error" 
+                        <Typography
+                            color="error"
                             fontWeight="bold"
                             fontSize={18}
                         >
-                            {
-                                Intl.NumberFormat('vi-VN', {
+                            {Intl.NumberFormat('vi-VN', {
                                 style: 'currency',
                                 currency: 'VND',
-                                }).format(currentPrice)
-                            }
+                            }).format(currentPrice)}
                         </Typography>
                     </div>
                     <div style={{ marginTop: '20px' }}>
                         <Typography
-                            fontWeight="normal" 
-                            variant="title1" 
+                            fontWeight="normal"
+                            variant="title1"
                             fontSize={20}
                         >
                             Màu sắc:
                         </Typography>
                         <div className={classes.wrapper}>
                             {typePropsData?.colorList.map((color, i) => (
-                                <div key={color} 
-                                    className={classes.colorItem} 
-                                    style={{ background: `#${color}`, border: `#${color}` === `#${currentColor}` && '2px solid blue' }} 
+                                <div
+                                    key={color}
+                                    className={classes.colorItem}
+                                    style={{
+                                        background: `#${color}`,
+                                        border:
+                                            `#${color}` ===
+                                                `#${currentColor}` &&
+                                            '2px solid blue',
+                                    }}
                                     onClick={() => setCurrentColor(color)}
                                 />
                             ))}
@@ -293,17 +332,21 @@ const ProductDetail = () => {
                     </div>
                     <div style={{ marginTop: '20px' }}>
                         <Typography
-                            fontWeight="normal" 
-                            variant="title1" 
+                            fontWeight="normal"
+                            variant="title1"
                             fontSize={20}
                         >
-                            Kích cỡ: 
+                            Kích cỡ:
                         </Typography>
                         <div className={classes.wrapper}>
                             {typePropsData?.sizeList.map((size, i) => (
-                                <div 
-                                    className={classes.sizeItem} 
-                                    style={{ border: size === currentSize && '2px solid blue' }}
+                                <div
+                                    className={classes.sizeItem}
+                                    style={{
+                                        border:
+                                            size === currentSize &&
+                                            '2px solid blue',
+                                    }}
                                     key={size}
                                     onClick={() => setCurrentSize(size)}
                                 >
@@ -314,158 +357,163 @@ const ProductDetail = () => {
                     </div>
                     <div style={{ marginTop: '20px' }}>
                         <Typography
-                            fontWeight="normal" 
-                            variant="title1" 
+                            fontWeight="normal"
+                            variant="title1"
                             fontSize={20}
                             marginBottom={4}
                         >
-                            Số lượng {type ? `(Còn ${type.quantity} sản phẩm)` : ''}:
+                            Số lượng{' '}
+                            {type ? `(Còn ${type.quantity} sản phẩm)` : ''}:
                         </Typography>
                         <div className={classes.wrapper}>
-                            <Button color="black" onClick={reduceQuantity}><RemoveIcon /></Button>
-                            <TextField 
-                                value={quantity} 
-                                className={classes.input} 
+                            <Button color="black" onClick={reduceQuantity}>
+                                <RemoveIcon />
+                            </Button>
+                            <TextField
+                                value={quantity}
+                                className={classes.input}
                                 color="black"
                             />
-                            <Button color="black" onClick={increaseQuantity}><AddIcon /></Button>
+                            <Button color="black" onClick={increaseQuantity}>
+                                <AddIcon />
+                            </Button>
                         </div>
                     </div>
                     <div style={{ marginTop: '40px' }}>
-                        <Stack spacing={2} direction={isMobile ? 'column' : 'row'}>
-                            <Button 
-                                variant="contained" 
-                                color="black" 
-                                style={{ color: 'white', padding: '20px' }} 
+                        <Stack
+                            spacing={2}
+                            direction={isMobile ? 'column' : 'row'}
+                        >
+                            <Button
+                                variant="contained"
+                                color="black"
+                                style={{ color: 'white', padding: '20px' }}
                                 size="large"
                                 onClick={handleSubmit}
                             >
                                 Thêm vào giỏ
                             </Button>
-                            <Button 
-                                variant="contained" 
-                                color="error" 
-                                style={{ color: 'white', padding: '20px'}} 
+                            <Button
+                                variant="contained"
+                                color="error"
+                                style={{ color: 'white', padding: '20px' }}
                                 size="large"
                                 onClick={handleBuyNow}
                             >
                                 Mua ngay
                             </Button>
                             <Tooltip title={!fav ? 'Thích' : 'Bỏ thích'}>
-                                <Button 
-                                    variant="outlined" 
+                                <Button
+                                    variant="outlined"
                                     color="error"
-                                    style={{ padding: '20px'}} 
+                                    style={{ padding: '20px' }}
                                     size="large"
                                     onClick={handleFavorite}
                                 >
-                                    {!fav ? <FavoriteBorderIcon /> : <FavoriteIcon />}
+                                    {!fav ? (
+                                        <FavoriteBorderIcon />
+                                    ) : (
+                                        <FavoriteIcon />
+                                    )}
                                 </Button>
                             </Tooltip>
                         </Stack>
-                        <Alert 
+                        <Alert
                             message={toastData.message}
-                            openToast={openToast} 
-                            handleCloseToast={handleCloseToast} 
+                            openToast={openToast}
+                            handleCloseToast={handleCloseToast}
                             color={toastData.color}
                             severity={toastData.severity}
                         />
                     </div>
                 </Grid>
             </Grid>
-            <Grid item container marginTop="40px" justifyContent="center" textAlign="center" direction="column"> 
-                <Grid item>
-                    <Typography 
-                        letterSpacing="2px" 
-                        fontSize="25px" 
-                        fontWeight="normal" 
-                        paddingTop="40px"
-                    >
-                        CHI TIẾT SẢN PHẨM
-                    </Typography> 
-                </Grid>
-                <Grid item>
-                    <Typography 
-                        letterSpacing="2px" 
-                        fontSize="25px" 
-                        fontWeight="normal" 
-                        paddingBottom="30px" 
-                        paddingTop="40px"
-                    >
-                        { data?.description }
-                    </Typography> 
-                </Grid>
-            </Grid>
-            <Grid 
-                item 
-                container 
-                marginTop="40px" 
-                justifyContent="center" 
-                textAlign="center" 
-                alignItems="center" 
+            <Grid
+                item
+                container
+                marginTop="40px"
+                justifyContent="center"
+                textAlign="center"
                 direction="column"
             >
                 <Grid item>
-                    <Typography 
-                        letterSpacing="2px" 
-                        fontSize="25px" 
-                        fontWeight="normal" 
+                    <Typography
+                        letterSpacing="2px"
+                        fontSize="25px"
+                        fontWeight="normal"
                         paddingTop="40px"
+                    >
+                        CHI TIẾT SẢN PHẨM
+                    </Typography>
+                </Grid>
+                <Grid item>
+                    <Typography
+                        letterSpacing="2px"
+                        fontSize="20px"
+                        fontWeight="normal"
+                        paddingBottom="30px"
+                        paddingTop="40px"
+                    >
+                        {data?.description}
+                    </Typography>
+                </Grid>
+                <Divider />
+            </Grid>
+            <Grid
+                item
+                container
+                marginTop="40px"
+                justifyContent="center"
+                textAlign="center"
+                alignItems="center"
+                direction="column"
+            >
+                <Grid item>
+                    <Typography
+                        letterSpacing="2px"
+                        fontSize="25px"
+                        fontWeight="normal"
+                        paddingTop="36px"
                         display="block"
                     >
                         ĐÁNH GIÁ
-                    </Typography> 
+                    </Typography>
                 </Grid>
-                <Grid item>
-                    <List className={classes.commentList}>
-                        <Divider className={classes.divider} />
-                        <ListItem alignItems="flex-start">
-                            <ListItemAvatar>
-                                <Avatar alt="Dante" src="https://yt3.ggpht.com/yti/AJo0G0mXhiLDl1CtA0Q65KQgegDt_mRqPuePpPzUk6ao=s88-c-k-c0x00ffffff-no-rj-mo" />
-                            </ListItemAvatar>
-                            <ListItemText primary="Dang" secondary={
-                                    <React.Fragment>
-                                        {'28-10-2022'}
-                                        <Typography 
-                                            letterSpacing="1px" 
-                                            fontSize="16px" 
-                                            fontWeight="normal" 
-                                            paddingTop="10px" 
-                                            component="span"
-                                            color="text.primary"
-                                            display="block"
-                                        >
-                                            Chất lượng tốt
-                                        </Typography>
-                                    </React.Fragment>
-                                } 
-                            />
-                            <div style={{ marginTop: '6px' }}>
-                                <Rating readOnly value={4.5} precision={0.1} size="small" /> 
-                            </div>
-                        </ListItem>
-                        <Divider className={classes.divider} />
-                    </List>       
+                <Grid
+                    item
+                    sx={{
+                        height: '300px',
+                        overflow:
+                            testLength && testLength > 3 ? 'scroll' : 'none',
+                    }}
+                >
+                    <Typography
+                        letterSpacing="2px"
+                        fontSize="22px"
+                        fontWeight="normal"
+                        paddingTop="36px"
+                        display="block"
+                    >
+                        Chưa có đánh giá nào
+                    </Typography>
+                    <SentimentDissatisfiedIcon fontSize="large" />
                 </Grid>
             </Grid>
             <Modal
                 closeAfterTransition
                 className={classes.modal}
                 BackdropProps={{
-                    timeout: 500
+                    timeout: 500,
                 }}
                 open={open}
                 onClose={() => setOpen(false)}
-            >   
+            >
                 <Fade in={open} timeout={500} style={{ outline: 'none' }}>
-                    <img
-                        src={image}
-                        className={classes.image} 
-                    />
+                    <img src={image} className={classes.image} />
                 </Fade>
             </Modal>
         </Grid>
-    )
-}
+    );
+};
 
 export default ProductDetail;
