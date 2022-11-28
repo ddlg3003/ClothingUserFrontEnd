@@ -59,8 +59,8 @@ const Orders = (props) => {
               <Container sx={{ mt: 0, height: "460px", overflow: props.orders?.length > 0 ? "scroll" : "none" }}>
                 {props.orders?.map((order, i) => (
                   <div key={i} style={{ marginTop: i > 0 ? "40px" : "0px" }}>
-                    {order.transactionMapper.map((product) => (
-                      <Box key={i}>
+                    {order.transactionMapper.map((product, proIndex) => (
+                      <Box key={`pro${proIndex}`}>
                         <Grid container spacing={2} sx={{ mb: 0, mt: 1 }}>
                           <Grid
                             item
@@ -192,9 +192,9 @@ const Orders = (props) => {
                     (order) => order.ordStatus === ORDER_STATUS[0].status
                   )
                   .map((order, i) => (
-                    <div key={i} style={{ marginTop: "40px" }}>
-                      {order.transactionMapper.map((product) => (
-                        <Box key={i}>
+                    <div key={i} style={{ marginTop: i > 0 ? "40px" : "0px" }}>
+                      {order.transactionMapper.map((product, proIndex) => (
+                        <Box key={`pro${proIndex}_pend`}>
                           <Grid container spacing={2} sx={{ mb: 0, mt: 1 }}>
                             <Grid
                               item
@@ -326,9 +326,9 @@ const Orders = (props) => {
                     (order) => order.ordStatus === ORDER_STATUS[1].status
                   )
                   .map((order, i) => (
-                    <div key={i} style={{ marginTop: "40px" }}>
-                      {order.transactionMapper.map((product) => (
-                        <Box key={i}>
+                    <div key={i} style={{ marginTop: i > 0 ? "40px" : "0px" }}>
+                      {order.transactionMapper.map((product, proIndex) => (
+                        <Box key={`pro${proIndex}_deli`}>
                           <Grid container spacing={2} sx={{ mb: 0, mt: 1 }}>
                             <Grid
                               item
@@ -460,9 +460,9 @@ const Orders = (props) => {
                     (order) => order.ordStatus === ORDER_STATUS[2].status
                   )
                   .map((order, i) => (
-                    <div key={i} style={{ marginTop: "40px" }}>
-                      {order.transactionMapper.map((product) => (
-                        <Box key={i}>
+                    <div key={i} style={{ marginTop: i > 0 ? "40px" : "0px" }}>
+                      {order.transactionMapper.map((product, proIndex) => (
+                        <Box key={`pro${proIndex}_done`}>
                           <Grid container spacing={2} sx={{ mb: 0, mt: 1 }}>
                             <Grid
                               item
@@ -600,9 +600,9 @@ const Orders = (props) => {
                     (order) => order.ordStatus === ORDER_STATUS[3].status
                   )
                   .map((order, i) => (
-                    <div key={i} style={{ marginTop: "40px" }}>
-                      {order.transactionMapper.map((product) => (
-                        <Box key={i}>
+                    <div key={i} style={{ marginTop: i > 0 ? "40px" : "0px" }}>
+                      {order.transactionMapper.map((product, proIndex) => (
+                        <Box key={`pro${proIndex}_can`}>
                           <Grid container spacing={2} sx={{ mb: 0, mt: 1 }}>
                             <Grid
                               item
