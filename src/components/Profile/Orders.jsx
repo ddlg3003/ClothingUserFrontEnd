@@ -58,7 +58,7 @@ const Orders = (props) => {
             <TabPanel value="1">
               <Container sx={{ mt: 0, height: "460px", overflow: props.orders?.length > 0 ? "scroll" : "none" }}>
                 {props.orders?.map((order, i) => (
-                  <div key={i} style={{ marginTop: "40px" }}>
+                  <div key={i} style={{ marginTop: i > 0 ? "40px" : "0px" }}>
                     {order.transactionMapper.map((product) => (
                       <Box key={i}>
                         <Grid container spacing={2} sx={{ mb: 0, mt: 1 }}>
