@@ -1,259 +1,256 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
-    Typography,
-    Button,
-    Grid,
-    Box,
-    CircularProgress,
-    Rating,
-    TextField,
-    Modal,
-    Fade,
-    useMediaQuery,
-    Stack,
-    Tooltip,
-    Divider,
-} from '@mui/material';
-import Alert from '../Alert/Alert';
-import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied';
-import RemoveIcon from '@mui/icons-material/Remove';
-import AddIcon from '@mui/icons-material/Add';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+  Typography,
+  Button,
+  Grid,
+  Box,
+  CircularProgress,
+  Rating,
+  TextField,
+  Modal,
+  Fade,
+  useMediaQuery,
+  Stack,
+  Tooltip,
+  Divider,
+} from "@mui/material";
+import Alert from "../Alert/Alert";
+import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied";
+import RemoveIcon from "@mui/icons-material/Remove";
+import AddIcon from "@mui/icons-material/Add";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 import {
-    useGetProductQuery,
-    useGetTypesQuery,
-    useGetTypesPropsQuery,
-} from '../../services/productApis';
+  useGetProductQuery,
+  useGetTypesQuery,
+  useGetTypesPropsQuery,
+} from "../../services/productApis";
 import {
-    useAddItemToCartMutation,
-    useGetCartQuery,
-} from '../../services/cartApis';
-import { updateCheckout } from '../../features/checkout';
+  useAddItemToCartMutation,
+  useGetCartQuery,
+} from "../../services/cartApis";
+import { updateCheckout } from "../../features/checkout";
 import {
-    useToggleWishlistMutation,
-    useGetUserWishlistQuery,
-} from '../../services/wishlistApis';
-import useStyles from './styles';
-import Comment from '../Comment/Comment';
+  useToggleWishlistMutation,
+  useGetUserWishlistQuery,
+} from "../../services/wishlistApis";
+import useStyles from "./styles";
+import Comment from "../Comment/Comment";
+import { useGetCommentsByProductIdQuery } from "../../services/commentApis";
 
 const ProductDetail = () => {
-    const classes = useStyles();
-    const { name } = useParams();
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+  const classes = useStyles();
+  const { name } = useParams();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-    const testLength = 0;
+  const testLength = 0;
 
-    const id = parseInt(name.slice(name.indexOf('.') + 1));
+  const id = parseInt(name.slice(name.indexOf(".") + 1));
 
-    const { isAuthenticated } = useSelector((state) => state.auth);
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
-    const { data, isFetching } = useGetProductQuery(id);
-    const { data: typesData, isFetching: isFetchingTypes } =
-        useGetTypesQuery(id);
-    const { data: typePropsData, isFetching: isFetchingTypeProps } =
-        useGetTypesPropsQuery(id);
-    const { data: wishlistData, isFetching: isFetchingWishlist } =
-        useGetUserWishlistQuery({ skip: !isAuthenticated });
-    const { data: dataCartList } = useGetCartQuery();
+  const { data, isFetching } = useGetProductQuery(id);
+  const { data: typesData, isFetching: isFetchingTypes } = useGetTypesQuery(id);
+  const { data: typePropsData, isFetching: isFetchingTypeProps } =
+    useGetTypesPropsQuery(id);
+  const { data: wishlistData, isFetching: isFetchingWishlist } =
+    useGetUserWishlistQuery({ skip: !isAuthenticated });
+  const { data: dataCartList } = useGetCartQuery();
 
-    const [toggleWishlist] = useToggleWishlistMutation();
+  const { data: commentsData, isFetching: isFetchingComments } =
+    useGetCommentsByProductIdQuery(id);
 
-    const [quantity, setQuantity] = useState(1);
-    const [open, setOpen] = useState(false);
-    const [toastData, setToastData] = useState({
-        message: '',
-        severity: '',
-        color: '',
-    });
-    const [image, setImage] = useState(''); // set image for modal
-    const [isSelectedImg, setIsSelectedImg] = useState(0);
-    const [fav, setFav] = useState(false);
+  const [toggleWishlist] = useToggleWishlistMutation();
 
-    const isMobile = useMediaQuery('(max-width: 800px)');
+  const [quantity, setQuantity] = useState(1);
+  const [open, setOpen] = useState(false);
+  const [toastData, setToastData] = useState({
+    message: "",
+    severity: "",
+    color: "",
+  });
+  const [image, setImage] = useState(""); // set image for modal
+  const [isSelectedImg, setIsSelectedImg] = useState(0);
+  const [fav, setFav] = useState(false);
 
-    // Set image state for product image
-    const [mainImg, setMainImg] = useState('');
-    const [currentColor, setCurrentColor] = useState('');
-    const [currentSize, setCurrentSize] = useState(null);
-    const [openToast, setOpenToast] = useState(false);
-    const [currentPrice, setCurrentPrice] = useState(0);
+  const isMobile = useMediaQuery("(max-width: 800px)");
 
-    const [addItemToCart] = useAddItemToCartMutation();
+  // Set image state for product image
+  const [mainImg, setMainImg] = useState("");
+  const [currentColor, setCurrentColor] = useState("");
+  const [currentSize, setCurrentSize] = useState(null);
+  const [openToast, setOpenToast] = useState(false);
+  const [currentPrice, setCurrentPrice] = useState(0);
 
-    // Run the callback for changing the initial main image when isFetching changes
-    useEffect(() => {
-        setMainImg(data?.image);
-        setCurrentPrice(data?.price);
-    }, [isFetching, data]);
+  const [addItemToCart] = useAddItemToCartMutation();
 
-    useEffect(() => {
-        if (isAuthenticated) {
-            // Set fav on or off base on product in fav list, if product is in the list, then true, if
-            // not then false
-            setFav(
-                !!wishlistData?.find((wishlist) => id === wishlist?.productId)
-            );
-        }
-    }, [wishlistData, isFetchingWishlist, isAuthenticated]);
+  // Run the callback for changing the initial main image when isFetching changes
+  useEffect(() => {
+    setMainImg(data?.image);
+    setCurrentPrice(data?.price);
+  }, [isFetching, data]);
 
-    // Find type quantity for current color and size
-    const [type, setType] = useState(undefined);
+  useEffect(() => {
+    if (isAuthenticated) {
+      // Set fav on or off base on product in fav list, if product is in the list, then true, if
+      // not then false
+      setFav(!!wishlistData?.find((wishlist) => id === wishlist?.productId));
+    }
+  }, [wishlistData, isFetchingWishlist, isAuthenticated]);
 
-    useEffect(() => {
-        if (currentSize && currentColor) {
-            const type = typesData?.find(
-                (type) =>
-                    type.size === currentSize && type.color === currentColor
-            );
-            setType(type);
-            setCurrentPrice(type.price);
+  // Find type quantity for current color and size
+  const [type, setType] = useState(undefined);
 
-            if (quantity > type.quantity) {
-                setQuantity(type.quantity);
-            }
-        }
-    }, [currentColor, currentSize, isFetchingTypes, typesData, quantity]);
+  useEffect(() => {
+    if (currentSize && currentColor) {
+      const type = typesData?.find(
+        (type) => type.size === currentSize && type.color === currentColor
+      );
+      setType(type);
+      setCurrentPrice(type.price);
 
-    const reduceQuantity = () => {
-        if (quantity > 0) {
-            setQuantity((prev) => prev - 1);
-        }
+      if (quantity > type.quantity) {
+        setQuantity(type.quantity);
+      }
+    }
+  }, [currentColor, currentSize, isFetchingTypes, typesData, quantity]);
+
+  const reduceQuantity = () => {
+    if (quantity > 0) {
+      setQuantity((prev) => prev - 1);
+    }
+  };
+
+  const increaseQuantity = () => {
+    if (quantity < type?.quantity) {
+      setQuantity((prev) => prev + 1);
+    }
+  };
+
+  const handleImage = (value) => {
+    setImage(value);
+    setOpen(true);
+  };
+
+  const handleMainImg = (value, index) => {
+    setMainImg(value);
+    setIsSelectedImg(index);
+  };
+
+  const handleSubmit = async () => {
+    const submitData = {
+      size: currentSize,
+      color: currentColor,
+      quantity,
+      product_id: id,
+      price: currentPrice,
     };
 
-    const increaseQuantity = () => {
-        if (quantity < type?.quantity) {
-            setQuantity((prev) => prev + 1);
-        }
-    };
+    if (isAuthenticated) {
+      if (submitData.size && submitData.color && submitData.quantity) {
+        await addItemToCart(submitData);
 
-    const handleImage = (value) => {
-        setImage(value);
-        setOpen(true);
-    };
-
-    const handleMainImg = (value, index) => {
-        setMainImg(value);
-        setIsSelectedImg(index);
-    };
-
-    const handleSubmit = async () => {
-        const submitData = {
-            size: currentSize,
-            color: currentColor,
-            quantity,
-            product_id: id,
-            price: currentPrice,
-        };
-
-        if (isAuthenticated) {
-            if (submitData.size && submitData.color && submitData.quantity) {
-                await addItemToCart(submitData);
-
-                // find the current product type in cart
-                const product = dataCartList?.find(
-                    (item) =>
-                        item?.size === currentSize &&
-                        item?.product_id &&
-                        item?.color === currentColor
-                );
-
-                // Check if current quantity + added quantity > max quantity --> show error message
-                if (product?.quantity + quantity > product?.availableQuantity) {
-                    setToastData((prev) => ({
-                        ...prev,
-                        message: `TRONG GIỎ HÀNG HIỆN ĐÃ CÓ ${product?.quantity} SẢN PHẨM. KHÔNG THỂ THÊM VÌ SẼ VƯỢT SỐ LƯỢNG MUA HÀNG`,
-                        severity: 'error',
-                        color: 'error',
-                    }));
-                } else {
-                    setToastData((prev) => ({
-                        ...prev,
-                        message: 'THÊM SẢN PHẨM VÀO GIỎ HÀNG THÀNH CÔNG',
-                        severity: 'success',
-                        color: 'black',
-                    }));
-                }
-            } else {
-                setToastData((prev) => ({
-                    ...prev,
-                    message: 'VUI LÒNG CHỌN ĐỦ THÔNG TIN SẢN PHẨM',
-                    severity: 'info',
-                    color: 'error',
-                }));
-            }
-            setOpenToast(true);
-        } else navigate('/auth');
-    };
-
-    const handleCloseToast = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-
-        setOpenToast(false);
-    };
-
-    const handleBuyNow = () => {
-        const submitData = {
-            size: currentSize,
-            color: currentColor,
-            quantity,
-            product_id: id,
-            price: currentPrice,
-            proImage: mainImg,
-            proName: data?.name,
-        };
-
-        dispatch(updateCheckout());
-        if (isAuthenticated) {
-            if (submitData.size && submitData.color && submitData.quantity) {
-                sessionStorage.setItem(
-                    'cartItems',
-                    JSON.stringify([submitData])
-                );
-                navigate('/checkout');
-            } else {
-                setToastData((prev) => ({
-                    ...prev,
-                    message: 'VUI LÒNG CHỌN ĐỦ THÔNG TIN SẢN PHẨM',
-                    severity: 'info',
-                    color: 'error',
-                }));
-                setOpenToast(true);
-            }
-        } else navigate('/auth');
-    };
-
-    const handleFavorite = async () => {
-        if (isAuthenticated) {
-            await toggleWishlist(id);
-        } else navigate('/auth');
-    };
-
-    if (isFetching && isFetchingTypes && isFetchingTypeProps) {
-        return (
-            <Box display="flex" justifyContent="center">
-                <CircularProgress color="black" size="6rem" />
-            </Box>
+        // find the current product type in cart
+        const product = dataCartList?.find(
+          (item) =>
+            item?.size === currentSize &&
+            item?.product_id &&
+            item?.color === currentColor
         );
+
+        // Check if current quantity + added quantity > max quantity --> show error message
+        if (product?.quantity + quantity > product?.availableQuantity) {
+          setToastData((prev) => ({
+            ...prev,
+            message: `TRONG GIỎ HÀNG HIỆN ĐÃ CÓ ${product?.quantity} SẢN PHẨM. KHÔNG THỂ THÊM VÌ SẼ VƯỢT SỐ LƯỢNG MUA HÀNG`,
+            severity: "error",
+            color: "error",
+          }));
+        } else {
+          setToastData((prev) => ({
+            ...prev,
+            message: "THÊM SẢN PHẨM VÀO GIỎ HÀNG THÀNH CÔNG",
+            severity: "success",
+            color: "black",
+          }));
+        }
+      } else {
+        setToastData((prev) => ({
+          ...prev,
+          message: "VUI LÒNG CHỌN ĐỦ THÔNG TIN SẢN PHẨM",
+          severity: "info",
+          color: "error",
+        }));
+      }
+      setOpenToast(true);
+    } else navigate("/auth");
+  };
+
+  const handleCloseToast = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
     }
 
+    setOpenToast(false);
+  };
+
+  const handleBuyNow = () => {
+    const submitData = {
+      size: currentSize,
+      color: currentColor,
+      quantity,
+      product_id: id,
+      price: currentPrice,
+      proImage: mainImg,
+      proName: data?.name,
+    };
+
+    dispatch(updateCheckout());
+    if (isAuthenticated) {
+      if (submitData.size && submitData.color && submitData.quantity) {
+        sessionStorage.setItem("cartItems", JSON.stringify([submitData]));
+        navigate("/checkout");
+      } else {
+        setToastData((prev) => ({
+          ...prev,
+          message: "VUI LÒNG CHỌN ĐỦ THÔNG TIN SẢN PHẨM",
+          severity: "info",
+          color: "error",
+        }));
+        setOpenToast(true);
+      }
+    } else navigate("/auth");
+  };
+
+  const handleFavorite = async () => {
+    if (isAuthenticated) {
+      await toggleWishlist(id);
+    } else navigate("/auth");
+  };
+
+  if (isFetching && isFetchingTypes && isFetchingTypeProps) {
     return (
-        <Grid container className={classes.container}>
-            <Grid item container justifyContent="center" spacing={3}>
-                <Grid item style={{ position: 'relative' }}>
-                    <img
-                        className={classes.image}
-                        src={mainImg}
-                        onClick={(e) => handleImage(mainImg)}
-                        alt={'product'}
-                    />
-                    <div className={classes.subImageContainer}>
-                        {/* {product.images.map((image, i) => (
+      <Box display="flex" justifyContent="center">
+        <CircularProgress color="black" size="6rem" />
+      </Box>
+    );
+  }
+
+  return (
+    <Grid container className={classes.container}>
+      <Grid item container justifyContent="center" spacing={3}>
+        <Grid item style={{ position: "relative" }}>
+          <img
+            className={classes.image}
+            src={mainImg}
+            onClick={(e) => handleImage(mainImg)}
+            alt={"product"}
+          />
+          <div className={classes.subImageContainer}>
+            {/* {product.images.map((image, i) => (
                             <img 
                                 key={i}
                                 className={classes.subImage} 
@@ -265,254 +262,233 @@ const ProductDetail = () => {
                                 }}
                             />
                         ))} */}
-                        <img
-                            className={classes.subImage}
-                            src={data?.image}
-                            alt={'product'}
-                            onClick={(e) => handleMainImg(data?.image, 0)}
-                            style={{
-                                opacity: isSelectedImg === 0 && '1',
-                                borderColor: isSelectedImg === 0 && 'black',
-                            }}
-                        />
-                    </div>
-                </Grid>
-                <Grid item>
-                    <Typography
-                        fontWeight="normal"
-                        variant="title1"
-                        fontSize={28}
-                    >
-                        {data?.name}
-                    </Typography>
-                    <div>
-                        <Rating
-                            readOnly
-                            value={data?.avgRating ? data?.avgRating : 0}
-                            precision={0.1}
-                            size="medium"
-                        />
-                    </div>
-                    <div>
-                        <Typography
-                            color="error"
-                            fontWeight="bold"
-                            fontSize={18}
-                        >
-                            {Intl.NumberFormat('vi-VN', {
-                                style: 'currency',
-                                currency: 'VND',
-                            }).format(currentPrice)}
-                        </Typography>
-                    </div>
-                    <div style={{ marginTop: '20px' }}>
-                        <Typography
-                            fontWeight="normal"
-                            variant="title1"
-                            fontSize={20}
-                        >
-                            Màu sắc:
-                        </Typography>
-                        <div className={classes.wrapper}>
-                            {typePropsData?.colorList.map((color, i) => (
-                                <div
-                                    key={color}
-                                    className={classes.colorItem}
-                                    style={{
-                                        background: `#${color}`,
-                                        border:
-                                            `#${color}` ===
-                                                `#${currentColor}` &&
-                                            '2px solid blue',
-                                    }}
-                                    onClick={() => setCurrentColor(color)}
-                                />
-                            ))}
-                        </div>
-                    </div>
-                    <div style={{ marginTop: '20px' }}>
-                        <Typography
-                            fontWeight="normal"
-                            variant="title1"
-                            fontSize={20}
-                        >
-                            Kích cỡ:
-                        </Typography>
-                        <div className={classes.wrapper}>
-                            {typePropsData?.sizeList.map((size, i) => (
-                                <div
-                                    className={classes.sizeItem}
-                                    style={{
-                                        border:
-                                            size === currentSize &&
-                                            '2px solid blue',
-                                    }}
-                                    key={size}
-                                    onClick={() => setCurrentSize(size)}
-                                >
-                                    {size}
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                    <div style={{ marginTop: '20px' }}>
-                        <Typography
-                            fontWeight="normal"
-                            variant="title1"
-                            fontSize={20}
-                            marginBottom={4}
-                        >
-                            Số lượng{' '}
-                            {type ? `(Còn ${type.quantity} sản phẩm)` : ''}:
-                        </Typography>
-                        <div className={classes.wrapper}>
-                            <Button color="black" onClick={reduceQuantity}>
-                                <RemoveIcon />
-                            </Button>
-                            <TextField
-                                value={quantity}
-                                className={classes.input}
-                                color="black"
-                            />
-                            <Button color="black" onClick={increaseQuantity}>
-                                <AddIcon />
-                            </Button>
-                        </div>
-                    </div>
-                    <div style={{ marginTop: '40px' }}>
-                        <Stack
-                            spacing={2}
-                            direction={isMobile ? 'column' : 'row'}
-                        >
-                            <Button
-                                variant="contained"
-                                color="black"
-                                style={{ color: 'white', padding: '20px' }}
-                                size="large"
-                                onClick={handleSubmit}
-                            >
-                                Thêm vào giỏ
-                            </Button>
-                            <Button
-                                variant="contained"
-                                color="error"
-                                style={{ color: 'white', padding: '20px' }}
-                                size="large"
-                                onClick={handleBuyNow}
-                            >
-                                Mua ngay
-                            </Button>
-                            <Tooltip title={!fav ? 'Thích' : 'Bỏ thích'}>
-                                <Button
-                                    variant="outlined"
-                                    color="error"
-                                    style={{ padding: '20px' }}
-                                    size="large"
-                                    onClick={handleFavorite}
-                                >
-                                    {!fav ? (
-                                        <FavoriteBorderIcon />
-                                    ) : (
-                                        <FavoriteIcon />
-                                    )}
-                                </Button>
-                            </Tooltip>
-                        </Stack>
-                        <Alert
-                            message={toastData.message}
-                            openToast={openToast}
-                            handleCloseToast={handleCloseToast}
-                            color={toastData.color}
-                            severity={toastData.severity}
-                        />
-                    </div>
-                </Grid>
-            </Grid>
-            <Grid
-                item
-                container
-                marginTop="40px"
-                justifyContent="center"
-                textAlign="center"
-                direction="column"
-            >
-                <Grid item>
-                    <Typography
-                        letterSpacing="2px"
-                        fontSize="25px"
-                        fontWeight="normal"
-                        paddingTop="40px"
-                    >
-                        CHI TIẾT SẢN PHẨM
-                    </Typography>
-                </Grid>
-                <Grid item>
-                    <Typography
-                        letterSpacing="2px"
-                        fontSize="20px"
-                        fontWeight="normal"
-                        paddingBottom="30px"
-                        paddingTop="40px"
-                    >
-                        {data?.description}
-                    </Typography>
-                </Grid>
-                <Divider />
-            </Grid>
-            <Grid
-                item
-                container
-                marginTop="40px"
-                justifyContent="center"
-                textAlign="center"
-                alignItems="center"
-                direction="column"
-            >
-                <Grid item>
-                    <Typography
-                        letterSpacing="2px"
-                        fontSize="25px"
-                        fontWeight="normal"
-                        paddingTop="36px"
-                        display="block"
-                    >
-                        ĐÁNH GIÁ
-                    </Typography>
-                </Grid>
-                <Grid
-                    item
-                    sx={{
-                        height: '300px',
-                        overflow:
-                            testLength && testLength > 3 ? 'scroll' : 'none',
-                    }}
-                >
-                    <Typography
-                        letterSpacing="2px"
-                        fontSize="22px"
-                        paddingTop="36px"
-                        display="block"
-                    >
-                        Chưa có đánh giá nào
-                    </Typography>
-                    <SentimentDissatisfiedIcon fontSize="large" />
-                </Grid>
-            </Grid>
-            <Modal
-                closeAfterTransition
-                className={classes.modal}
-                BackdropProps={{
-                    timeout: 500,
-                }}
-                open={open}
-                onClose={() => setOpen(false)}
-            >
-                <Fade in={open} timeout={500} style={{ outline: 'none' }}>
-                    <img src={image} className={classes.image} />
-                </Fade>
-            </Modal>
+            <img
+              className={classes.subImage}
+              src={data?.image}
+              alt={"product"}
+              onClick={(e) => handleMainImg(data?.image, 0)}
+              style={{
+                opacity: isSelectedImg === 0 && "1",
+                borderColor: isSelectedImg === 0 && "black",
+              }}
+            />
+          </div>
         </Grid>
-    );
+        <Grid item>
+          <Typography fontWeight="normal" variant="title1" fontSize={28}>
+            {data?.name}
+          </Typography>
+          <div>
+            <Rating
+              readOnly
+              value={data?.avgRating ? data?.avgRating : 0}
+              precision={0.1}
+              size="medium"
+            />
+          </div>
+          <div>
+            <Typography color="error" fontWeight="bold" fontSize={18}>
+              {Intl.NumberFormat("vi-VN", {
+                style: "currency",
+                currency: "VND",
+              }).format(currentPrice)}
+            </Typography>
+          </div>
+          <div style={{ marginTop: "20px" }}>
+            <Typography fontWeight="normal" variant="title1" fontSize={20}>
+              Màu sắc:
+            </Typography>
+            <div className={classes.wrapper}>
+              {typePropsData?.colorList.map((color, i) => (
+                <div
+                  key={color}
+                  className={classes.colorItem}
+                  style={{
+                    background: `#${color}`,
+                    border:
+                      `#${color}` === `#${currentColor}` && "2px solid blue",
+                  }}
+                  onClick={() => setCurrentColor(color)}
+                />
+              ))}
+            </div>
+          </div>
+          <div style={{ marginTop: "20px" }}>
+            <Typography fontWeight="normal" variant="title1" fontSize={20}>
+              Kích cỡ:
+            </Typography>
+            <div className={classes.wrapper}>
+              {typePropsData?.sizeList.map((size, i) => (
+                <div
+                  className={classes.sizeItem}
+                  style={{
+                    border: size === currentSize && "2px solid blue",
+                  }}
+                  key={size}
+                  onClick={() => setCurrentSize(size)}
+                >
+                  {size}
+                </div>
+              ))}
+            </div>
+          </div>
+          <div style={{ marginTop: "20px" }}>
+            <Typography
+              fontWeight="normal"
+              variant="title1"
+              fontSize={20}
+              marginBottom={4}
+            >
+              Số lượng {type ? `(Còn ${type.quantity} sản phẩm)` : ""}:
+            </Typography>
+            <div className={classes.wrapper}>
+              <Button color="black" onClick={reduceQuantity}>
+                <RemoveIcon />
+              </Button>
+              <TextField
+                value={quantity}
+                className={classes.input}
+                color="black"
+              />
+              <Button color="black" onClick={increaseQuantity}>
+                <AddIcon />
+              </Button>
+            </div>
+          </div>
+          <div style={{ marginTop: "40px" }}>
+            <Stack spacing={2} direction={isMobile ? "column" : "row"}>
+              <Button
+                variant="contained"
+                color="black"
+                style={{ color: "white", padding: "20px" }}
+                size="large"
+                onClick={handleSubmit}
+              >
+                Thêm vào giỏ
+              </Button>
+              <Button
+                variant="contained"
+                color="error"
+                style={{ color: "white", padding: "20px" }}
+                size="large"
+                onClick={handleBuyNow}
+              >
+                Mua ngay
+              </Button>
+              <Tooltip title={!fav ? "Thích" : "Bỏ thích"}>
+                <Button
+                  variant="outlined"
+                  color="error"
+                  style={{ padding: "20px" }}
+                  size="large"
+                  onClick={handleFavorite}
+                >
+                  {!fav ? <FavoriteBorderIcon /> : <FavoriteIcon />}
+                </Button>
+              </Tooltip>
+            </Stack>
+            <Alert
+              message={toastData.message}
+              openToast={openToast}
+              handleCloseToast={handleCloseToast}
+              color={toastData.color}
+              severity={toastData.severity}
+            />
+          </div>
+        </Grid>
+      </Grid>
+      <Grid
+        item
+        container
+        marginTop="40px"
+        justifyContent="center"
+        textAlign="center"
+        direction="column"
+      >
+        <Grid item>
+          <Typography
+            letterSpacing="2px"
+            fontSize="25px"
+            fontWeight="normal"
+            paddingTop="40px"
+          >
+            CHI TIẾT SẢN PHẨM
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Typography
+            letterSpacing="2px"
+            fontSize="20px"
+            fontWeight="normal"
+            paddingBottom="30px"
+            paddingTop="40px"
+          >
+            {data?.description}
+          </Typography>
+        </Grid>
+        <Divider />
+      </Grid>
+      <Grid
+        item
+        container
+        marginTop="40px"
+        justifyContent="center"
+        textAlign="center"
+        alignItems="center"
+        direction="column"
+      >
+        <Grid item>
+          <Typography
+            letterSpacing="2px"
+            fontSize="25px"
+            fontWeight="normal"
+            paddingTop="36px"
+            display="block"
+          >
+            ĐÁNH GIÁ
+          </Typography>
+        </Grid>
+        <Grid
+          item
+          sx={{
+            height: "300px",
+            overflow: testLength && testLength > 3 ? "scroll" : "none",
+          }}
+        >
+          {commentsData?.length === 0 ? (
+            <>
+              <Typography
+                letterSpacing="2px"
+                fontSize="22px"
+                paddingTop="36px"
+                display="block"
+              >
+                Chưa có đánh giá nào
+              </Typography>
+              <SentimentDissatisfiedIcon fontSize="large" />
+            </>
+          ) : (
+            commentsData?.map((comment) => (
+              <Comment keyname={comment?.id} comment={comment} />
+            ))
+          )}
+        </Grid>
+      </Grid>
+      <Modal
+        closeAfterTransition
+        className={classes.modal}
+        BackdropProps={{
+          timeout: 500,
+        }}
+        open={open}
+        onClose={() => setOpen(false)}
+      >
+        <Fade in={open} timeout={500} style={{ outline: "none" }}>
+          <img src={image} className={classes.image} />
+        </Fade>
+      </Modal>
+    </Grid>
+  );
 };
 
 export default ProductDetail;

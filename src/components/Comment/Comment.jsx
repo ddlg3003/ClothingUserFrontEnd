@@ -2,11 +2,11 @@ import { Avatar, Divider, List, ListItem, ListItemAvatar, ListItemText, Rating, 
 import React from 'react';
 import useStyles from './styles'; 
 
-const Comment = () => {
+const Comment = ({ keyname, comment }) => {
     const classes = useStyles();
 
     return (
-        <List className={classes.commentList}>
+        <List key={keyname} className={classes.commentList}>
             <Divider />
             <ListItem alignItems="flex-start">
                 <ListItemAvatar>
@@ -16,7 +16,7 @@ const Comment = () => {
                     />
                 </ListItemAvatar>
                 <ListItemText
-                    primary="Dang"
+                    primary={comment?.userFullName}
                     secondary={
                         <React.Fragment>
                             {'28-10-2022'}
@@ -29,13 +29,13 @@ const Comment = () => {
                                 color="text.primary"
                                 display="block"
                             >
-                                Chất lượng tốt
+                                {comment?.comContent}
                             </Typography>
                         </React.Fragment>
                     }
                 />
                 <div style={{ marginTop: '6px' }}>
-                    <Rating readOnly value={4.5} precision={0.1} size="small" />
+                    <Rating readOnly value={comment?.comRating} precision={0.1} size="small" />
                 </div>
             </ListItem>
         </List>
