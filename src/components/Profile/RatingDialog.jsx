@@ -13,27 +13,41 @@ import DialogContent from "@mui/material/DialogContent";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Rating from "@mui/material/Rating";
+import { useAddCommentMutation } from "../../services/commentApis";
+import { URL_REGEX } from "../../utils/globalVariables";
 
 const RatingDialog = (props) => {
+  const [addComment] = useAddCommentMutation();
 
   const { onClose, open, orderDetails } = props;
 
   const [ratings, setRatings] = useState({
-    rate: "2",
-    comment: "",
+    comRating: "2",
+    comContent: "",
   });
+
+  const handleCommentContent = (event) => {
+    const content = event.target.value;
+    setRatings((prev) => ({ ...prev, comContent: content }));
+  };
 
   const handleStarRating = (event) => {
     const rate = event.target.value;
-    setRatings((prev) => ({ ...prev, rate: rate }));
+    setRatings((prev) => ({ ...prev, comRating: rate }));
   };
 
   const handleClose = () => {
     onClose();
   };
 
-  const handleConfirmClick = () => {
-    // setAddressInfo(initialState);
+  const handleConfirmClick = async () => {
+    await addComment({
+      comContent: ratings.comContent,
+      comRating: ratings.comRating,
+      productId: orderDetails.productId,
+      transactionId: orderDetails.id,
+    });
+    onClose();
   };
 
   return (
@@ -44,18 +58,28 @@ const RatingDialog = (props) => {
           <Box>
             <Grid container spacing={2} sx={{ mb: 3, mt: 2, ml: 1 }}>
               <Grid item xs container direction="column" spacing={2}>
-                <Link to="/products/1" className={props.classes.favoriteItems}>
+                <Link
+                  to={`/products/${orderDetails.productName
+                    .replace(URL_REGEX, "-")
+                    .toLowerCase()}-i.${orderDetails.productId}`}
+                  className={props.classes.favoriteItems}
+                >
                   <Grid container spacing={2}>
                     <Grid item>
                       <img src={orderDetails?.productImage} width={80} alt="" />
                     </Grid>
                     <Grid item xs>
-                      <Typography fontSize={18} gutterBottom component="div" sx={{ color: "black!important" }}
->
+                      <Typography
+                        fontSize={18}
+                        gutterBottom
+                        component="div"
+                        sx={{ color: "black!important" }}
+                      >
                         {orderDetails?.productName}
                       </Typography>
                       <Typography color="text.secondary">
-                        Phân loại hàng: {orderDetails.color} - {orderDetails.size}
+                        Phân loại hàng: {orderDetails?.color} -{" "}
+                        {orderDetails?.size}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -72,7 +96,7 @@ const RatingDialog = (props) => {
               </Typography>
               <Rating
                 name="simple-controlled"
-                value={ratings.rate}
+                value={ratings.comRating}
                 onChange={handleStarRating}
               />
             </Stack>
@@ -84,6 +108,8 @@ const RatingDialog = (props) => {
               placeholder="Để lại đánh giá"
               sx={{ mt: 3, mb: 2 }}
               fullWidth
+              value={ratings.comContent}
+              onChange={handleCommentContent}
             />
           </Box>
         </DialogContent>

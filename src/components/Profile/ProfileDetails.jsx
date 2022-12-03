@@ -76,7 +76,6 @@ const ProfileDetails = (props) => {
             </Grid>
             <Grid item xs={8}>
               <TextField
-                
                 variant="outlined"
                 value={props.userInfo?.phone}
                 onChange={props.handlePhoneNumberChange}

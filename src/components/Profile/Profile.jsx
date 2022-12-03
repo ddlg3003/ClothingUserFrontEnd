@@ -108,12 +108,13 @@ const Profile = () => {
 
   const handleNameChange = (event) => {
     const name = event.target.value;
-    setUserInfo((prev) => ({ ...prev, fullname: name }));
+    if (name.length <= 45)
+      setUserInfo((prev) => ({ ...prev, fullname: name }));
   };
 
   const handlePhoneNumberChange = (event) => {
     const phone = event.target.value;
-    if (!validatePhoneNumber(phone))
+    if (!validatePhoneNumber(phone) && phone.length <= 11)
       setUserInfo((prev) => ({ ...prev, phone: phone }));
   };
 

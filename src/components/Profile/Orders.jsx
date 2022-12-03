@@ -20,7 +20,6 @@ import RatingDialog from "./RatingDialog";
 const Orders = (props) => {
   const [openRatingDialog, setOpenRatingDialog] = useState(false);
 
-  console.log(props.orders);
 
   useEffect(() => {
     if (props.navSelection === "orders") {
@@ -32,8 +31,8 @@ const Orders = (props) => {
     setOpenRatingDialog(false);
   };
 
-  const handleClickRate = () => {
-    setOpenRatingDialog(true);
+  const handleClickRate = (id) => {
+    setOpenRatingDialog(id);
   };
 
   const handleChangeTab = (event, newValue) => {
@@ -459,9 +458,9 @@ const Orders = (props) => {
                   ?.filter(
                     (order) => order.ordStatus === ORDER_STATUS[2].status
                   )
-                  .map((order, i) => (
+                  .map((filteredOrder, i) => (
                     <div key={i} style={{ marginTop: i > 0 ? "40px" : "0px" }}>
-                      {order.transactionMapper.map((product, proIndex) => (
+                      {filteredOrder.transactionMapper.map((product, proIndex) => (
                         <Box key={`pro${proIndex}_done`}>
                           <Grid container spacing={2} sx={{ mb: 0, mt: 1 }}>
                             <Grid
@@ -527,13 +526,13 @@ const Orders = (props) => {
                                   component="label"
                                   style={{ color: "white" }}
                                   startIcon={<StarsIcon />}
-                                  onClick={handleClickRate}
+                                  onClick={() => handleClickRate(product.id)}
                                 >
                                   Đánh giá
                                 </Button>
                                 <RatingDialog
                                   classes={props.classes}
-                                  open={openRatingDialog}
+                                  open={openRatingDialog === product.id}
                                   onClose={handleCloseRatingDialog}
                                   orderDetails={product}
                                 />
@@ -552,26 +551,26 @@ const Orders = (props) => {
                       >
                         <Stack p={1}>
                           <Typography fontWeight="bold" fontSize={16}>
-                            SĐT: {order?.ordPhone}
+                            SĐT: {filteredOrder?.ordPhone}
                           </Typography>
                           <Typography color="text.secondary">
-                            {order?.ordAddress}
+                            {filteredOrder?.ordAddress}
                           </Typography>
                           <Typography color="text.secondary">
-                            {order?.ordDate}
+                            {filteredOrder?.ordDate}
                           </Typography>
                         </Stack>
                         <Chip
                           color={
                             ORDER_STATUS.find(
-                              (o) => o.status === order?.ordStatus
+                              (o) => o.status === filteredOrder?.ordStatus
                             ).color
                           }
                           variant="outlined"
                           icon={<FiberManualRecordIcon />}
                           label={
                             ORDER_STATUS.find(
-                              (o) => o.status === order?.ordStatus
+                              (o) => o.status === filteredOrder?.ordStatus
                             ).string
                           }
                         />
@@ -585,7 +584,7 @@ const Orders = (props) => {
                           {Intl.NumberFormat("vi-VN", {
                             style: "currency",
                             currency: "VND",
-                          }).format(order?.ordTotalPrice)}
+                          }).format(filteredOrder?.ordTotalPrice)}
                         </Typography>
                       </Stack>
                       <Divider />

@@ -3,6 +3,7 @@ import { Button, Dialog, DialogTitle, TextField } from "@mui/material";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import { useAddAddressMutation } from "../../services/userApis";
+import { validatePhoneNumber } from "../../utils/validateString";
 
 const NewAddressDialog = (props) => {
   const initialState = {
@@ -33,15 +34,18 @@ const NewAddressDialog = (props) => {
 
   const handleNameChange = (event) => {
     const name = event.target.value;
-    setAddressInfo((prev) => ({ ...prev, name: name }));
+    if (name.length <= 45)
+      setAddressInfo((prev) => ({ ...prev, name: name }));
   };
   const handlePhoneChange = (event) => {
     const phone = event.target.value;
-    setAddressInfo((prev) => ({ ...prev, phoneNumber: phone }));
+    if (!validatePhoneNumber(phone) && phone.length <= 11)
+      setAddressInfo((prev) => ({ ...prev, phoneNumber: phone }));
   };
   const handleAddressChange = (event) => {
     const address = event.target.value;
-    setAddressInfo((prev) => ({ ...prev, address: address }));
+    if (address.length <= 255)
+      setAddressInfo((prev) => ({ ...prev, address: address }));
   };
   return (
     <div>
