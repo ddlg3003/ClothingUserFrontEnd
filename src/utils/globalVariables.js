@@ -1,8 +1,8 @@
 export const BLACK_LOGO =
-  "https://fontmeme.com/permalink/221015/466d5aeb7170191e34604da1b59fb9b2.png";
+  "https://res.cloudinary.com/dgyqhnavx/image/upload/v1670131428/samples/ecommerce/Clothing%20assets/Black_qvloqn.png";
 
 export const WHITE_LOGO =
-  "https://fontmeme.com/permalink/221016/0904f554131fbb26609e131d851031a4.png?fbclid=IwAR0arYmZn4xlsq0mSYQ2nGP5qIAm4aXMe_D1TZPw1HcnjrCczz3QX71si5o";
+  "https://res.cloudinary.com/dgyqhnavx/image/upload/v1670131428/samples/ecommerce/Clothing%20assets/White_bfey7r.png";
 
 export const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
