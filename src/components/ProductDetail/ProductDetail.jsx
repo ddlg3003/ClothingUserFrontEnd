@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Typography,
   Button,
@@ -13,32 +13,32 @@ import {
   Stack,
   Tooltip,
   Divider,
-} from "@mui/material";
-import Alert from "../Alert/Alert";
-import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied";
-import RemoveIcon from "@mui/icons-material/Remove";
-import AddIcon from "@mui/icons-material/Add";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+} from '@mui/material';
+import Alert from '../Alert/Alert';
+import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied';
+import RemoveIcon from '@mui/icons-material/Remove';
+import AddIcon from '@mui/icons-material/Add';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   useGetProductQuery,
   useGetTypesQuery,
   useGetTypesPropsQuery,
-} from "../../services/productApis";
+} from '../../services/productApis';
 import {
   useAddItemToCartMutation,
   useGetCartQuery,
-} from "../../services/cartApis";
-import { updateCheckout } from "../../features/checkout";
+} from '../../services/cartApis';
+import { updateCheckout } from '../../features/checkout';
 import {
   useToggleWishlistMutation,
   useGetUserWishlistQuery,
-} from "../../services/wishlistApis";
-import useStyles from "./styles";
-import Comment from "../Comment/Comment";
-import { useGetCommentsByProductIdQuery } from "../../services/commentApis";
+} from '../../services/wishlistApis';
+import useStyles from './styles';
+import Comment from '../Comment/Comment';
+import { useGetCommentsByProductIdQuery } from '../../services/commentApis';
 
 const ProductDetail = () => {
   const classes = useStyles();
@@ -48,7 +48,7 @@ const ProductDetail = () => {
 
   const testLength = 0;
 
-  const id = parseInt(name.slice(name.indexOf(".") + 1));
+  const id = parseInt(name.slice(name.indexOf('.') + 1));
 
   const { isAuthenticated } = useSelector((state) => state.auth);
 
@@ -61,26 +61,26 @@ const ProductDetail = () => {
   const { data: dataCartList } = useGetCartQuery();
 
   const { data: commentsData, isFetching: isFetchingComments } =
-    useGetCommentsByProductIdQuery(id, { skip: !isAuthenticated });
+    useGetCommentsByProductIdQuery(id);
 
   const [toggleWishlist] = useToggleWishlistMutation();
 
   const [quantity, setQuantity] = useState(1);
   const [open, setOpen] = useState(false);
   const [toastData, setToastData] = useState({
-    message: "",
-    severity: "",
-    color: "",
+    message: '',
+    severity: '',
+    color: '',
   });
-  const [image, setImage] = useState(""); // set image for modal
+  const [image, setImage] = useState(''); // set image for modal
   const [isSelectedImg, setIsSelectedImg] = useState(0);
   const [fav, setFav] = useState(false);
 
-  const isMobile = useMediaQuery("(max-width: 800px)");
+  const isMobile = useMediaQuery('(max-width: 800px)');
 
   // Set image state for product image
-  const [mainImg, setMainImg] = useState("");
-  const [currentColor, setCurrentColor] = useState("");
+  const [mainImg, setMainImg] = useState('');
+  const [currentColor, setCurrentColor] = useState('');
   const [currentSize, setCurrentSize] = useState(null);
   const [openToast, setOpenToast] = useState(false);
   const [currentPrice, setCurrentPrice] = useState(0);
@@ -166,31 +166,31 @@ const ProductDetail = () => {
           setToastData((prev) => ({
             ...prev,
             message: `TRONG GIỎ HÀNG HIỆN ĐÃ CÓ ${product?.quantity} SẢN PHẨM. KHÔNG THỂ THÊM VÌ SẼ VƯỢT SỐ LƯỢNG MUA HÀNG`,
-            severity: "error",
-            color: "error",
+            severity: 'error',
+            color: 'error',
           }));
         } else {
           setToastData((prev) => ({
             ...prev,
-            message: "THÊM SẢN PHẨM VÀO GIỎ HÀNG THÀNH CÔNG",
-            severity: "success",
-            color: "black",
+            message: 'THÊM SẢN PHẨM VÀO GIỎ HÀNG THÀNH CÔNG',
+            severity: 'success',
+            color: 'black',
           }));
         }
       } else {
         setToastData((prev) => ({
           ...prev,
-          message: "VUI LÒNG CHỌN ĐỦ THÔNG TIN SẢN PHẨM",
-          severity: "info",
-          color: "error",
+          message: 'VUI LÒNG CHỌN ĐỦ THÔNG TIN SẢN PHẨM',
+          severity: 'info',
+          color: 'error',
         }));
       }
       setOpenToast(true);
-    } else navigate("/auth");
+    } else navigate('/auth');
   };
 
   const handleCloseToast = (event, reason) => {
-    if (reason === "clickaway") {
+    if (reason === 'clickaway') {
       return;
     }
 
@@ -211,24 +211,24 @@ const ProductDetail = () => {
     dispatch(updateCheckout());
     if (isAuthenticated) {
       if (submitData.size && submitData.color && submitData.quantity) {
-        sessionStorage.setItem("cartItems", JSON.stringify([submitData]));
-        navigate("/checkout");
+        sessionStorage.setItem('cartItems', JSON.stringify([submitData]));
+        navigate('/checkout');
       } else {
         setToastData((prev) => ({
           ...prev,
-          message: "VUI LÒNG CHỌN ĐỦ THÔNG TIN SẢN PHẨM",
-          severity: "info",
-          color: "error",
+          message: 'VUI LÒNG CHỌN ĐỦ THÔNG TIN SẢN PHẨM',
+          severity: 'info',
+          color: 'error',
         }));
         setOpenToast(true);
       }
-    } else navigate("/auth");
+    } else navigate('/auth');
   };
 
   const handleFavorite = async () => {
     if (isAuthenticated) {
       await toggleWishlist(id);
-    } else navigate("/auth");
+    } else navigate('/auth');
   };
 
   if (isFetching && isFetchingTypes && isFetchingTypeProps) {
@@ -242,12 +242,12 @@ const ProductDetail = () => {
   return (
     <Grid container className={classes.container}>
       <Grid item container justifyContent="center" spacing={3}>
-        <Grid item style={{ position: "relative" }}>
+        <Grid item style={{ position: 'relative' }}>
           <img
             className={classes.image}
             src={mainImg}
             onClick={(e) => handleImage(mainImg)}
-            alt={"product"}
+            alt={'product'}
           />
           <div className={classes.subImageContainer}>
             {/* {product.images.map((image, i) => (
@@ -265,11 +265,11 @@ const ProductDetail = () => {
             <img
               className={classes.subImage}
               src={data?.image}
-              alt={"product"}
+              alt={'product'}
               onClick={(e) => handleMainImg(data?.image, 0)}
               style={{
-                opacity: isSelectedImg === 0 && "1",
-                borderColor: isSelectedImg === 0 && "black",
+                opacity: isSelectedImg === 0 && '1',
+                borderColor: isSelectedImg === 0 && 'black',
               }}
             />
           </div>
@@ -288,13 +288,13 @@ const ProductDetail = () => {
           </div>
           <div>
             <Typography color="error" fontWeight="bold" fontSize={18}>
-              {Intl.NumberFormat("vi-VN", {
-                style: "currency",
-                currency: "VND",
+              {Intl.NumberFormat('vi-VN', {
+                style: 'currency',
+                currency: 'VND',
               }).format(currentPrice)}
             </Typography>
           </div>
-          <div style={{ marginTop: "20px" }}>
+          <div style={{ marginTop: '20px' }}>
             <Typography fontWeight="normal" variant="title1" fontSize={20}>
               Màu sắc:
             </Typography>
@@ -306,14 +306,14 @@ const ProductDetail = () => {
                   style={{
                     background: `#${color}`,
                     border:
-                      `#${color}` === `#${currentColor}` && "2px solid blue",
+                      `#${color}` === `#${currentColor}` && '2px solid blue',
                   }}
                   onClick={() => setCurrentColor(color)}
                 />
               ))}
             </div>
           </div>
-          <div style={{ marginTop: "20px" }}>
+          <div style={{ marginTop: '20px' }}>
             <Typography fontWeight="normal" variant="title1" fontSize={20}>
               Kích cỡ:
             </Typography>
@@ -322,7 +322,7 @@ const ProductDetail = () => {
                 <div
                   className={classes.sizeItem}
                   style={{
-                    border: size === currentSize && "2px solid blue",
+                    border: size === currentSize && '2px solid blue',
                   }}
                   key={size}
                   onClick={() => setCurrentSize(size)}
@@ -332,14 +332,14 @@ const ProductDetail = () => {
               ))}
             </div>
           </div>
-          <div style={{ marginTop: "20px" }}>
+          <div style={{ marginTop: '20px' }}>
             <Typography
               fontWeight="normal"
               variant="title1"
               fontSize={20}
               marginBottom={4}
             >
-              Số lượng {type ? `(Còn ${type.quantity} sản phẩm)` : ""}:
+              Số lượng {type ? `(Còn ${type.quantity} sản phẩm)` : ''}:
             </Typography>
             <div className={classes.wrapper}>
               <Button color="black" onClick={reduceQuantity}>
@@ -355,12 +355,12 @@ const ProductDetail = () => {
               </Button>
             </div>
           </div>
-          <div style={{ marginTop: "40px" }}>
-            <Stack spacing={2} direction={isMobile ? "column" : "row"}>
+          <div style={{ marginTop: '40px' }}>
+            <Stack spacing={2} direction={isMobile ? 'column' : 'row'}>
               <Button
                 variant="contained"
                 color="black"
-                style={{ color: "white", padding: "20px" }}
+                style={{ color: 'white', padding: '20px' }}
                 size="large"
                 onClick={handleSubmit}
               >
@@ -369,17 +369,17 @@ const ProductDetail = () => {
               <Button
                 variant="contained"
                 color="error"
-                style={{ color: "white", padding: "20px" }}
+                style={{ color: 'white', padding: '20px' }}
                 size="large"
                 onClick={handleBuyNow}
               >
                 Mua ngay
               </Button>
-              <Tooltip title={!fav ? "Thích" : "Bỏ thích"}>
+              <Tooltip title={!fav ? 'Thích' : 'Bỏ thích'}>
                 <Button
                   variant="outlined"
                   color="error"
-                  style={{ padding: "20px" }}
+                  style={{ padding: '20px' }}
                   size="large"
                   onClick={handleFavorite}
                 >
@@ -451,8 +451,8 @@ const ProductDetail = () => {
         <Grid
           item
           sx={{
-            height: "300px",
-            overflow: testLength && testLength > 3 ? "scroll" : "none",
+            height: '300px',
+            overflow: testLength && testLength > 3 ? 'scroll' : 'none',
           }}
         >
           {commentsData?.length === 0 ? (
@@ -483,7 +483,7 @@ const ProductDetail = () => {
         open={open}
         onClose={() => setOpen(false)}
       >
-        <Fade in={open} timeout={500} style={{ outline: "none" }}>
+        <Fade in={open} timeout={500} style={{ outline: 'none' }}>
           <img src={image} className={classes.image} />
         </Fade>
       </Modal>
