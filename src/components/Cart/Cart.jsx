@@ -141,7 +141,7 @@ const Cart = () => {
                 </TableBody>
               ) : (
                 <TableBody>
-                  {dataCartList.map((data, i) => (
+                  {dataCartList?.map((data, i) => (
                     <TableRow
                       key={i}
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -149,21 +149,21 @@ const Cart = () => {
                       <TableCell component="th" scope="row">
                         <div>
                           <Link
-                            to={`/products/${data.proName
+                            to={`/products/${data?.proName
                               .replace(URL_REGEX, "-")
-                              .toLowerCase()}-i.${data.product_id}`}
+                              .toLowerCase()}-i.${data?.product_id}`}
                             className={classes.itemLink}
                           >
-                            <img width={80} src={data.proImage} alt="" />
+                            <img width={80} src={data?.proImage} alt="" />
                           </Link>
                         </div>
                       </TableCell>
                       <TableCell component="th" scope="row">
                         <Stack direction="column">
                           <Link
-                            to={`/products/${data.proName
+                            to={`/products/${data?.proName
                               .replace(URL_REGEX, "-")
-                              .toLowerCase()}-i.${data.product_id}`}
+                              .toLowerCase()}-i.${data?.product_id}`}
                             className={classes.itemLink}
                           >
                             <Typography
@@ -172,7 +172,7 @@ const Cart = () => {
                               className={classes.itemName}
                               sx={{ color: "#000" }}
                             >
-                              {data.proName}
+                              {data?.proName}
                             </Typography>
                             <Typography
                               fontSize="16px"
@@ -180,7 +180,7 @@ const Cart = () => {
                               maxWidth={200}
                               className={classes.itemName}
                             >
-                              Màu: {data.color}
+                              Màu: {data?.color}
                             </Typography>
                             <Typography
                               fontSize="16px"
@@ -188,7 +188,7 @@ const Cart = () => {
                               maxWidth={200}
                               className={classes.itemName}
                             >
-                              Kích cỡ: {data.size}
+                              Kích cỡ: {data?.size}
                             </Typography>
                           </Link>
                         </Stack>
@@ -198,7 +198,7 @@ const Cart = () => {
                           {Intl.NumberFormat("vi-VN", {
                             style: "currency",
                             currency: "VND",
-                          }).format(data.price)}
+                          }).format(data?.price)}
                         </Typography>
                       </TableCell>
                       <TableCell align="center" width={170}>
@@ -215,7 +215,7 @@ const Cart = () => {
                           disabled={true}
                           readOnly={true}
                           onChange={() => {}}
-                          value={data.quantity}
+                          value={data?.quantity}
                           className={classes.inputField}
                         />
                         <IconButton
@@ -237,13 +237,13 @@ const Cart = () => {
                           {Intl.NumberFormat("vi-VN", {
                             style: "currency",
                             currency: "VND",
-                          }).format(data.price * data.quantity)}
+                          }).format(data?.price * data?.quantity)}
                         </Typography>
                       </TableCell>
                       <TableCell width={100} align="left">
                         <IconButton
                           size="large"
-                          onClick={() => handleClickDeleteItem(data.product_id)}
+                          onClick={() => handleClickDeleteItem(data?.product_id)}
                         >
                           <ClearIcon
                             fontSize="inherit"
@@ -252,7 +252,7 @@ const Cart = () => {
                           />
                         </IconButton>
                         <DeleteAlertDialog
-                          open={openDeleteItemDialog === data.product_id}
+                          open={openDeleteItemDialog === data?.product_id}
                           onClose={handleCloseDeleteItem}
                           item={data}
                           handleConfirmDeleteClick={handleConfirmDeleteClick}
@@ -283,7 +283,7 @@ const Cart = () => {
                   currency: "VND",
                 }).format(isFetchingCartList ? 0 :
                   dataCartList?.reduce((acc, data) => {
-                    return (acc = acc + data.price * data.quantity);
+                    return (acc = acc + data?.price * data?.quantity);
                 }, 0))
             }
           </Typography>
