@@ -2,7 +2,7 @@ import React from 'react';
 import { Grid, Typography } from '@mui/material';
 import useStyles from './styles';
 import { Link } from 'react-router-dom';
-import { LIMIT, PRODUCT_QUERY_STRING } from '../../utils/globalVariables';
+import { LIMIT, PRODUCT_QUERY_STRING, CATEGORY_IMG } from '../../utils/globalVariables';
 
 const Category = ({ category }) => {
     const classes = useStyles();
@@ -23,7 +23,7 @@ const Category = ({ category }) => {
                 {category.name}
             </Typography>                
             <img 
-                src={'https://cdn.shopify.com/s/files/1/2290/7887/products/F0217103619_2_ba577132-c0b1-4dcf-937c-a601b4560278.jpg?v=1660566069'}
+                src={CATEGORY_IMG}
                 className={classes.image}
             />
             </Link>

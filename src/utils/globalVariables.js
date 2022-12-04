@@ -4,6 +4,8 @@ export const BLACK_LOGO =
 export const WHITE_LOGO =
   "https://res.cloudinary.com/dgyqhnavx/image/upload/v1670131428/samples/ecommerce/Clothing%20assets/White_bfey7r.png";
 
+export const CATEGORY_IMG = "https://res.cloudinary.com/dgyqhnavx/image/upload/v1670131567/samples/ecommerce/Clothing%20assets/category_jqeubl.jpg";
+
 export const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
 export const PASSWORD_REGEX =
