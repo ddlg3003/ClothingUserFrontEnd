@@ -66,6 +66,7 @@ const RatingDialog = (props) => {
     onClose();
     setToastData(prev => ({ ...prev, color: 'success', severity: 'success', message: 'Đánh giá thành công!' }));
     setOpenToast(true);
+    window.location.reload();
   };
 
   return (
