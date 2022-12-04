@@ -166,16 +166,16 @@ const Auth = () => {
             }
         }
         else {
-            const data = await signup({ ...formData, name: formData.username, roles: ["USER"] });
+            const axiosRes = await signup({ ...formData, name: formData.username, roles: ["USER"] });
 
-            // if(status === 200) {
-            //     setToastData(prev => ({ ...prev, color: 'success', severity: 'success', message: 'ĐĂNG KÝ THÀNH CÔNG' }));
-            //     setIsRegister(prev => !prev);
-            // }
-            // else {
-                console.log(data)
-            //     setToastData(prev => ({ ...prev, color: 'error', severity: 'error', message: '' }));
-            // }
+            if(axiosRes.status === 200) {
+                setToastData(prev => ({ ...prev, color: 'success', severity: 'success', message: 'ĐĂNG KÝ THÀNH CÔNG' }));
+                setIsRegister(prev => !prev);
+            }
+            else {
+                // console.log(axiosRes);
+                setToastData(prev => ({ ...prev, color: 'error', severity: 'error', message: axiosRes.response.data.message }));
+            }
 
             setOpenToast(true);
         }

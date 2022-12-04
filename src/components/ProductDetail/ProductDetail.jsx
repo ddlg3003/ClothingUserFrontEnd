@@ -477,7 +477,7 @@ const ProductDetail = () => {
           item
           sx={{
             minHeight: '300px',
-            overflow: 'scroll',
+            overflow: commentsData?.length ? 'scroll' : 'none',
           }}
         >
           {commentsData?.length === 0 ? (

@@ -11,15 +11,15 @@ const Product = ({ product }) => {
         <>
             <Grid item>
                 <Link 
-                    to={`/products/${product.name.replace(URL_REGEX, '-').toLowerCase()}-i.${product.id}`} 
+                    to={`/products/${product?.name.replace(URL_REGEX, '-').toLowerCase()}-i.${product.id}`} 
                     className={classes.links}
                 >
                     <img 
-                        src={product.image}
+                        src={product?.image}
                         className={classes.image}
                     />
                     <div>
-                        <Rating readOnly value={product.avgRating ? product.avgRating : 0} precision={0.1} size="large" /> 
+                        <Rating readOnly value={product?.avgRating ? product?.avgRating : 0} precision={0.1} size="large" /> 
                     </div>
                     <Typography 
                         fontWeight="normal" 
@@ -27,7 +27,7 @@ const Product = ({ product }) => {
                         className={classes.title} 
                         fontSize={16}
                     >
-                        {product.name}
+                        {product?.name}
                     </Typography>
                     <Typography 
                         color="error" 
@@ -39,7 +39,7 @@ const Product = ({ product }) => {
                             Intl.NumberFormat('vi-VN', {
                             style: 'currency',
                             currency: 'VND',
-                            }).format(100000)
+                            }).format(product?.price)
                         }
                     </Typography>
                 </Link>
