@@ -53,13 +53,22 @@ const ProductDetail = () => {
   const { isAuthenticated } = useSelector((state) => state.auth);
 
   const { data, isFetching } = useGetProductQuery(id);
+
+  // type api
   const { data: typesData, isFetching: isFetchingTypes } = useGetTypesQuery(id);
+
+  // color array api
   const { data: typePropsData, isFetching: isFetchingTypeProps } =
     useGetTypesPropsQuery(id);
+
+  // wishlist api
   const { data: wishlistData, isFetching: isFetchingWishlist } =
     useGetUserWishlistQuery({ skip: !isAuthenticated });
+
+  // cart api
   const { data: dataCartList } = useGetCartQuery();
 
+  // comment api
   const { data: commentsData, isFetching: isFetchingComments } =
     useGetCommentsByProductIdQuery(id);
 
@@ -81,6 +90,7 @@ const ProductDetail = () => {
   // Set image state for product image
   const [mainImg, setMainImg] = useState('');
   const [currentColor, setCurrentColor] = useState('');
+  const [sizesByColorArr, setSizesByColorArr] = useState([]);
   const [currentSize, setCurrentSize] = useState(null);
   const [openToast, setOpenToast] = useState(false);
   const [currentPrice, setCurrentPrice] = useState(0);
@@ -91,7 +101,14 @@ const ProductDetail = () => {
   useEffect(() => {
     setMainImg(data?.image);
     setCurrentPrice(data?.price);
+    setCurrentColor(data?.color);
   }, [isFetching, data]);
+
+  // Set size array based on color being choosed
+  useEffect(() => {
+    setSizesByColorArr(typesData
+    ?.filter(({ color }) => (color === currentColor)).map(({ size }) => size));
+  }, [isFetchingTypes, typesData, currentColor]);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -109,11 +126,19 @@ const ProductDetail = () => {
       const type = typesData?.find(
         (type) => type.size === currentSize && type.color === currentColor
       );
-      setType(type);
-      setCurrentPrice(type.price);
 
-      if (quantity > type.quantity) {
-        setQuantity(type.quantity);
+      if(type) {
+        setType(type);
+        setCurrentPrice(type.price);
+
+        if (quantity > type.quantity) {
+          setQuantity(type.quantity);
+        }
+      }
+      else {
+        setCurrentPrice(data?.price);
+        setCurrentSize(null);
+        setType(undefined);
       }
     }
   }, [currentColor, currentSize, isFetchingTypes, typesData, quantity]);
@@ -318,11 +343,11 @@ const ProductDetail = () => {
               Kích cỡ:
             </Typography>
             <div className={classes.wrapper}>
-              {typePropsData?.sizeList.map((size, i) => (
+              {sizesByColorArr?.map((size, i) => (
                 <div
                   className={classes.sizeItem}
                   style={{
-                    border: size === currentSize && '2px solid blue',
+                    border: type && size === currentSize && '2px solid blue',
                   }}
                   key={size}
                   onClick={() => setCurrentSize(size)}
@@ -339,7 +364,7 @@ const ProductDetail = () => {
               fontSize={20}
               marginBottom={4}
             >
-              Số lượng {type ? `(Còn ${type.quantity} sản phẩm)` : ''}:
+              Số lượng: {type ? `(Còn ${type.quantity} sản phẩm)` : ''}
             </Typography>
             <div className={classes.wrapper}>
               <Button color="black" onClick={reduceQuantity}>
