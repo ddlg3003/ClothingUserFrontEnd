@@ -96,6 +96,7 @@ const CartItems = ({ cartItems }) => {
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
+                    
                     <Typography
                       className={classes.itemName}
                       fontSize={18}

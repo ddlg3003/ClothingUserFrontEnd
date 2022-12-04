@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Typography, Paper } from "@mui/material";
+import { Button, Typography, Paper, Stack } from "@mui/material";
 import { Box, Container } from "@mui/system";
 import CartItems from "./CartItems";
 import ShippingAddresses from "./ShippingAddresses";
@@ -48,6 +48,12 @@ const Checkout = () => {
     payment.payment = "COD";
     payment.shipping_fee = 30000;
   }
+
+  const totalItemPrice = cartItems.reduce((acc, data) => {
+    return (acc = acc + data.price * data.quantity);
+  }, 0);
+
+  const shipping_fee = totalItemPrice > 250000 ? 0 : 25000;
 
   const [createOrder] = useCreateOrderMutation();
   const [createVNPAYOrder] = useCreateVNPAYOrderMutation();
@@ -123,37 +129,91 @@ const Checkout = () => {
         </Container>
         <div className={classes.buttonContainer}>
           <div className={classes.totalText}>
-            <Typography fontSize="20px">Tổng thanh toán:</Typography>
+            <Stack
+              spacing={1}
+              direction="column"
+              sx={{ width: "300px", mr: "300px" }}
+            >
+              <Stack
+                direction="row"
+                justifyContent="space-between"
+                alignItems="flex-start"
+                spacing={0}
+              >
+                <Typography fontSize="20px" mr={1} color="text.secondary">
+                  Tổng tiền hàng:
+                </Typography>
 
-            <Typography
-              color="error"
-              className={classes.title}
-              fontWeight="normal"
-              fontSize={28}
-            >
-              {Intl.NumberFormat("vi-VN", {
-                style: "currency",
-                currency: "VND",
-              }).format(
-                cartItems.reduce((acc, data) => {
-                  return (acc = acc + data.price * data.quantity);
-                }, 0)
-              )}
-            </Typography>
+                <Typography
+                  className={classes.title}
+                  fontWeight="normal"
+                  fontSize={20}
+                  color="text.secondary"
+                >
+                  {Intl.NumberFormat("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                  }).format(totalItemPrice)}
+                </Typography>
+              </Stack>
+              <Stack
+                direction="row"
+                justifyContent="space-between"
+                alignItems="flex-start"
+                spacing={0}
+              >
+                <Typography fontSize="20px" mr={1} color="text.secondary">
+                  Phí vận chuyển:
+                </Typography>
+
+                <Typography
+                  className={classes.title}
+                  fontWeight="normal"
+                  fontSize={20}
+                  color="text.secondary"
+                >
+                  {Intl.NumberFormat("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                  }).format(shipping_fee)}
+                </Typography>
+              </Stack>
+              <Stack
+                direction="row"
+                justifyContent="space-between"
+                alignItems="flex-start"
+                spacing={0}
+              >
+                <Typography fontSize="20px" mr={1} mt={1}>
+                  Tổng thanh toán:
+                </Typography>
+
+                <Typography
+                  color="error"
+                  className={classes.title}
+                  fontWeight="normal"
+                  fontSize={28}
+                >
+                  {Intl.NumberFormat("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                  }).format(shipping_fee + totalItemPrice)}
+                </Typography>
+              </Stack>
+              <Button
+                size="large"
+                variant="outlined"
+                color="black"
+                className={classes.checkoutButton}
+                sx={{ mr: "380px", mt: "10px", width: "300px" }}
+                disabled={!isFetching && data.length ? false : true}
+                onClick={handleSubmit}
+              >
+                Đặt Hàng
+              </Button>
+            </Stack>
           </div>
-          <div>
-            <Button
-              size="large"
-              variant="outlined"
-              color="black"
-              className={classes.checkoutButton}
-              sx={{ mr: "380px" }}
-              disabled={!isFetching && data.length ? false : true}
-              onClick={handleSubmit}
-            >
-              Đặt Hàng
-            </Button>
-          </div>
+          {/* <div></div>  */}
         </div>
       </div>
     </>
