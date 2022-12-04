@@ -17,10 +17,11 @@ export const getUserLogin = async (formData) => {
 
 export const signup = async (formData) => {
   try {
-    const { data, status } = await api.post("/register", formData);
+    const response = await api.post("/register", formData);
 
-    return { data, status };
+    return response;
   } catch (error) {
     console.log(error);
+    return error;
   }
 };

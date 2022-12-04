@@ -166,15 +166,16 @@ const Auth = () => {
             }
         }
         else {
-            const { data, status } = await signup({ ...formData, name: formData.username, roles: ["USER"] });
+            const data = await signup({ ...formData, name: formData.username, roles: ["USER"] });
 
-            if(status === 200) {
-                setToastData(prev => ({ ...prev, color: 'success', severity: 'success', message: 'ĐĂNG KÝ THÀNH CÔNG' }));
-                setIsRegister(prev => !prev);
-            }
-            else {
-                setToastData(prev => ({ ...prev, color: 'error', severity: 'error', message: 'CÓ VẤN ĐỀ KHI ĐĂNG KÝ' }));
-            }
+            // if(status === 200) {
+            //     setToastData(prev => ({ ...prev, color: 'success', severity: 'success', message: 'ĐĂNG KÝ THÀNH CÔNG' }));
+            //     setIsRegister(prev => !prev);
+            // }
+            // else {
+                console.log(data)
+            //     setToastData(prev => ({ ...prev, color: 'error', severity: 'error', message: '' }));
+            // }
 
             setOpenToast(true);
         }
