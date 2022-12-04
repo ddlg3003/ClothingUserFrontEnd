@@ -15,8 +15,24 @@ import { Link } from "react-router-dom";
 import Rating from "@mui/material/Rating";
 import { useAddCommentMutation } from "../../services/commentApis";
 import { URL_REGEX } from "../../utils/globalVariables";
+import Alert from "../Alert/Alert";
 
 const RatingDialog = (props) => {
+  const [openToast, setOpenToast] = useState(false);
+  const [toastData, setToastData] = useState({
+    color: "",
+    severity: "",
+    message: "",
+  });
+
+  const handleCloseToast = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenToast(false);
+  };
+
   const [addComment] = useAddCommentMutation();
 
   const { onClose, open, orderDetails } = props;
@@ -48,6 +64,8 @@ const RatingDialog = (props) => {
       transactionId: orderDetails.id,
     });
     onClose();
+    setToastData(prev => ({ ...prev, color: 'success', severity: 'success', message: 'Đánh giá thành công!' }));
+    setOpenToast(true);
   };
 
   return (
@@ -137,6 +155,13 @@ const RatingDialog = (props) => {
           </Button>
         </DialogActions>
       </Dialog>
+      <Alert 
+                message={toastData.message}
+                openToast={openToast} 
+                handleCloseToast={handleCloseToast}
+                color={toastData.color}
+                severity={toastData.severity}    
+            />
     </div>
   );
 };

@@ -3,8 +3,8 @@ import { clothing, onQueryStartedHandler } from "./clothingBaseApis";
 const comment = clothing.injectEndpoints({
   endpoints: (builder) => ({
     getCommentsByProductId: builder.query({
-        query: (productId) =>
-            `comment/product/${productId}`,
+      query: (productId) => `comment/product/${productId}`,
+      providesTags: ["Comment"],
     }),
     addComment: builder.mutation({
       query: (formData) => ({
@@ -12,9 +12,11 @@ const comment = clothing.injectEndpoints({
         method: "POST",
         body: formData,
       }),
+      invalidatesTags: ["Comment"],
     }),
   }),
   overrideExisting: false,
 });
 
-export const { useAddCommentMutation, useGetCommentsByProductIdQuery } = comment;
+export const { useAddCommentMutation, useGetCommentsByProductIdQuery } =
+  comment;

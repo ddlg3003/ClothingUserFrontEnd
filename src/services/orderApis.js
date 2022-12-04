@@ -13,8 +13,16 @@ const order = clothing.injectEndpoints({
             }),
             invalidatesTags: ['Cart'],
         }),
+        createVNPAYOrder: builder.mutation({
+            query: (formData) => ({
+                url: 'user/order/payment/vnpay',
+                method: 'POST',
+                body: formData,
+            }),
+            invalidatesTags: ['Cart'],
+        }),
     }),
     overrideExisting: false,
 });
 
-export const { useGetAllOrdersQuery, useCreateOrderMutation } = order;
+export const { useGetAllOrdersQuery, useCreateOrderMutation, useCreateVNPAYOrderMutation } = order;

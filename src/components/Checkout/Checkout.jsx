@@ -5,9 +5,15 @@ import CartItems from "./CartItems";
 import ShippingAddresses from "./ShippingAddresses";
 import PaymentMethods from "./PaymentMethods";
 import { useGetUserAddressQuery } from "../../services/userApis";
-import { useCreateOrderMutation } from "../../services/orderApis";
+import {
+  useCreateOrderMutation,
+  useCreateVNPAYOrderMutation,
+} from "../../services/orderApis";
 import { useNavigate } from "react-router-dom";
-import { SIDEBAR_STATE, PROFILE_QUERY_STRING } from "../../utils/globalVariables";
+import {
+  SIDEBAR_STATE,
+  PROFILE_QUERY_STRING,
+} from "../../utils/globalVariables";
 import useStyles from "./styles";
 
 const Checkout = () => {
@@ -20,13 +26,7 @@ const Checkout = () => {
 
   const submitData = [...JSON.parse(sessionStorage.getItem("cartItems"))];
 
-  const transformObject = ({
-    color,
-    price,
-    product_id,
-    quantity,
-    size,
-  }) => {
+  const transformObject = ({ color, price, product_id, quantity, size }) => {
     return {
       quantity: quantity.toString(),
       unit_price: price.toString(),
@@ -41,7 +41,7 @@ const Checkout = () => {
   });
 
   const [paymentTypeValue, setPaymentTypeValue] = useState("credit");
-  const [creditMethod, setCreditMethod] = useState("VCB");
+  const [creditMethod, setCreditMethod] = useState("VNPAY");
 
   let payment = {};
   if (paymentTypeValue === "COD") {
@@ -50,13 +50,31 @@ const Checkout = () => {
   }
 
   const [createOrder] = useCreateOrderMutation();
+  const [createVNPAYOrder] = useCreateVNPAYOrderMutation();
 
   const handleSubmit = async () => {
-    // console.log([newSubmitData, payment]);
-    await createOrder([newSubmitData, payment]);
+    try {
+      if (paymentTypeValue === "COD") {
+        await createOrder([newSubmitData, payment]);
+        navigate(`/profile?${PROFILE_QUERY_STRING[0]}=${SIDEBAR_STATE[4]}`);
+      } else {
+        const { data: VNPAYData } = await createVNPAYOrder([
+          newSubmitData,
+          payment,
+        ]);
+        if (VNPAYData?.status !== "00") {
+          alert("Payment error");
+          console.log(VNPAYData);
+          return;
+        }
+        window.location.href = VNPAYData?.url;
+      }
+    } catch {
+      alert("Payment error");
+    }
+
     sessionStorage.clear();
     // window.location.href = `/profile?${PROFILE_QUERY_STRING[0]}=${SIDEBAR_STATE[4]}`;
-    navigate(`/profile?${PROFILE_QUERY_STRING[0]}=${SIDEBAR_STATE[4]}`);
     // dispatch(updateCart([]));
   };
 

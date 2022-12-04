@@ -4,7 +4,6 @@ import useStyles from './styles';
 
 const Comment = ({ keyname, comment }) => {
     const classes = useStyles();
-
     return (
         <List key={keyname} className={classes.commentList}>
             <Divider />
@@ -19,7 +18,7 @@ const Comment = ({ keyname, comment }) => {
                     primary={comment?.userFullName}
                     secondary={
                         <React.Fragment>
-                            {'28-10-2022'}
+                            {comment?.create_at}
                             <Typography
                                 letterSpacing="1px"
                                 fontSize="16px"
