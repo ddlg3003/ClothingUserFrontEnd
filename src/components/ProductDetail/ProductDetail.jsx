@@ -272,7 +272,7 @@ const ProductDetail = () => {
             className={classes.image}
             src={mainImg}
             onClick={(e) => handleImage(mainImg)}
-            alt={'product'}
+            alt={''}
           />
           <div className={classes.subImageContainer}>
             {/* {product.images.map((image, i) => (

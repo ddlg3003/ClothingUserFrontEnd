@@ -8,7 +8,7 @@ import { LIMIT, PRODUCT_QUERY_STRING } from '../../utils/globalVariables';
 
 const PorductList = () => {
     const classes = useStyles();
-    const { data, isFetching } = useGetProductsQuery({ pageNumber: 1, pageSize: 10, cat: '', });
+    const { data, isFetching } = useGetProductsQuery({ pageNumber: 1, pageSize: 8, cat: '', });
 
     return (
         <div className={classes.container}>
