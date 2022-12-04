@@ -9,6 +9,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../../features/auth';
 import { getUserLogin, signup } from '../../utils/auth';
+import { LoadingButton } from '@mui/lab';
 import useStyles from './styles';
 
 const Auth = () => {
@@ -25,15 +26,25 @@ const Auth = () => {
         retypePassword: '',
     };
     const [openToast, setOpenToast] = useState(false);
+    const [toastData, setToastData] = useState({
+        color: '',
+        severity: '',
+        message: '',
+    });
+
     const [formData, setFormData] = useState(initialFormState);
     const [isRegister, setIsRegister] = useState(false);
+
     const [showPassword, setShowPassword] = useState(false);
     const [invalidEmail, setInvalidEmail] = useState({ error: false, helperText: '' });
     const [invalidUsername, setInvalidUsername] = useState({ error: false, helperText: '' });
     const [invalidPhone, setInvalidPhone] = useState({ error: false, helperText: '' });
     const [invalidPassword, setInvalidPassword] = useState({ error: false, helperText: '' });
     const [invalidRetypePassword, setInvalidRetypePassword] = useState({ error: false, helperText: '' });
+
+    const [loading, setLoading] = useState(false);
     const [enableButton, setEnableButton] = useState(false);
+
     const phoneInput = useRef();
     const emailInput = useRef();
     const usernameInput = useRef();
@@ -139,26 +150,33 @@ const Auth = () => {
         
         if(!isRegister) {
             const { data, status } = await getUserLogin(formData);
+            setLoading(true);
 
             if(status === 200) {
                 dispatch(setUser(data));
                 navigate(-1);
-                setEnableButton(false);
             }
             else {
-                setOpenToast(true);
+                setToastData(prev => ({ ...prev, color: 'error', severity: 'error', message: 'SAI THÔNG TIN ĐĂNG NHẬP' }));
+
+                setTimeout(() => {
+                    setLoading(false);
+                    setOpenToast(true);
+                }, 250);
             }
         }
         else {
             const { data, status } = await signup({ ...formData, name: formData.username, roles: ["USER"] });
 
             if(status === 200) {
+                setToastData(prev => ({ ...prev, color: 'success', severity: 'success', message: 'ĐĂNG KÝ THÀNH CÔNG' }));
                 setIsRegister(prev => !prev);
-                // console.log(formData);
             }
             else {
-                setOpenToast(true);
+                setToastData(prev => ({ ...prev, color: 'error', severity: 'error', message: 'CÓ VẤN ĐỀ KHI ĐĂNG KÝ' }));
             }
+
+            setOpenToast(true);
         }
     }
 
@@ -249,16 +267,18 @@ const Auth = () => {
                         /> 
                         : null 
                     }
-                    <Button 
+                    <LoadingButton 
                         variant="contained" 
                         color="black" 
                         style={{ color: 'white', padding: '16px', width: '100%' }} 
                         size="medium"
-                        type="submit"
+                        type="submit" 
+                        loadingPosition="start"  
                         disabled={!enableButton}
+                        loading={loading}
                     >
                         {isRegister ? 'Đăng ký' : 'Đăng nhập'}
-                    </Button>
+                    </LoadingButton>
                     {!isRegister ? (
                         <>
                             <div className={classes.divider}>
@@ -330,11 +350,11 @@ const Auth = () => {
                 </form>
             </Paper>
             <Alert 
-                message="THÔNG TIN ĐĂNG NHẬP KHÔNG ĐÚNG" 
+                message={toastData.message}
                 openToast={openToast} 
                 handleCloseToast={handleCloseToast}
-                color="error"
-                severity="error"    
+                color={toastData.color}
+                severity={toastData.severity}    
             />
         </Container>
     )

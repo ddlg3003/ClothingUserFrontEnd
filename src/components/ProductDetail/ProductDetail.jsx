@@ -61,7 +61,7 @@ const ProductDetail = () => {
   const { data: dataCartList } = useGetCartQuery();
 
   const { data: commentsData, isFetching: isFetchingComments } =
-    useGetCommentsByProductIdQuery(id);
+    useGetCommentsByProductIdQuery(id, { skip: !isAuthenticated });
 
   const [toggleWishlist] = useToggleWishlistMutation();
 
