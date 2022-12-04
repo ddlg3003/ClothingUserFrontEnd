@@ -4,7 +4,7 @@ const product = clothing.injectEndpoints({
     endpoints: (builder) => ({
         getProducts: builder.query({
             query: ({ pageNumber, pageSize, cat }) =>
-                `product?pageNo=${pageNumber}&pageSize=${pageSize}&cat=${cat}`,
+                `product?pageNo=${pageNumber}&pageSize=${pageSize}&catId=${cat}`,
         }),
         getProduct: builder.query({
             query: (id) => `product/${id}`,
