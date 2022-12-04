@@ -26,6 +26,7 @@ import {
   useGetProductQuery,
   useGetTypesQuery,
   useGetTypesPropsQuery,
+  useGetProductsImagesQuery,
 } from '../../services/productApis';
 import {
   useAddItemToCartMutation,
@@ -72,6 +73,9 @@ const ProductDetail = () => {
   const { data: commentsData, isFetching: isFetchingComments } =
     useGetCommentsByProductIdQuery(id);
 
+  // images list api
+  const { data: imgArr, isFetching: isFetchingImgArr } = useGetProductsImagesQuery(id);
+
   const [toggleWishlist] = useToggleWishlistMutation();
 
   const [quantity, setQuantity] = useState(1);
@@ -99,10 +103,10 @@ const ProductDetail = () => {
 
   // Run the callback for changing the initial main image when isFetching changes
   useEffect(() => {
-    setMainImg(data?.image);
+    setMainImg(imgArr ? imgArr[0]?.image : '');
     setCurrentPrice(data?.price);
     setCurrentColor(data?.color);
-  }, [isFetching, data]);
+  }, [isFetching, data, isFetchingImgArr, imgArr]);
 
   // Set size array based on color being choosed
   useEffect(() => {
@@ -275,28 +279,29 @@ const ProductDetail = () => {
             alt={''}
           />
           <div className={classes.subImageContainer}>
-            {/* {product.images.map((image, i) => (
-                            <img 
-                                key={i}
-                                className={classes.subImage} 
-                                src={image}
-                                onClick={(e) => handleMainImg(image, i)}
-                                style={{ 
-                                    opacity: isSelectedImg === i && '1', 
-                                    borderColor: isSelectedImg === i && 'black',
-                                }}
-                            />
-                        ))} */}
-            <img
+            {imgArr?.map(({ image }, i) => (
+              <img 
+                  key={i}
+                  className={classes.subImage} 
+                  src={image}
+                  onClick={(e) => handleMainImg(image, i)}
+                  style={{ 
+                      opacity: isSelectedImg === i && '1', 
+                      borderColor: isSelectedImg === i && 'black',
+                  }}
+                  alt={''}
+              />
+          ))}
+            {/* <img
               className={classes.subImage}
-              src={data?.image}
+              src={imgArr[0]?.image}
               alt={'product'}
-              onClick={(e) => handleMainImg(data?.image, 0)}
+              onClick={(e) => handleMainImg(imgArr[0]?.image, 0)}
               style={{
                 opacity: isSelectedImg === 0 && '1',
                 borderColor: isSelectedImg === 0 && 'black',
               }}
-            />
+            /> */}
           </div>
         </Grid>
         <Grid item>

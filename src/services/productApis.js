@@ -18,6 +18,9 @@ const product = clothing.injectEndpoints({
         getTypesProps: builder.query({
             query: (productId) => `type/cas/${productId}`,
         }),
+        getProductsImages: builder.query({
+            query: (productId) => `product/${productId}/imageDetail`,
+        }),
     }),
     overrideExisting: false,
 });
@@ -28,4 +31,5 @@ export const {
     useGetProductsByCatQuery,
     useGetTypesQuery,
     useGetTypesPropsQuery,
+    useGetProductsImagesQuery,
 } = product;
