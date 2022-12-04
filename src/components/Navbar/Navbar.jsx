@@ -20,18 +20,23 @@ import {
 } from '@mui/icons-material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SecondNavbar from '../SecondNavbar/SecondNavbar';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { useGetCategoriesQuery } from '../../services/catApis';
 import { useGetCartQuery } from '../../services/cartApis';
+// import { useGetProductsQuery } from '../../services/productApis';
+import AutoCompleteSearch from './AutoCompleteSearch';
 import { logout } from '../../features/auth';
 import decode from 'jwt-decode';
+import { useDebounce } from '../../utils/helperFunction';
 import useStyles from './styles';
+import { useRef } from 'react';
 
 const Navbar = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const location = useLocation();
+    const navigate = useNavigate();
 
     const { isAuthenticated } = useSelector((state) => state.auth);
     const user = JSON.parse(localStorage.getItem('user'));
@@ -60,7 +65,45 @@ const Navbar = () => {
     const [mobileOpen, setMobileOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const [anchorElAuth, setAnchorElAuth] = useState(null);
+    const [query, setQuery] = useState('');
+    const [notOpenAutoComplete, setNotOpenAutoComplete] = useState(true);
 
+    // Debounce search query
+    const debouncedQuery = useDebounce(query, 500);
+
+    // Handle search
+    const handleKeyPress = (event) => {
+        if(event.key === 'Enter') {
+            navigate(`/products?${PRODUCT_QUERY_STRING[3]}=${query}&${PRODUCT_QUERY_STRING[0]}=1`);
+            setNotOpenAutoComplete(true);
+            setQuery('');
+        }
+    }
+
+    // handle click outside search text
+    const searchRef = useRef(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (searchRef.current && !searchRef.current.contains(event.target)) {
+                setNotOpenAutoComplete(true);
+            }
+        };
+        document.addEventListener('click', handleClickOutside, true);
+        return () => {
+            document.removeEventListener('click', handleClickOutside, true);
+        };
+      }, [setNotOpenAutoComplete]);
+
+    const handleSearchChange = (e) => {
+        setQuery(e.target.value);
+
+        if(e.target.value === '') {
+            setNotOpenAutoComplete(true);
+        } else {
+            setNotOpenAutoComplete(false);
+        }
+    }
     // Auth hover functions
     const handleClickAuth = (e) => {
         if (anchorElAuth !== e.currentTarget) {
@@ -139,21 +182,31 @@ const Navbar = () => {
                             <MenuIcon />
                         </IconButton>
                     )}
-                    <TextField
-                        className={classes.search}
-                        onKeyPress={() => {}}
-                        // value={}
-                        onChange={() => {}}
-                        variant="standard"
-                        InputProps={{
-                            // className: classes.input,
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <SearchIcon />
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
+                    <div ref={searchRef} className={classes.search}>
+                        <TextField
+                            onKeyPress={handleKeyPress}
+                            value={query}
+                            sx={{ width: '100%' }}
+                            onChange={handleSearchChange}
+                            variant="standard"
+                            InputProps={{
+                                // className: classes.input,
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <SearchIcon />
+                                    </InputAdornment>
+                                ),
+                            }}
+                        />
+                        {!isMobile ? (
+                            <AutoCompleteSearch 
+                                hidden={notOpenAutoComplete} 
+                                query={debouncedQuery} 
+                                setQuery={setQuery} 
+                                setNotOpenAutoComplete={setNotOpenAutoComplete} 
+                            />
+                        ) : (<></>)}
+                    </div>
                     <div>
                         <Button component={Link} to="/cart" color="black">
                             <Badge badgeContent={dataCartList?.length} color="error">
@@ -299,7 +352,7 @@ const Navbar = () => {
                         data.map((category) => (
                             <Link
                                 key={category.id}
-                                to={`/products?${PRODUCT_QUERY_STRING[0]}=${1}&${PRODUCT_QUERY_STRING[1]}=${LIMIT}&${PRODUCT_QUERY_STRING[2]}=${category.id}`} 
+                                to={`/products?${PRODUCT_QUERY_STRING[2]}=${category.id}&${PRODUCT_QUERY_STRING[0]}=${1}`} 
                                 style={{
                                     textDecoration: 'none',
                                     color: 'black',

@@ -30,7 +30,7 @@ export const SIDEBAR_STATE = [
 
 export const BASE_API_URL = "http://localhost:8099";
 
-export const PRODUCT_QUERY_STRING = ["page", "limit", "cat"];
+export const PRODUCT_QUERY_STRING = ["page", "limit", "cat", "keyword"];
 
 export const PROFILE_QUERY_STRING = ["tab"];
 

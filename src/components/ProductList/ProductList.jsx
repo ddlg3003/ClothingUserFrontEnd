@@ -25,7 +25,7 @@ const PorductList = () => {
             <div className={classes.moreButton}>
                 <Button 
                     component={Link} 
-                    to={`/products?${PRODUCT_QUERY_STRING[0]}=${1}&${PRODUCT_QUERY_STRING[1]}=${LIMIT}`} 
+                    to={`/products?${PRODUCT_QUERY_STRING[0]}=${1}`} 
                     variant="contained" color="black" 
                     style={{ margin: '20px 0 40px 0', color: 'white' }} 
                     size="large"
