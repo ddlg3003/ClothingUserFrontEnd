@@ -19,7 +19,7 @@ const Product = ({ product }) => {
                         className={classes.image}
                     />
                     <div>
-                        <Rating readOnly value={product?.avgRating ? product?.avgRating : 0} precision={0.1} size="large" /> 
+                        <Rating readOnly value={product?.avgRating ? product?.avgRating : (product?.avg_rating ? product?.avg_rating : 0)} precision={0.1} size="large" /> 
                     </div>
                     <Typography 
                         fontWeight="normal" 
