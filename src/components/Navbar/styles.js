@@ -13,6 +13,9 @@ export default makeStyles((theme) => ({
         }
     },
     search: {
+        position: 'relative',
+        marginLeft: '24px',
+        width: '40%',
         [theme.breakpoints.down('md')]: {
             width: '40%',
         },
@@ -52,5 +55,10 @@ export default makeStyles((theme) => ({
         [theme.breakpoints.down('800')]: {
             marginLeft: '16px',
         } 
-    }
+    },
+    productSearchItem: {
+        '&:hover': {
+            backgroundColor: '#f1f1f1',
+        }
+    },
 }));

@@ -16,28 +16,37 @@ const ProductListMore = () => {
     const pageNum = parseInt(searchParams.get(PRODUCT_QUERY_STRING[0])); // Get the query of page for validation
     const pageInit = Number.isInteger(pageNum) && pageNum > 0 ? pageNum : 1;
 
-    const limitNum = parseInt(searchParams.get(PRODUCT_QUERY_STRING[1])); // Get the query of limit for validation
-    const limitInit = Number.isInteger(limitNum) && limitNum > 0 ? limitNum : LIMIT;
+    // const limitNum = parseInt(searchParams.get(PRODUCT_QUERY_STRING[1])); // Get the query of limit for validation
+    // const limitInit = Number.isInteger(limitNum) && limitNum > 0 ? limitNum : LIMIT;
+    const searchInit = searchParams.get(PRODUCT_QUERY_STRING[3]) || '';
 
     const catNum = parseInt(searchParams.get(PRODUCT_QUERY_STRING[2])); // Get the query of cat for validation
     const catInit = Number.isInteger(catNum) ? catNum : '';
 
     const { data, isFetching } = useGetProductsQuery({
         pageNumber: pageInit,
-        pageSize: limitInit,
+        pageSize: LIMIT,
         cat: catInit,
+        keyword: searchInit,
     });
 
     const isMobile = useMediaQuery('(max-width: 800px)');
 
     const onPageChange = (e, value) => {
-        let query = { [PRODUCT_QUERY_STRING[0]]: value, [PRODUCT_QUERY_STRING[1]]: limitInit };
+        let query = {};
 
         // Check if cat query exist 
         if(searchParams.get(PRODUCT_QUERY_STRING[2])) {
             query = { ...query, [PRODUCT_QUERY_STRING[2]]: catInit };
         }
 
+        // Check if search query exist 
+        if(searchParams.get(PRODUCT_QUERY_STRING[3])) {
+            query = { ...query, [PRODUCT_QUERY_STRING[3]]: searchInit };
+        }
+
+        query = { ...query, [PRODUCT_QUERY_STRING[0]]: value };
+        
         setSearchParams(query);
     }
 
@@ -52,7 +61,7 @@ const ProductListMore = () => {
                     <Products data={data} />
                     <Stack spacing={2} className={classes.pagination}>
                         <Pagination
-                            count={Math.ceil(data?.numberItem / limitInit)}
+                            count={Math.ceil(data?.numberItem / LIMIT)}
                             shape="rounded"
                             page={pageInit}
                             size={isMobile ? 'small' : 'large'}

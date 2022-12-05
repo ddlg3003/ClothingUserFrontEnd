@@ -3,8 +3,13 @@ import { clothing } from './clothingBaseApis';
 const product = clothing.injectEndpoints({
     endpoints: (builder) => ({
         getProducts: builder.query({
-            query: ({ pageNumber, pageSize, cat }) =>
-                `product?pageNo=${pageNumber}&pageSize=${pageSize}&catId=${cat}`,
+            query: ({ pageNumber, pageSize, cat, keyword }) => {
+                if(!keyword) {
+                    return `product?pageNo=${pageNumber}&pageSize=${pageSize}&catId=${cat}`;
+                }
+
+                return `product/search?keyword=${keyword}&pageNo=${pageNumber}&pageSize=${pageSize}`;
+            }
         }),
         getProduct: builder.query({
             query: (id) => `product/${id}`,
@@ -18,6 +23,9 @@ const product = clothing.injectEndpoints({
         getTypesProps: builder.query({
             query: (productId) => `type/cas/${productId}`,
         }),
+        getProductsImages: builder.query({
+            query: (productId) => `product/${productId}/imageDetail`,
+        }),
     }),
     overrideExisting: false,
 });
@@ -28,4 +36,5 @@ export const {
     useGetProductsByCatQuery,
     useGetTypesQuery,
     useGetTypesPropsQuery,
+    useGetProductsImagesQuery,
 } = product;
