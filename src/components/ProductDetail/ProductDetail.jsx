@@ -38,7 +38,7 @@ import {
   useGetUserWishlistQuery,
 } from '../../services/wishlistApis';
 import useStyles from './styles';
-import Comment from '../Comment/Comment';
+import Comment from './Comment';
 import { useGetCommentsByProductIdQuery } from '../../services/commentApis';
 
 const ProductDetail = () => {
