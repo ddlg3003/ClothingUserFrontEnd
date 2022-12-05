@@ -1,8 +1,9 @@
 import {
   Box,
-  CircularProgress, Container,
+  CircularProgress,
+  Container,
   Paper,
-  Typography
+  Typography,
 } from "@mui/material";
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
@@ -11,7 +12,8 @@ import { useFilePicker } from "use-file-picker";
 import { useGetAllOrdersQuery } from "../../services/orderApis";
 import { useGetProfileQuery } from "../../services/userApis";
 import {
-  PROFILE_QUERY_STRING, SIDEBAR_STATE
+  PROFILE_QUERY_STRING,
+  SIDEBAR_STATE,
 } from "../../utils/globalVariables";
 import { validateEmail, validatePhoneNumber } from "../../utils/validateString";
 import AddressDetails from "./AddressDetails";
@@ -21,21 +23,6 @@ import PasswordChange from "./PasswordChange";
 import ProfileDetails from "./ProfileDetails";
 import SideBar from "./SideBar";
 import useStyles from "./styles";
-
-const favorites = [
-  {
-    id: 0,
-    name: "Kính chống nắng",
-    price: 150000,
-    img: "https://demo.themefisher.com/aviato/images/shop/cart/cart-1.jpg",
-  },
-  {
-    id: 1,
-    name: "Áo Polo nam Pique Cotton USA thấm hút tối đa (kẻ sọc)",
-    price: 100000,
-    img: "https://media.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/August2022/DSC05295-copy_73.jpg",
-  },
-];
 
 const Profile = () => {
   const classes = useStyles();
@@ -65,18 +52,22 @@ const Profile = () => {
 
   const { data: userInformation, isFetching: isFetchingUserInformation } =
     useGetProfileQuery();
-  const { data: allUserOrders, isFetching: isFetchingUserOrders, refetch } =
-    useGetAllOrdersQuery();
+  const {
+    data: allUserOrders,
+    isFetching: isFetchingUserOrders,
+    refetch,
+  } = useGetAllOrdersQuery();
 
   window.onpopstate = () => {
-    if(window.location.href === "http://localhost:3000/profile?tab=orders") window.location.href = "/";
-  }
+    if (window.location.href === "http://localhost:3000/profile?tab=orders")
+      window.location.href = "/";
+  };
 
   useEffect(() => {
     setUserInfo(userInformation);
     setBirthday(userInformation?.dob);
   }, [isFetchingUserInformation]);
-  
+
   useEffect(() => {
     setOrders(allUserOrders);
   }, [isFetchingUserOrders]);
@@ -108,8 +99,7 @@ const Profile = () => {
 
   const handleNameChange = (event) => {
     const name = event.target.value;
-    if (name.length <= 45)
-      setUserInfo((prev) => ({ ...prev, fullname: name }));
+    if (name.length <= 45) setUserInfo((prev) => ({ ...prev, fullname: name }));
   };
 
   const handlePhoneNumberChange = (event) => {
@@ -150,7 +140,7 @@ const Profile = () => {
             />
             <Paper elevation={10}>
               <div className={classes.profileMain}>
-                {(isFetchingUserInformation && isFetchingUserOrders) ? (
+                {isFetchingUserInformation && isFetchingUserOrders ? (
                   <Box display="flex" justifyContent="center">
                     <CircularProgress color="black" size="4rem" />
                   </Box>
@@ -183,7 +173,7 @@ const Profile = () => {
                 </div>
 
                 <div hidden={tabParamInit !== SIDEBAR_STATE[3]}>
-                  <Favorites favorites={favorites} classes={classes} />
+                  <Favorites classes={classes} />
                 </div>
                 <div hidden={tabParamInit !== SIDEBAR_STATE[4]}>
                   <Orders
