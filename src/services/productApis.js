@@ -1,4 +1,5 @@
 import { clothing } from './clothingBaseApis';
+import { PYTHON_URL } from '../utils/globalVariables';
 
 const product = clothing.injectEndpoints({
     endpoints: (builder) => ({
@@ -26,6 +27,10 @@ const product = clothing.injectEndpoints({
         getProductsImages: builder.query({
             query: (productId) => `product/${productId}/imageDetail`,
         }),
+        getRecommendedProducts: builder.query({
+            query: (userId) => `${PYTHON_URL}/recommend/${userId}`,
+            providesTags: ['Wishlist'],
+        }),
     }),
     overrideExisting: false,
 });
@@ -37,4 +42,5 @@ export const {
     useGetTypesQuery,
     useGetTypesPropsQuery,
     useGetProductsImagesQuery,
+    useGetRecommendedProductsQuery,
 } = product;

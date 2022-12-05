@@ -2,9 +2,10 @@ import React from 'react';
 import { Typography, Button, CircularProgress, Box } from '@mui/material'; 
 import { Link } from 'react-router-dom';
 import { useGetProductsQuery } from '../../services/productApis';
-import useStyles from './styles';
 import Products from '../Products/Products'
 import { LIMIT, PRODUCT_QUERY_STRING } from '../../utils/globalVariables';
+import RecommendList from '../RecommendList/RecommendList';
+import useStyles from './styles';
 
 const PorductList = () => {
     const classes = useStyles();
@@ -12,14 +13,15 @@ const PorductList = () => {
 
     return (
         <div className={classes.container}>
-            <Typography letterSpacing="2px" fontSize="25px" fontWeight="normal" align="center" paddingBottom="30px" paddingTop="40px">SẢN PHẨM HOT</Typography>
+            <RecommendList />
+            <Typography letterSpacing="2px" fontSize="28px" fontWeight="normal" align="center" paddingBottom="30px" paddingTop="40px">SẢN PHẨM HOT</Typography>
             {
                 isFetching ? (
                     <Box display="flex" justifyContent="center">
                         <CircularProgress color="black" size="4rem" />
                     </Box>
                 ) : (
-                    <Products data={data} />
+                    <Products data={data?.list} />
                 )
             }
             <div className={classes.moreButton}>

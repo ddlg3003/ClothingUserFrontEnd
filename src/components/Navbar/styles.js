@@ -14,13 +14,16 @@ export default makeStyles((theme) => ({
     },
     search: {
         position: 'relative',
-        marginLeft: '24px',
+        marginLeft: '64px',
         width: '40%',
         [theme.breakpoints.down('md')]: {
             width: '40%',
+            marginLeft: '40px',
+
         },
         [theme.breakpoints.down('sm')]: {
             width: '30%',
+            marginLeft: '0',
         }
     },
     nav: {

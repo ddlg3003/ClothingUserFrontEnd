@@ -64,3 +64,5 @@ export const axiosConfig = () => {
     },
   };
 };
+
+export const PYTHON_URL = 'http://localhost:8081';

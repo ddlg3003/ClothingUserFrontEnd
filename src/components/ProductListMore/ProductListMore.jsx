@@ -58,7 +58,7 @@ const ProductListMore = () => {
                 </Box>
             ) : (
                 <>
-                    <Products data={data} />
+                    <Products data={data?.list} />
                     <Stack spacing={2} className={classes.pagination}>
                         <Pagination
                             count={Math.ceil(data?.numberItem / LIMIT)}

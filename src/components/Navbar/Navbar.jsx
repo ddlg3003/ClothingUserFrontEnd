@@ -83,6 +83,7 @@ const Navbar = () => {
     // handle click outside search text
     const searchRef = useRef(null);
 
+    // Use effect to check when click outside of search div
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (searchRef.current && !searchRef.current.contains(event.target)) {

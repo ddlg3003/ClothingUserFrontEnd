@@ -8,8 +8,8 @@ const Products = ({ data }) => {
 
     return (
         <Grid container justifyContent="center" spacing={4} className={classes.productContainer}>
-            {data.list.map((product) => (
-                <Product key={product.id} product={product} />
+            {data?.map((product, i) => (
+                <Product key={i} product={product} />
             ))}
         </Grid>
     )
