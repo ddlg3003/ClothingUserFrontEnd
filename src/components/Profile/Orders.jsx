@@ -169,7 +169,7 @@ const Orders = (props) => {
                       alignItems="center"
                       sx={{ background: "#Fbf9f8" }}
                     >
-                      <Stack p={1}>
+                      <Stack p={1} width="400px">
                         <Typography fontWeight="bold" fontSize={16}>
                           SĐT: {order?.ordPhone}
                         </Typography>
@@ -303,7 +303,7 @@ const Orders = (props) => {
                         alignItems="center"
                         sx={{ background: "#Fbf9f8" }}
                       >
-                        <Stack p={1}>
+                        <Stack p={1} width="400px">
                           <Typography fontWeight="bold" fontSize={16}>
                             SĐT: {order?.ordPhone}
                           </Typography>
@@ -338,7 +338,9 @@ const Orders = (props) => {
                           {Intl.NumberFormat("vi-VN", {
                             style: "currency",
                             currency: "VND",
-                          }).format(order?.ordTotalPrice + order?.ordShippingFee)}
+                          }).format(
+                            order?.ordTotalPrice + order?.ordShippingFee
+                          )}
                         </Typography>
                       </Stack>
                       <Divider />
@@ -437,7 +439,7 @@ const Orders = (props) => {
                         alignItems="center"
                         sx={{ background: "#Fbf9f8" }}
                       >
-                        <Stack p={1}>
+                        <Stack p={1} width="400px">
                           <Typography fontWeight="bold" fontSize={16}>
                             SĐT: {order?.ordPhone}
                           </Typography>
@@ -472,7 +474,9 @@ const Orders = (props) => {
                           {Intl.NumberFormat("vi-VN", {
                             style: "currency",
                             currency: "VND",
-                          }).format(order?.ordTotalPrice + order?.ordShippingFee)}
+                          }).format(
+                            order?.ordTotalPrice + order?.ordShippingFee
+                          )}
                         </Typography>
                       </Stack>
                       <Divider />
@@ -594,7 +598,7 @@ const Orders = (props) => {
                         alignItems="center"
                         sx={{ background: "#Fbf9f8" }}
                       >
-                        <Stack p={1}>
+                        <Stack p={1} width="400px">
                           <Typography fontWeight="bold" fontSize={16}>
                             SĐT: {filteredOrder?.ordPhone}
                           </Typography>
@@ -629,7 +633,10 @@ const Orders = (props) => {
                           {Intl.NumberFormat("vi-VN", {
                             style: "currency",
                             currency: "VND",
-                          }).format(filteredOrder?.ordTotalPrice + filteredOrder?.ordShippingFee)}
+                          }).format(
+                            filteredOrder?.ordTotalPrice +
+                              filteredOrder?.ordShippingFee
+                          )}
                         </Typography>
                       </Stack>
                       <Divider />
@@ -728,7 +735,7 @@ const Orders = (props) => {
                         alignItems="center"
                         sx={{ background: "#Fbf9f8" }}
                       >
-                        <Stack p={1}>
+                        <Stack p={1} width="400px">
                           <Typography fontWeight="bold" fontSize={16}>
                             SĐT: {order?.ordPhone}
                           </Typography>
