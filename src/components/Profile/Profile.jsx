@@ -140,7 +140,7 @@ const Profile = () => {
             />
             <Paper elevation={10}>
               <div className={classes.profileMain}>
-                {isFetchingUserInformation && isFetchingUserOrders ? (
+                {isFetchingUserInformation || isFetchingUserOrders ? (
                   <Box display="flex" justifyContent="center">
                     <CircularProgress color="black" size="4rem" />
                   </Box>

@@ -260,7 +260,7 @@ const ProductDetail = () => {
     } else navigate('/auth');
   };
 
-  if (isFetching && isFetchingTypes && isFetchingTypeProps) {
+  if (isFetching || isFetchingTypes || isFetchingTypeProps || isFetchingImgArr) {
     return (
       <Box display="flex" justifyContent="center">
         <CircularProgress color="black" size="6rem" />

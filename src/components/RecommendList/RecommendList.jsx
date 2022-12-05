@@ -14,7 +14,7 @@ const RecommendList = () => {
 
   return (
     <div style={{ marginBottom: '60px' }}>
-      {!isFetchingRecommendData && recommendData?.list.length > 0 && user ? (
+      {user && !isFetchingRecommendData && recommendData?.list.length > 0 ? (
         <>
           <Typography
             letterSpacing="2px"
