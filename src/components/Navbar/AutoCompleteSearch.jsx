@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   CircularProgress,
@@ -27,6 +27,18 @@ const AutoCompleteSearch = ({ hidden, query, setQuery, setNotOpenAutoComplete })
       }
     );
 
+  // Array to store search data  
+  const [searchList, setSearchList] = useState([]);
+  
+  // Callback for reset array and set array
+  useEffect(() => {
+    setSearchList(productsData?.list);
+
+    if(!query) {
+      setSearchList([]);
+    }
+  }, [isFetchingProducts, productsData, query]);
+
   return (
     <Paper
       sx={{ position: 'absolute', width: '100%', zIndex: 99 }}
@@ -37,7 +49,7 @@ const AutoCompleteSearch = ({ hidden, query, setQuery, setNotOpenAutoComplete })
           <CircularProgress color="black" size="3rem" />
         </Box>
       ) : (
-        productsData?.list.slice(0, 5).map((product, i) => (
+        searchList?.slice(0, 5).map((product, i) => (
           <Stack
             key={i}
             direction="row"
@@ -49,6 +61,7 @@ const AutoCompleteSearch = ({ hidden, query, setQuery, setNotOpenAutoComplete })
             onClick={() => {
               setNotOpenAutoComplete(true);
               setQuery('');
+              setSearchList([]);
             }}
             to={`/products/${product?.name
               .replace(URL_REGEX, '-')
