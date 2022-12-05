@@ -12,7 +12,7 @@ const Categories = () => {
         <div className={classes.cateContainer}>
         <Typography 
             letterSpacing="2px" 
-            fontSize="25px" 
+            fontSize="28px" 
             fontWeight="normal" 
             align="center" 
             paddingBottom="30px" 
