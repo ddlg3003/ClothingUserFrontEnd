@@ -296,7 +296,7 @@ const Cart = () => {
             onClick={handleBuyButton}
             component={Link}
             disabled={isFetchingCartList}
-            to= {dataCartList?.length ? "/checkout" : `/products?${PRODUCT_QUERY_STRING[0]}=${1}&${PRODUCT_QUERY_STRING[1]}=${LIMIT}`}
+            to= {dataCartList?.length ? "/checkout" : `/products?${PRODUCT_QUERY_STRING[0]}=${1}`}
             className={classes.checkoutButton}
           >
             Mua Hàng

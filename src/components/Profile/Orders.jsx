@@ -1,6 +1,6 @@
-import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
-import StarsIcon from "@mui/icons-material/Stars";
-import { TabContext, TabList, TabPanel } from "@mui/lab";
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
+import StarsIcon from '@mui/icons-material/Stars';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
 import {
   Box,
   Button,
@@ -11,18 +11,25 @@ import {
   Stack,
   Tab,
   Typography,
-} from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { ORDER_STATUS, URL_REGEX } from "../../utils/globalVariables";
-import RatingDialog from "./RatingDialog";
+} from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useGetAllOrdersQuery } from '../../services/orderApis';
+import { ORDER_STATUS, URL_REGEX } from '../../utils/globalVariables';
+import RatingDialog from './RatingDialog';
 
 const Orders = (props) => {
   const [openRatingDialog, setOpenRatingDialog] = useState(false);
 
+  const {
+    data: allUserOrders,
+    isFetching: isFetchingUserOrders,
+    refetch,
+  } = useGetAllOrdersQuery();
+
   useEffect(() => {
-    if (props.navSelection === "orders") {
-      props.setTabValue("1");
+    if (props.navSelection === 'orders') {
+      props.setTabValue('1');
     }
   }, [props.navSelection]);
 
@@ -40,10 +47,10 @@ const Orders = (props) => {
 
   return (
     <>
-      <Box sx={{ display: "flex", mb: 1 }}>
+      <Box sx={{ display: 'flex', mb: 1 }}>
         <Box sx={{ flexGrow: 1 }} className={props.classes.title}>
           <TabContext value={props.tabValue}>
-            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
               <TabList onChange={handleChangeTab}>
                 <Tab label="Tất cả" value="1" />
                 <Tab label="Chờ xác nhận" value="2" />
@@ -57,12 +64,12 @@ const Orders = (props) => {
               <Container
                 sx={{
                   mt: 0,
-                  height: "460px",
-                  overflow: props.orders?.length > 0 ? "scroll" : "none",
+                  height: '460px',
+                  overflow: allUserOrders?.length > 0 ? 'scroll' : 'none',
                 }}
               >
-                {props.orders?.map((order, i) => (
-                  <div key={i} style={{ marginTop: i > 0 ? "40px" : "0px" }}>
+                {allUserOrders?.map((order, i) => (
+                  <div key={i} style={{ marginTop: i > 0 ? '40px' : '0px' }}>
                     {order.transactionMapper.map((product, proIndex) => (
                       <Box key={`pro${proIndex}`}>
                         <Grid container spacing={2} sx={{ mb: 0, mt: 1 }}>
@@ -75,14 +82,14 @@ const Orders = (props) => {
                           >
                             <Link
                               to={`/products/${product.productName
-                                .replace(URL_REGEX, "-")
+                                .replace(URL_REGEX, '-')
                                 .toLowerCase()}-i.${product.productId}`}
                               className={props.classes.favoriteItems}
                             >
                               <Grid container spacing={2}>
                                 <Grid
                                   item
-                                  sx={{ paddingLeft: "32px!important" }}
+                                  sx={{ paddingLeft: '32px!important' }}
                                 >
                                   <img
                                     src={product?.productImage}
@@ -95,12 +102,12 @@ const Orders = (props) => {
                                     fontSize={18}
                                     gutterBottom
                                     component="div"
-                                    sx={{ color: "black!important" }}
+                                    sx={{ color: 'black!important' }}
                                   >
                                     {product?.productName}
                                   </Typography>
                                   <Typography color="text.secondary">
-                                    Phân loại hàng: {product?.color} -{" "}
+                                    Phân loại hàng: {product?.color} -{' '}
                                     {product?.size}
                                   </Typography>
                                   <Typography color="text.secondary">
@@ -111,9 +118,9 @@ const Orders = (props) => {
                                     fontWeight="bold"
                                     fontSize={20}
                                   >
-                                    {Intl.NumberFormat("vi-VN", {
-                                      style: "currency",
-                                      currency: "VND",
+                                    {Intl.NumberFormat('vi-VN', {
+                                      style: 'currency',
+                                      currency: 'VND',
                                     }).format(product?.tranUnitPrice)}
                                   </Typography>
                                 </Grid>
@@ -128,7 +135,7 @@ const Orders = (props) => {
                                   color="black"
                                   variant="contained"
                                   component="label"
-                                  style={{ color: "white" }}
+                                  style={{ color: 'white' }}
                                   startIcon={<StarsIcon />}
                                   disabled
                                 >
@@ -140,7 +147,7 @@ const Orders = (props) => {
                                     color="black"
                                     variant="contained"
                                     component="label"
-                                    style={{ color: "white" }}
+                                    style={{ color: 'white' }}
                                     startIcon={<StarsIcon />}
                                     onClick={() => handleClickRate(product?.id)}
                                   >
@@ -151,6 +158,11 @@ const Orders = (props) => {
                                     open={openRatingDialog === product?.id}
                                     onClose={handleCloseRatingDialog}
                                     orderDetails={product}
+                                    toastData={props.toastData}
+                                    setToastData={props.setToastData}
+                                    openToast={props.openToast}
+                                    setOpenToast={props.setOpenToast}
+                                    handleCloseToast={props.handleCloseToast}
                                   />
                                 </Box>
                               )
@@ -167,7 +179,7 @@ const Orders = (props) => {
                       direction="row"
                       justifyContent="space-between"
                       alignItems="center"
-                      sx={{ background: "#Fbf9f8" }}
+                      sx={{ background: '#Fbf9f8' }}
                     >
                       <Stack p={1} width="400px">
                         <Typography fontWeight="bold" fontSize={16}>
@@ -201,9 +213,9 @@ const Orders = (props) => {
                         fontWeight="bold"
                         fontSize={22}
                       >
-                        {Intl.NumberFormat("vi-VN", {
-                          style: "currency",
-                          currency: "VND",
+                        {Intl.NumberFormat('vi-VN', {
+                          style: 'currency',
+                          currency: 'VND',
                         }).format(order?.ordTotalPrice + order?.ordShippingFee)}
                       </Typography>
                     </Stack>
@@ -213,13 +225,13 @@ const Orders = (props) => {
               </Container>
             </TabPanel>
             <TabPanel value="2">
-              <Container sx={{ mt: 0, height: "460px", overflow: "scroll" }}>
-                {props.orders
+              <Container sx={{ mt: 0, height: '460px', overflow: 'scroll' }}>
+                {allUserOrders
                   ?.filter(
                     (order) => order.ordStatus === ORDER_STATUS[0].status
                   )
                   .map((order, i) => (
-                    <div key={i} style={{ marginTop: i > 0 ? "40px" : "0px" }}>
+                    <div key={i} style={{ marginTop: i > 0 ? '40px' : '0px' }}>
                       {order.transactionMapper.map((product, proIndex) => (
                         <Box key={`pro${proIndex}_pend`}>
                           <Grid container spacing={2} sx={{ mb: 0, mt: 1 }}>
@@ -232,14 +244,14 @@ const Orders = (props) => {
                             >
                               <Link
                                 to={`/products/${product.productName
-                                  .replace(URL_REGEX, "-")
+                                  .replace(URL_REGEX, '-')
                                   .toLowerCase()}-i.${product.productId}`}
                                 className={props.classes.favoriteItems}
                               >
                                 <Grid container spacing={2}>
                                   <Grid
                                     item
-                                    sx={{ paddingLeft: "32px!important" }}
+                                    sx={{ paddingLeft: '32px!important' }}
                                   >
                                     <img
                                       src={product?.productImage}
@@ -252,12 +264,12 @@ const Orders = (props) => {
                                       fontSize={18}
                                       gutterBottom
                                       component="div"
-                                      sx={{ color: "black!important" }}
+                                      sx={{ color: 'black!important' }}
                                     >
                                       {product?.productName}
                                     </Typography>
                                     <Typography color="text.secondary">
-                                      Phân loại hàng: {product?.color} -{" "}
+                                      Phân loại hàng: {product?.color} -{' '}
                                       {product?.size}
                                     </Typography>
                                     <Typography color="text.secondary">
@@ -268,9 +280,9 @@ const Orders = (props) => {
                                       fontWeight="bold"
                                       fontSize={20}
                                     >
-                                      {Intl.NumberFormat("vi-VN", {
-                                        style: "currency",
-                                        currency: "VND",
+                                      {Intl.NumberFormat('vi-VN', {
+                                        style: 'currency',
+                                        currency: 'VND',
                                       }).format(product?.tranUnitPrice)}
                                     </Typography>
                                   </Grid>
@@ -290,7 +302,7 @@ const Orders = (props) => {
                             >
                               Đã giao
                             </Button> */}
-                              </Box>{" "}
+                              </Box>{' '}
                             </Grid>
                           </Grid>
                           <Divider />
@@ -301,7 +313,7 @@ const Orders = (props) => {
                         direction="row"
                         justifyContent="space-between"
                         alignItems="center"
-                        sx={{ background: "#Fbf9f8" }}
+                        sx={{ background: '#Fbf9f8' }}
                       >
                         <Stack p={1} width="400px">
                           <Typography fontWeight="bold" fontSize={16}>
@@ -335,9 +347,9 @@ const Orders = (props) => {
                           fontWeight="bold"
                           fontSize={22}
                         >
-                          {Intl.NumberFormat("vi-VN", {
-                            style: "currency",
-                            currency: "VND",
+                          {Intl.NumberFormat('vi-VN', {
+                            style: 'currency',
+                            currency: 'VND',
                           }).format(
                             order?.ordTotalPrice + order?.ordShippingFee
                           )}
@@ -349,13 +361,13 @@ const Orders = (props) => {
               </Container>
             </TabPanel>
             <TabPanel value="3">
-              <Container sx={{ mt: 0, height: "460px", overflow: "scroll" }}>
-                {props.orders
+              <Container sx={{ mt: 0, height: '460px', overflow: 'scroll' }}>
+                {allUserOrders
                   ?.filter(
                     (order) => order.ordStatus === ORDER_STATUS[1].status
                   )
                   .map((order, i) => (
-                    <div key={i} style={{ marginTop: i > 0 ? "40px" : "0px" }}>
+                    <div key={i} style={{ marginTop: i > 0 ? '40px' : '0px' }}>
                       {order.transactionMapper.map((product, proIndex) => (
                         <Box key={`pro${proIndex}_deli`}>
                           <Grid container spacing={2} sx={{ mb: 0, mt: 1 }}>
@@ -368,14 +380,14 @@ const Orders = (props) => {
                             >
                               <Link
                                 to={`/products/${product.productName
-                                  .replace(URL_REGEX, "-")
+                                  .replace(URL_REGEX, '-')
                                   .toLowerCase()}-i.${product.productId}`}
                                 className={props.classes.favoriteItems}
                               >
                                 <Grid container spacing={2}>
                                   <Grid
                                     item
-                                    sx={{ paddingLeft: "32px!important" }}
+                                    sx={{ paddingLeft: '32px!important' }}
                                   >
                                     <img
                                       src={product?.productImage}
@@ -388,12 +400,12 @@ const Orders = (props) => {
                                       fontSize={18}
                                       gutterBottom
                                       component="div"
-                                      sx={{ color: "black!important" }}
+                                      sx={{ color: 'black!important' }}
                                     >
                                       {product?.productName}
                                     </Typography>
                                     <Typography color="text.secondary">
-                                      Phân loại hàng: {product?.color} -{" "}
+                                      Phân loại hàng: {product?.color} -{' '}
                                       {product?.size}
                                     </Typography>
                                     <Typography color="text.secondary">
@@ -404,9 +416,9 @@ const Orders = (props) => {
                                       fontWeight="bold"
                                       fontSize={20}
                                     >
-                                      {Intl.NumberFormat("vi-VN", {
-                                        style: "currency",
-                                        currency: "VND",
+                                      {Intl.NumberFormat('vi-VN', {
+                                        style: 'currency',
+                                        currency: 'VND',
                                       }).format(product?.tranUnitPrice)}
                                     </Typography>
                                   </Grid>
@@ -426,7 +438,7 @@ const Orders = (props) => {
                             >
                               Đã giao
                             </Button> */}
-                              </Box>{" "}
+                              </Box>{' '}
                             </Grid>
                           </Grid>
                           <Divider />
@@ -437,7 +449,7 @@ const Orders = (props) => {
                         direction="row"
                         justifyContent="space-between"
                         alignItems="center"
-                        sx={{ background: "#Fbf9f8" }}
+                        sx={{ background: '#Fbf9f8' }}
                       >
                         <Stack p={1} width="400px">
                           <Typography fontWeight="bold" fontSize={16}>
@@ -471,9 +483,9 @@ const Orders = (props) => {
                           fontWeight="bold"
                           fontSize={22}
                         >
-                          {Intl.NumberFormat("vi-VN", {
-                            style: "currency",
-                            currency: "VND",
+                          {Intl.NumberFormat('vi-VN', {
+                            style: 'currency',
+                            currency: 'VND',
                           }).format(
                             order?.ordTotalPrice + order?.ordShippingFee
                           )}
@@ -485,13 +497,13 @@ const Orders = (props) => {
               </Container>
             </TabPanel>
             <TabPanel value="4">
-              <Container sx={{ mt: 0, height: "460px", overflow: "scroll" }}>
-                {props.orders
+              <Container sx={{ mt: 0, height: '460px', overflow: 'scroll' }}>
+                {allUserOrders
                   ?.filter(
                     (order) => order.ordStatus === ORDER_STATUS[2].status
                   )
                   .map((filteredOrder, i) => (
-                    <div key={i} style={{ marginTop: i > 0 ? "40px" : "0px" }}>
+                    <div key={i} style={{ marginTop: i > 0 ? '40px' : '0px' }}>
                       {filteredOrder.transactionMapper.map(
                         (product, proIndex) => (
                           <Box key={`pro${proIndex}_done`}>
@@ -505,14 +517,14 @@ const Orders = (props) => {
                               >
                                 <Link
                                   to={`/products/${product.productName
-                                    .replace(URL_REGEX, "-")
+                                    .replace(URL_REGEX, '-')
                                     .toLowerCase()}-i.${product.productId}`}
                                   className={props.classes.favoriteItems}
                                 >
                                   <Grid container spacing={2}>
                                     <Grid
                                       item
-                                      sx={{ paddingLeft: "32px!important" }}
+                                      sx={{ paddingLeft: '32px!important' }}
                                     >
                                       <img
                                         src={product?.productImage}
@@ -525,12 +537,12 @@ const Orders = (props) => {
                                         fontSize={18}
                                         gutterBottom
                                         component="div"
-                                        sx={{ color: "black!important" }}
+                                        sx={{ color: 'black!important' }}
                                       >
                                         {product?.productName}
                                       </Typography>
                                       <Typography color="text.secondary">
-                                        Phân loại hàng: {product?.color} -{" "}
+                                        Phân loại hàng: {product?.color} -{' '}
                                         {product?.size}
                                       </Typography>
                                       <Typography color="text.secondary">
@@ -541,9 +553,9 @@ const Orders = (props) => {
                                         fontWeight="bold"
                                         fontSize={20}
                                       >
-                                        {Intl.NumberFormat("vi-VN", {
-                                          style: "currency",
-                                          currency: "VND",
+                                        {Intl.NumberFormat('vi-VN', {
+                                          style: 'currency',
+                                          currency: 'VND',
                                         }).format(product?.tranUnitPrice)}
                                       </Typography>
                                     </Grid>
@@ -557,7 +569,7 @@ const Orders = (props) => {
                                     color="black"
                                     variant="contained"
                                     component="label"
-                                    style={{ color: "white" }}
+                                    style={{ color: 'white' }}
                                     startIcon={<StarsIcon />}
                                     disabled
                                   >
@@ -569,7 +581,7 @@ const Orders = (props) => {
                                       color="black"
                                       variant="contained"
                                       component="label"
-                                      style={{ color: "white" }}
+                                      style={{ color: 'white' }}
                                       startIcon={<StarsIcon />}
                                       onClick={() =>
                                         handleClickRate(product?.id)
@@ -596,7 +608,7 @@ const Orders = (props) => {
                         direction="row"
                         justifyContent="space-between"
                         alignItems="center"
-                        sx={{ background: "#Fbf9f8" }}
+                        sx={{ background: '#Fbf9f8' }}
                       >
                         <Stack p={1} width="400px">
                           <Typography fontWeight="bold" fontSize={16}>
@@ -630,9 +642,9 @@ const Orders = (props) => {
                           fontWeight="bold"
                           fontSize={22}
                         >
-                          {Intl.NumberFormat("vi-VN", {
-                            style: "currency",
-                            currency: "VND",
+                          {Intl.NumberFormat('vi-VN', {
+                            style: 'currency',
+                            currency: 'VND',
                           }).format(
                             filteredOrder?.ordTotalPrice +
                               filteredOrder?.ordShippingFee
@@ -645,13 +657,13 @@ const Orders = (props) => {
               </Container>
             </TabPanel>
             <TabPanel value="5">
-              <Container sx={{ mt: 0, height: "460px", overflow: "scroll" }}>
-                {props.orders
+              <Container sx={{ mt: 0, height: '460px', overflow: 'scroll' }}>
+                {allUserOrders
                   ?.filter(
                     (order) => order.ordStatus === ORDER_STATUS[3].status
                   )
                   .map((order, i) => (
-                    <div key={i} style={{ marginTop: i > 0 ? "40px" : "0px" }}>
+                    <div key={i} style={{ marginTop: i > 0 ? '40px' : '0px' }}>
                       {order.transactionMapper.map((product, proIndex) => (
                         <Box key={`pro${proIndex}_can`}>
                           <Grid container spacing={2} sx={{ mb: 0, mt: 1 }}>
@@ -664,14 +676,14 @@ const Orders = (props) => {
                             >
                               <Link
                                 to={`/products/${product.productName
-                                  .replace(URL_REGEX, "-")
+                                  .replace(URL_REGEX, '-')
                                   .toLowerCase()}-i.${product.productId}`}
                                 className={props.classes.favoriteItems}
                               >
                                 <Grid container spacing={2}>
                                   <Grid
                                     item
-                                    sx={{ paddingLeft: "32px!important" }}
+                                    sx={{ paddingLeft: '32px!important' }}
                                   >
                                     <img
                                       src={product?.productImage}
@@ -684,12 +696,12 @@ const Orders = (props) => {
                                       fontSize={18}
                                       gutterBottom
                                       component="div"
-                                      sx={{ color: "black!important" }}
+                                      sx={{ color: 'black!important' }}
                                     >
                                       {product?.productName}
                                     </Typography>
                                     <Typography color="text.secondary">
-                                      Phân loại hàng: {product?.color} -{" "}
+                                      Phân loại hàng: {product?.color} -{' '}
                                       {product?.size}
                                     </Typography>
                                     <Typography color="text.secondary">
@@ -700,9 +712,9 @@ const Orders = (props) => {
                                       fontWeight="bold"
                                       fontSize={20}
                                     >
-                                      {Intl.NumberFormat("vi-VN", {
-                                        style: "currency",
-                                        currency: "VND",
+                                      {Intl.NumberFormat('vi-VN', {
+                                        style: 'currency',
+                                        currency: 'VND',
                                       }).format(product?.tranUnitPrice)}
                                     </Typography>
                                   </Grid>
@@ -722,7 +734,7 @@ const Orders = (props) => {
                             >
                               Đã giao
                             </Button> */}
-                              </Box>{" "}
+                              </Box>{' '}
                             </Grid>
                           </Grid>
                           <Divider />
@@ -733,7 +745,7 @@ const Orders = (props) => {
                         direction="row"
                         justifyContent="space-between"
                         alignItems="center"
-                        sx={{ background: "#Fbf9f8" }}
+                        sx={{ background: '#Fbf9f8' }}
                       >
                         <Stack p={1} width="400px">
                           <Typography fontWeight="bold" fontSize={16}>
@@ -767,9 +779,9 @@ const Orders = (props) => {
                           fontWeight="bold"
                           fontSize={22}
                         >
-                          {Intl.NumberFormat("vi-VN", {
-                            style: "currency",
-                            currency: "VND",
+                          {Intl.NumberFormat('vi-VN', {
+                            style: 'currency',
+                            currency: 'VND',
                           }).format(order?.ordTotalPrice)}
                         </Typography>
                       </Stack>

@@ -4,6 +4,7 @@ const order = clothing.injectEndpoints({
     endpoints: (builder) => ({
         getAllOrders: builder.query({
             query: () => `user/order/getAll`,
+            providesTags: ['Order'],
         }),
         createOrder: builder.mutation({
             query: (formData) => ({
@@ -11,7 +12,7 @@ const order = clothing.injectEndpoints({
                 method: 'POST',
                 body: formData,
             }),
-            invalidatesTags: ['Cart'],
+            invalidatesTags: ['Cart', 'Order'],
         }),
         createVNPAYOrder: builder.mutation({
             query: (formData) => ({

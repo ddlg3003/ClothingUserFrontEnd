@@ -30,6 +30,7 @@ import { logout } from '../../features/auth';
 import decode from 'jwt-decode';
 import { useDebounce } from '../../utils/helperFunction';
 import useStyles from './styles';
+import { useGetProfileQuery } from '../../services/userApis';
 import { useRef } from 'react';
 
 const Navbar = () => {
@@ -39,7 +40,8 @@ const Navbar = () => {
     const navigate = useNavigate();
 
     const { isAuthenticated } = useSelector((state) => state.auth);
-    const user = JSON.parse(localStorage.getItem('user'));
+
+    const { data: user, isFetching: isFetchingUser } = useGetProfileQuery({ skip: !isAuthenticated });
 
     const { data: dataCartList, isFetching: isFetchingCartList } = useGetCartQuery({ skip: !isAuthenticated });
 
@@ -232,8 +234,8 @@ const Navbar = () => {
                                     onMouseOver={handleClickAuth}
                                     onMouseLeave={handleCloseHoverAuth}
                                 >
-                                    <Avatar sx={{ width: 32, height: 32 }} />
-                                    {!isMobile && <>&nbsp; {user?.name}</>}
+                                    <Avatar sx={{ width: 32, height: 32 }} src={user?.avatar ? user?.avatar : ''} />
+                                    {!isMobile && <>&nbsp; {user?.username}</>}
                                 </Button>
                                 <Menu
                                     // className={classes.dropdown}

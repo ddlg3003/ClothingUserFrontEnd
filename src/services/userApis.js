@@ -8,6 +8,7 @@ const user = clothing.injectEndpoints({
         }),
         getProfile: builder.query({
             query: () => `user/profile`,
+            providesTags: ['User'],
         }),
         addAddress: builder.mutation({
             query: (addressInfo) => ({
@@ -45,6 +46,7 @@ const user = clothing.injectEndpoints({
                 method: 'POST',
                 body: formData,
             }),
+            invalidatesTags: ['User'],
         }),
         changePassword: builder.mutation({
             query: (formData) => ({
@@ -52,6 +54,14 @@ const user = clothing.injectEndpoints({
                 method: 'POST',
                 body: formData,
             }),
+        }),
+        uploadAvatar: builder.mutation({
+            query: (file) => ({
+                url: 'user/profile/avatar',
+                method: 'POST',
+                body: file
+            }),
+            invalidatesTags: ['User'],
         }),
     }),
     overrideExisting: false,
@@ -66,4 +76,5 @@ export const {
     useSelectDefaultAddressMutation,
     useChangeProfileMutation,
     useChangePasswordMutation,
+    useUploadAvatarMutation,
 } = user;
