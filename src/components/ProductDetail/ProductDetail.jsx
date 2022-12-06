@@ -481,7 +481,7 @@ const ProductDetail = () => {
         <Grid
           item
           sx={{
-            minHeight: '300px',
+            height: '460px',
             overflow: commentsData?.length > 3 ? 'scroll' : 'none',
           }}
         >

@@ -11,7 +11,7 @@ const Comment = ({ keyname, comment }) => {
                 <ListItemAvatar>
                     <Avatar
                         alt="Dante"
-                        src={comment?.userAvatar}
+                        src={comment?.avatar}
                     />
                 </ListItemAvatar>
                 <ListItemText
