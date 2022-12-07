@@ -18,6 +18,7 @@ import {
     AccountCircle,
     Menu as MenuIcon,
 } from '@mui/icons-material';
+import LoginIcon from '@mui/icons-material/Login';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SecondNavbar from '../SecondNavbar/SecondNavbar';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -224,7 +225,7 @@ const Navbar = () => {
                                 onClick={() => {}}
                             >
                                 {!isMobile && <>Đăng nhập &nbsp;</>}
-                                <AccountCircle />
+                                <LoginIcon />
                             </Button>
                         ) : (
                             <>

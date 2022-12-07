@@ -10,7 +10,12 @@ import {
   PASSWORD_REGEX,
   OTP_REGEX,
 } from '../../utils/globalVariables';
+import {
+  useSendOtpMutation,
+  useResetPasswordMutation,
+} from '../../services/forgotPasswordApis';
 import useStyles from './styles';
+import { LoadingButton } from '@mui/lab';
 
 const ForgotPassword = () => {
   const classes = useStyles();
@@ -68,7 +73,7 @@ const ForgotPassword = () => {
         formData.newPassword &&
         formData.rePassword &&
         formData.newPassword.match(PASSWORD_REGEX) &&
-        formData.otp.match(OTP_REGEX) && 
+        formData.otp.match(OTP_REGEX) &&
         formData.rePassword === formData.newPassword
       ) {
         setEnableButton(true);
@@ -116,13 +121,8 @@ const ForgotPassword = () => {
   };
 
   const handleOtpChange = (e) => {
-    return handleInvalid(
-      e,
-      OTP_REGEX,
-      setInvalidOtp,
-      'Nhập mã gồm 6 chữ số'
-    );
-  }
+    return handleInvalid(e, OTP_REGEX, setInvalidOtp, 'Nhập mã gồm 6 chữ số');
+  };
 
   const handlePasswordChange = (e) => {
     return handleInvalid(
@@ -134,37 +134,59 @@ const ForgotPassword = () => {
   };
 
   const handleRetypePasswordChange = (e) => {
-    if(e.target.value === formData.newPassword) {
-      setInvalidRetypePassword({ error: false, helperText: '' })
+    if (e.target.value === formData.newPassword) {
+      setInvalidRetypePassword({ error: false, helperText: '' });
     } else {
-      setInvalidRetypePassword({ error: true, helperText: 'Mật khẩu nhập lại không khớp' })
+      setInvalidRetypePassword({
+        error: true,
+        helperText: 'Mật khẩu nhập lại không khớp',
+      });
     }
 
     setFormData({ ...formData, [e.target.name]: e.target.value });
-  }
+  };
 
-  const handleSubmit = (e) => {
+  const [sendOtp, { isLoading }] = useSendOtpMutation();
+
+  const [resetPassword, { isLoading: isLoadingReset }] =
+    useResetPasswordMutation();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     console.log(formData);
 
-    if (queryValue === RECOVERY_FLOW[0]) {
-      setSearchParams({ [RECOVERY_QUERY_STRING[0]]: RECOVERY_FLOW[1] });
+    try {
+      if (queryValue === RECOVERY_FLOW[0]) {
+        await sendOtp(formData);
 
+        setSearchParams({ [RECOVERY_QUERY_STRING[0]]: RECOVERY_FLOW[1] });
+
+        setToastData((prev) => ({
+          ...prev,
+          message:
+            'ADNCloth đã gửi một Email cho bạn, vui lòng kiểm tra và nhập mã',
+          color: 'success',
+          severity: 'success',
+        }));
+      }
+
+      if (queryValue === RECOVERY_FLOW[1]) {
+        await resetPassword(formData);
+
+        setToastData((prev) => ({
+          ...prev,
+          message: 'Cập nhật mật khẩu thành công',
+          color: 'success',
+          severity: 'success',
+        }));
+      }
+    } catch (e) {
       setToastData((prev) => ({
         ...prev,
-        message:
-          'ADNCloth đã gửi một Email cho bạn, vui lòng kiểm tra và nhập mã',
-        color: 'success',
-        severity: 'success',
-      }));
-    }
-    if (queryValue === RECOVERY_FLOW[1]) {
-      setToastData((prev) => ({
-        ...prev,
-        message: 'Cập nhật mật khẩu thành công',
-        color: 'success',
-        severity: 'success',
+        message: 'Đã có lỗi xảy ra vui lòng thử lại sau',
+        color: 'error',
+        severity: 'error',
       }));
     }
 
@@ -218,18 +240,19 @@ const ForgotPassword = () => {
               // inputRef={emailInput}
             />
           )}
-          <Button
+          <LoadingButton
             variant="contained"
             size="medium"
             style={{ padding: '16px', width: '100%', color: 'white' }}
             type="submit"
             color="black"
+            loading={queryValue === RECOVERY_FLOW[0] ? isLoading : isLoadingReset}
             disabled={!enableButton}
           >
             {queryValue === RECOVERY_FLOW[1] && formData.email
               ? 'Cập nhật'
               : 'Gửi mã'}
-          </Button>
+          </LoadingButton>
         </form>
         <Typography variant="title1" fontSize="14px" marginBottom="20px">
           Nhớ mật khẩu?{' '}

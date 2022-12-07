@@ -1,10 +1,23 @@
 import { clothing } from './clothingBaseApis';
 
 const forgotPassword = clothing.injectEndpoints({
-    endpoints: (builder) => ({
-
+  endpoints: (builder) => ({
+    sendOtp: builder.mutation({
+      query: ({ email }) => ({
+        url: 'recoveryPassword/getOtp',
+        method: 'POST',
+        body: { email },
+      }),
     }),
-    overrideExisting: false,
+    resetPassword: builder.mutation({
+      query: (formData) => ({
+        url: 'recoveryPassword/checkOtp',
+        method: 'POST',
+        body: formData,
+      }),
+    }),
+  }),
+  overrideExisting: false,
 });
 
-export const {  } = forgotPassword;
+export const { useSendOtpMutation, useResetPasswordMutation } = forgotPassword;

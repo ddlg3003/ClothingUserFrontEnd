@@ -9,6 +9,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../../features/auth';
 import { getUserLogin, signup } from '../../utils/auth';
+import LoginIcon from '@mui/icons-material/Login';
 import { LoadingButton } from '@mui/lab';
 import useStyles from './styles';
 
@@ -148,9 +149,10 @@ const Auth = () => {
         e.preventDefault();
         // console.log(formData);
         
+        setLoading(true);
+
         if(!isRegister) {
             const { data, status } = await getUserLogin(formData);
-            setLoading(true);
 
             if(status === 200) {
                 dispatch(setUser(data));
@@ -158,11 +160,6 @@ const Auth = () => {
             }
             else {
                 setToastData(prev => ({ ...prev, color: 'error', severity: 'error', message: 'SAI THÔNG TIN ĐĂNG NHẬP' }));
-
-                setTimeout(() => {
-                    setLoading(false);
-                    setOpenToast(true);
-                }, 250);
             }
         }
         else {
@@ -176,9 +173,13 @@ const Auth = () => {
                 // console.log(axiosRes);
                 setToastData(prev => ({ ...prev, color: 'error', severity: 'error', message: axiosRes.response.data.message }));
             }
-
-            setOpenToast(true);
         }
+        
+        setTimeout(() => {
+            setLoading(false);
+        }, 250);
+
+        setOpenToast(true);
     }
 
     const switchAuthMode = () => {
@@ -273,8 +274,9 @@ const Auth = () => {
                         color="black" 
                         style={{ color: 'white', padding: '16px', width: '100%' }} 
                         size="medium"
+                        loadingPosition="end"
+                        endIcon={<LoginIcon />}
                         type="submit" 
-                        loadingPosition="start"  
                         disabled={!enableButton}
                         loading={loading}
                     >
