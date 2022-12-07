@@ -137,7 +137,7 @@ const ForgotPassword = () => {
     if(e.target.value === formData.newPassword) {
       setInvalidRetypePassword({ error: false, helperText: '' })
     } else {
-      setInvalidRetypePassword({ error: false, helperText: '' })
+      setInvalidRetypePassword({ error: true, helperText: 'Mật khẩu nhập lại không khớp' })
     }
 
     setFormData({ ...formData, [e.target.name]: e.target.value });
