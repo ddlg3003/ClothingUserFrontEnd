@@ -177,9 +177,8 @@ const Auth = () => {
         
         setTimeout(() => {
             setLoading(false);
+            setOpenToast(true);
         }, 250);
-
-        setOpenToast(true);
     }
 
     const switchAuthMode = () => {
