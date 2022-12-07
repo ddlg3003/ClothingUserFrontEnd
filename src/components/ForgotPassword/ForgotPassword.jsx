@@ -151,34 +151,32 @@ const ForgotPassword = () => {
   const [resetPassword, { isLoading: isLoadingReset }] =
     useResetPasswordMutation();
 
-  const handleSubmit = async (e) => {
+  const handleSendMail = async (e) => {
     e.preventDefault();
 
-    console.log(formData);
-
     try {
-      if (queryValue === RECOVERY_FLOW[0]) {
-        await sendOtp(formData);
+      // Send OTP to mail checking
+      const response = await sendOtp(formData);
 
+      // Check if response is error
+      if (response?.error) {
+        setToastData((prev) => ({
+          ...prev,
+          message: response?.error.data,
+          color: 'error',
+          severity: 'error',
+        }));
+      }
+      // Not error case then jump to next flow
+      else {
         setSearchParams({ [RECOVERY_QUERY_STRING[0]]: RECOVERY_FLOW[1] });
 
         setToastData((prev) => ({
           ...prev,
           message:
             'ADNCloth đã gửi một Email cho bạn, vui lòng kiểm tra và nhập mã',
-          color: 'success',
-          severity: 'success',
-        }));
-      }
-
-      if (queryValue === RECOVERY_FLOW[1]) {
-        await resetPassword(formData);
-
-        setToastData((prev) => ({
-          ...prev,
-          message: 'Cập nhật mật khẩu thành công',
-          color: 'success',
-          severity: 'success',
+            color: 'success',
+            severity: 'success',
         }));
       }
     } catch (e) {
@@ -189,8 +187,48 @@ const ForgotPassword = () => {
         severity: 'error',
       }));
     }
-
     setOpenToast(true);
+  };
+
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+
+    try {
+      // Reset password
+      const response = await resetPassword(formData);
+
+      // Check if response is error and status !== 200
+      if (response?.error.originalStatus !== 200) {
+        console.log(response)
+        setToastData((prev) => ({
+          ...prev,
+          message: response?.error.data,
+          color: 'error',
+          severity: 'error',
+        }));
+        setOpenToast(true); 
+      }
+      // Success change password
+      else {
+        setToastData((prev) => ({
+          ...prev,
+          message: 'Cập nhật mật khẩu thành công',
+          color: 'success',
+          severity: 'success',
+        }));
+        setOpenToast(true);
+        window.location.href = '/auth';
+      }
+    } catch {
+      setToastData((prev) => ({
+        ...prev,
+        message: 'Đã có lỗi xảy ra vui lòng thử lại sau',
+        color: 'error',
+        severity: 'error',
+      }));
+
+      setOpenToast(true);
+    }
   };
 
   return (
@@ -199,7 +237,14 @@ const ForgotPassword = () => {
         <Typography variant="h4" marginBottom="20px">
           Khôi phục mật khẩu
         </Typography>
-        <form className={classes.form} onSubmit={handleSubmit}>
+        <form
+          className={classes.form}
+          onSubmit={
+            queryValue === RECOVERY_FLOW[0]
+              ? handleSendMail
+              : handleResetPassword
+          }
+        >
           {queryValue === RECOVERY_FLOW[1] && formData.email ? (
             <>
               <Input
@@ -246,7 +291,9 @@ const ForgotPassword = () => {
             style={{ padding: '16px', width: '100%', color: 'white' }}
             type="submit"
             color="black"
-            loading={queryValue === RECOVERY_FLOW[0] ? isLoading : isLoadingReset}
+            loading={
+              queryValue === RECOVERY_FLOW[0] ? isLoading : isLoadingReset
+            }
             disabled={!enableButton}
           >
             {queryValue === RECOVERY_FLOW[1] && formData.email
