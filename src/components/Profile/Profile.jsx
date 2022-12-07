@@ -62,7 +62,7 @@ const Profile = () => {
   const [orders, setOrders] = useState();
 
   window.onpopstate = () => {
-    if (window.location.href === "http://localhost:3000/profile?tab=orders")
+    if (window.location.href === "/profile?tab=orders")
       window.location.href = "/";
   };
 

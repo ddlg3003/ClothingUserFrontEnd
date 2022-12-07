@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Container, Paper, Typography, Button, Divider, Grid } from '@mui/material';
-import { BLACK_LOGO, EMAIL_REGEX, PASSWORD_REGEX, PHONE_REGEX, USERNAME_REGEX } from '../../utils/globalVariables';
+import { BLACK_LOGO, EMAIL_REGEX, PASSWORD_REGEX, PHONE_REGEX, USERNAME_REGEX, RECOVERY_FLOW, RECOVERY_QUERY_STRING } from '../../utils/globalVariables';
 import GoogleIcon from '@mui/icons-material/Google';
 import FacebookIcon from '@mui/icons-material/Facebook';
-import Input from './Input';
+import Input from '../Input/Input';
 import Alert from '../Alert/Alert';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -88,7 +88,7 @@ const Auth = () => {
         }
     
         setOpenToast(false);
-      };
+    };
 
     const handleShowPassword = () => setShowPassword(prev => !prev);
 
@@ -301,7 +301,7 @@ const Auth = () => {
                                 <Grid item>
                                     <Typography 
                                         component={Link}
-                                        to="/"
+                                        to={`/recovery?${RECOVERY_QUERY_STRING[0]}=${RECOVERY_FLOW[0]}`}
                                         className={classes.text}
                                         variant="title1" 
                                         fontSize="14px" 

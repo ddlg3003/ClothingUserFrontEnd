@@ -22,7 +22,7 @@ const Input = ({ name, handleChange, label, autoFocus, handleShowPassword, type,
             type={type}
             helperText={helperText}
             error={error}
-            InputProps={ name === 'password' ? {
+            InputProps={ name === 'password' || name === 'newPassword' ? {
                 endAdornment: (
                 <InputAdornment position="end">
                     <IconButton onClick={handleShowPassword}>

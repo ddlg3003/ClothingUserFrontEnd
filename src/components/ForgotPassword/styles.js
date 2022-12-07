@@ -14,27 +14,9 @@ export default makeStyles((theme) => ({
     form: {
         width: '90%', // Fix IE 11 issue.
         marginTop: theme.spacing(4),
+        marginBottom: theme.spacing(4),
     },
     divider: {
         margin: '20px 0',
-    },
-    otherLogin: {
-        display: 'flex',
-        justifyContent: 'center',
-        margin: '20px 0',
-    },
-    options: {
-        display: 'flex',
-        justifyContent: 'space-between',
-    },
-    text: {
-        color: 'black',
-        textDecoration: 'none',
-    },
-    register: {
-        textDecoration: 'underline',
-        '&:hover': {
-            cursor: 'pointer',
-        }
     },
 }));

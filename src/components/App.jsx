@@ -10,6 +10,7 @@ import Profile from './Profile/Profile';
 import Cart from './Cart/Cart';
 import Auth from './Auth/Auth';
 import Checkout from './Checkout/Checkout';
+import ForgotPassword from './ForgotPassword/ForgotPassword';
 import { useSelector } from 'react-redux';
 import useStyles from './styles';
 
@@ -68,6 +69,16 @@ const App = () => {
                         element={
                             !isAuthenticated ? (
                                 <Auth />
+                            ) : (
+                                <Navigate replace to="/" />
+                            )
+                        }
+                    />
+                    <Route 
+                        path="/recovery"
+                        element={
+                            !isAuthenticated ? (
+                                <ForgotPassword />
                             ) : (
                                 <Navigate replace to="/" />
                             )
