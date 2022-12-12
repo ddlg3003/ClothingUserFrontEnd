@@ -78,7 +78,6 @@ const ProductDetail = () => {
 
   const [toggleWishlist] = useToggleWishlistMutation();
 
-  const [quantity, setQuantity] = useState(1);
   const [open, setOpen] = useState(false);
   const [toastData, setToastData] = useState({
     message: '',
@@ -91,11 +90,14 @@ const ProductDetail = () => {
 
   const isMobile = useMediaQuery('(max-width: 800px)');
 
-  // Set image state for product image
-  const [mainImg, setMainImg] = useState('');
+  // Type props state
+  const [quantity, setQuantity] = useState(1);
   const [currentColor, setCurrentColor] = useState('');
   const [sizesByColorArr, setSizesByColorArr] = useState([]);
   const [currentSize, setCurrentSize] = useState(null);
+
+  // Set image state for product image
+  const [mainImg, setMainImg] = useState('');
   const [openToast, setOpenToast] = useState(false);
   const [currentPrice, setCurrentPrice] = useState(0);
 
@@ -139,11 +141,6 @@ const ProductDetail = () => {
           setQuantity(type.quantity);
         }
       }
-      else {
-        setCurrentPrice(data?.price);
-        setCurrentSize(null);
-        setType(undefined);
-      }
     }
   }, [currentColor, currentSize, isFetchingTypes, typesData, quantity]);
 
@@ -169,15 +166,15 @@ const ProductDetail = () => {
     setIsSelectedImg(index);
   };
 
-  const handleSubmit = async () => {
-    const submitData = {
-      size: currentSize,
-      color: currentColor,
-      quantity,
-      product_id: id,
-      price: currentPrice,
-    };
+  let submitData = {
+    size: currentSize,
+    color: currentColor,
+    quantity,
+    product_id: id,
+    price: currentPrice,
+  };
 
+  const handleSubmit = async () => {
     if (isAuthenticated) {
       if (submitData.size && submitData.color && submitData.quantity) {
         await addItemToCart(submitData);
@@ -227,12 +224,8 @@ const ProductDetail = () => {
   };
 
   const handleBuyNow = () => {
-    const submitData = {
-      size: currentSize,
-      color: currentColor,
-      quantity,
-      product_id: id,
-      price: currentPrice,
+    submitData = {
+      ...submitData,
       proImage: mainImg,
       proName: data?.name,
     };
@@ -265,6 +258,13 @@ const ProductDetail = () => {
       setCurrentSize(size);
     }
   };
+
+  const handleSetCurrentColor = (color) => {
+    setCurrentColor(color);
+    setCurrentSize(null);
+    setType(undefined);
+    setCurrentPrice(data?.price);
+  }
 
   if (isFetching || isFetchingTypes || isFetchingTypeProps || isFetchingImgArr) {
     return (
@@ -344,11 +344,7 @@ const ProductDetail = () => {
                     border:
                       `#${color}` === `#${currentColor}` && '2px solid blue',
                   }}
-                  onClick={() => {
-                    setCurrentColor(color);
-                    setCurrentSize(null);
-                    setType(undefined);
-                  }}
+                  onClick={() => handleSetCurrentColor(color)}
                 />
               ))}
             </div>
