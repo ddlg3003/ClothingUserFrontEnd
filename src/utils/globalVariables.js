@@ -73,3 +73,7 @@ export const PYTHON_URL = 'http://localhost:8081';
 export const RECOVERY_QUERY_STRING = ['step'];
 
 export const RECOVERY_FLOW = ['email', 'update_password'];
+
+export const ACTIVE_STATUS = 'Active';
+
+export const DISABLED_STATUS = 'Disable';
