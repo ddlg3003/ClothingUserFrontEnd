@@ -26,7 +26,7 @@ const ProfileDetails = (props) => {
 
   const { data: userInformation, isFetching: isFetchingUserInformation } =
     useGetProfileQuery();
-
+  console.log(userInformation);
   // image upload
   const [fileContent, setFileContent] = useState({
     content: '',
@@ -224,7 +224,7 @@ const ProfileDetails = (props) => {
                   disableFuture
                   openTo="year"
                   views={["year", "month", "day"]}
-                  value={props?.birthday}
+                  value={birthday}
                   onChange={(newValue) => {
                     setBirthday(newValue);
                   }}

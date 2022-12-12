@@ -61,7 +61,12 @@ const Checkout = () => {
   const handleSubmit = async () => {
     try {
       if (paymentTypeValue === "COD") {
-        await createOrder([newSubmitData, payment]);
+        const response = await createOrder([newSubmitData, payment]);
+        if (response?.error.originalStatus === 409) {
+          alert(response?.error.data);
+          return navigate(`/cart`);
+        }
+
         navigate(`/profile?${PROFILE_QUERY_STRING[0]}=${SIDEBAR_STATE[4]}`);
       } else {
         const { data: VNPAYData } = await createVNPAYOrder([
@@ -76,7 +81,7 @@ const Checkout = () => {
         window.location.href = VNPAYData?.url;
       }
     } catch {
-      alert("Payment error");
+      alert("Thanh toán thất bại");
     }
 
     sessionStorage.clear();

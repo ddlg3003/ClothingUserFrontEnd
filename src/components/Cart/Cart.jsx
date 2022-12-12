@@ -49,12 +49,13 @@ const Cart = () => {
   };
 
   // Handle show dialog
-  const handleClickDeleteItem = (productId) => {
-    setOpenDeleteItemDialog(productId);
+  const handleClickDeleteItem = (i) => {
+    setOpenDeleteItemDialog(i);
   };
 
   const handleConfirmDeleteClick = async ({ color, size, productId }) => {
     await deleteCartItem({ color, size, productId }).unwrap();
+    setOpenDeleteItemDialog("");
   };
 
   const handleIncrease = async ({ color, size, product_id: productId }) => {
@@ -73,9 +74,9 @@ const Cart = () => {
     size,
     product_id: productId,
     quantity,
-  }) => {
+  }, i) => {
     if (quantity === 1) {
-      handleClickDeleteItem(productId);
+      handleClickDeleteItem(i);
       return;
     }
     await decreaseCartItem({ color, size, productId }).unwrap();
@@ -204,7 +205,7 @@ const Cart = () => {
                       <TableCell align="center" width={170}>
                         <IconButton
                           size="small"
-                          onClick={() => handleDecrease(data)}
+                          onClick={() => handleDecrease(data, i)}
                         >
                           <RemoveIcon
                             fontSize="inherit"
@@ -243,7 +244,7 @@ const Cart = () => {
                       <TableCell width={100} align="left">
                         <IconButton
                           size="large"
-                          onClick={() => handleClickDeleteItem(data?.product_id)}
+                          onClick={() => handleClickDeleteItem(i)}
                         >
                           <ClearIcon
                             fontSize="inherit"
@@ -252,7 +253,7 @@ const Cart = () => {
                           />
                         </IconButton>
                         <DeleteAlertDialog
-                          open={openDeleteItemDialog === data?.product_id}
+                          open={openDeleteItemDialog === i}
                           onClose={handleCloseDeleteItem}
                           item={data}
                           handleConfirmDeleteClick={handleConfirmDeleteClick}
