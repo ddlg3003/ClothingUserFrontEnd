@@ -111,7 +111,7 @@ const ProductDetail = () => {
   // Set size array based on color being choosed
   useEffect(() => {
     setSizesByColorArr(typesData
-    ?.filter(({ color }) => (color === currentColor)).map(({ size }) => size));
+    ?.filter(({ color }) => (color === currentColor)).map(({ size, quantity }) => ({ size, quantity })));
   }, [isFetchingTypes, typesData, currentColor]);
 
   useEffect(() => {
@@ -260,6 +260,12 @@ const ProductDetail = () => {
     } else navigate('/auth');
   };
 
+  const handleSetCurrentSize = (size, quantity) => {
+    if(quantity) {
+      setCurrentSize(size);
+    }
+  };
+
   if (isFetching || isFetchingTypes || isFetchingTypeProps || isFetchingImgArr) {
     return (
       <Box display="flex" justifyContent="center">
@@ -338,7 +344,11 @@ const ProductDetail = () => {
                     border:
                       `#${color}` === `#${currentColor}` && '2px solid blue',
                   }}
-                  onClick={() => setCurrentColor(color)}
+                  onClick={() => {
+                    setCurrentColor(color);
+                    setCurrentSize(null);
+                    setType(undefined);
+                  }}
                 />
               ))}
             </div>
@@ -348,14 +358,14 @@ const ProductDetail = () => {
               Kích cỡ:
             </Typography>
             <div className={classes.wrapper}>
-              {sizesByColorArr?.map((size, i) => (
+              {sizesByColorArr?.map(({ size, quantity }, i) => (
                 <div
-                  className={classes.sizeItem}
+                  className={quantity ? classes.sizeItem : classes.disableSizeItem}
                   style={{
-                    border: type && size === currentSize && '2px solid blue',
+                    border: type && size === currentSize && quantity && '2px solid blue',
                   }}
-                  key={size}
-                  onClick={() => setCurrentSize(size)}
+                  key={i}
+                  onClick={() => handleSetCurrentSize(size, quantity)}
                 >
                   {size}
                 </div>

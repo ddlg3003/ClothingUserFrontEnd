@@ -50,6 +50,19 @@ export default makeStyles((theme) => ({
             cursor: 'pointer',
         }
     },
+    disableSizeItem: {
+        background: '#a0a0a0',
+        width: '80px', 
+        height: '40px', 
+        marginRight: '6px',
+        display: 'flex',
+        justifyContent: 'center',
+        borderRadius: '4px',
+        alignItems: 'center',
+        '&:hover': {
+            cursor: 'not-allowed',
+        }
+    },
     input: {
         width: '80px',
     },
