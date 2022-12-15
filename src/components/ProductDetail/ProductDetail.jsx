@@ -292,7 +292,7 @@ const ProductDetail = () => {
     isFetchingImgArr
   ) {
     return (
-      <Box display="flex" justifyContent="center">
+      <Box display="flex" justifyContent="center" mt={2}>
         <CircularProgress color="black" size="6rem" />
       </Box>
     );
