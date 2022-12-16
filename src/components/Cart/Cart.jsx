@@ -20,7 +20,7 @@ import React, { useState } from "react";
 import useStyles from "./styles";
 import DeleteAlertDialog from "./DeleteAlertDialog";
 import { useDispatch, useSelector } from "react-redux";
-import { LIMIT, PRODUCT_QUERY_STRING, URL_REGEX } from "../../utils/globalVariables";
+import { LIMIT, PRODUCT_QUERY_STRING, URL_REGEX, COLOR_LIST } from "../../utils/globalVariables";
 import { Link } from "react-router-dom";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import { useGetCartQuery, 
@@ -181,7 +181,7 @@ const Cart = () => {
                               maxWidth={200}
                               className={classes.itemName}
                             >
-                              Màu: {data?.color}
+                              Màu: {COLOR_LIST.find(item => item.color === data?.color).name}
                             </Typography>
                             <Typography
                               fontSize="16px"

@@ -74,14 +74,14 @@ const Checkout = () => {
           payment,
         ]);
         if (VNPAYData?.status !== "00") {
-          alert("Payment error");
+          alert("Đã có lỗi xảy ra");
           console.log(VNPAYData);
           return;
         }
         window.location.href = VNPAYData?.url;
       }
     } catch {
-      alert("Thanh toán thất bại");
+      alert("Đã có lỗi xảy ra");
     }
 
     sessionStorage.clear();

@@ -110,7 +110,7 @@ const ProductDetail = () => {
   useEffect(() => {
     setMainImg(imgArr ? imgArr[0]?.image : '');
     setCurrentPrice(data?.price);
-    setCurrentColor(data?.color);
+    setCurrentColor(typePropsData?.colorList[0]);
   }, [isFetching, data, isFetchingImgArr, imgArr]);
 
   // Set size array based on color being choosed

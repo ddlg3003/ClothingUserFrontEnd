@@ -77,3 +77,34 @@ export const RECOVERY_FLOW = ['email', 'update_password'];
 export const ACTIVE_STATUS = 'Active';
 
 export const DISABLED_STATUS = 'Disable';
+
+export const COLOR_LIST = [
+  {
+    color: 'f1f1f1',
+    name: 'Trắng',
+  },
+  {
+    color: '000',
+    name: 'Đen',
+  },
+  {
+    color: '8c8c8c',
+    name: 'Xám',
+  },
+  {
+    color: 'd9b99b',
+    name: 'Be',
+  },
+  {
+    color: '186287',
+    name: 'Xanh nước nhạt',
+  },
+  {
+    color: '114abd',
+    name: 'Xanh nước đậm',
+  },
+  {
+    color: '6e10a1',
+    name: 'Tím',
+  },
+];

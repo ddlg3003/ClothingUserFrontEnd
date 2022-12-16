@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { Container } from "@mui/system";
 import { Link } from "react-router-dom";
-import { URL_REGEX } from '../../utils/globalVariables';
+import { URL_REGEX, COLOR_LIST } from '../../utils/globalVariables';
 import useStyles from "./styles";
 
 const CartItems = ({ cartItems }) => {
@@ -77,7 +77,7 @@ const CartItems = ({ cartItems }) => {
                           maxWidth={200}
                           className={classes.itemName}
                         >
-                          {item.color}, {item.size}
+                          {COLOR_LIST.find(colorItem => colorItem.color === item.color).name}, {item.size}
                         </Typography>
                       </Link>
                     </Stack>
