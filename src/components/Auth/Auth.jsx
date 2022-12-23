@@ -110,7 +110,7 @@ const Auth = () => {
                 setInvalidData({ error: true, helperText });
             }
         }
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
     }
 
     const handleEmailChange = (e) => {
@@ -141,7 +141,7 @@ const Auth = () => {
             setInvalidRetypePassword({ error: true, helperText: 'Mật khẩu nhập lại không khớp' });
         }
 
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
         
     }
 
