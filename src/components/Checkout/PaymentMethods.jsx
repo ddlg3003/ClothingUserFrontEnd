@@ -7,7 +7,12 @@ import {
 } from "@mui/material";
 import useStyles from "./styles";
 
-const PaymentMethods = ({ paymentTypeValue, setPaymentTypeValue, creditMethod, setCreditMethod }) => {
+const PaymentMethods = ({
+  paymentTypeValue,
+  setPaymentTypeValue,
+  creditMethod,
+  setCreditMethod,
+}) => {
   const classes = useStyles();
 
   const handlePaymentTypeChange = (e) => {
@@ -58,7 +63,6 @@ const PaymentMethods = ({ paymentTypeValue, setPaymentTypeValue, creditMethod, s
                 VNPAY
               </Stack>
             </ToggleButton>
-            
           </ToggleButtonGroup>
         </div>
       </div>

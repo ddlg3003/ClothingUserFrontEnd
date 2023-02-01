@@ -15,7 +15,11 @@ import {
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useGetAllOrdersQuery } from "../../services/orderApis";
-import { ORDER_STATUS, URL_REGEX, COLOR_LIST } from "../../utils/globalVariables";
+import {
+  ORDER_STATUS,
+  URL_REGEX,
+  COLOR_LIST,
+} from "../../utils/globalVariables";
 import RatingDialog from "./RatingDialog";
 
 const Orders = (props) => {

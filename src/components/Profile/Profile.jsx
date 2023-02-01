@@ -27,7 +27,7 @@ const Profile = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // TOAST 
+  // TOAST
   const [openToast, setOpenToast] = useState(false);
   const [toastData, setToastData] = useState({
     color: "",
@@ -136,12 +136,12 @@ const Profile = () => {
           </div>
         </Container>
       </div>
-      <Alert 
+      <Alert
         message={toastData.message}
-        openToast={openToast} 
+        openToast={openToast}
         handleCloseToast={handleCloseToast}
         color={toastData.color}
-        severity={toastData.severity}    
+        severity={toastData.severity}
       />
     </>
   );

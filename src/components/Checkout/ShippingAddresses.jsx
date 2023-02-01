@@ -19,14 +19,19 @@ import useStyles from "./styles";
 import PropTypes from "prop-types";
 import { blue } from "@mui/material/colors";
 import { useState, useEffect } from "react";
-import { useGetUserAddressQuery, useSelectDefaultAddressMutation } from "../../services/userApis";
-import { SIDEBAR_STATE, PROFILE_QUERY_STRING } from "../../utils/globalVariables";
+import {
+  useGetUserAddressQuery,
+  useSelectDefaultAddressMutation,
+} from "../../services/userApis";
+import {
+  SIDEBAR_STATE,
+  PROFILE_QUERY_STRING,
+} from "../../utils/globalVariables";
 
 function AddressSelectionDialog(props) {
   const { onClose, selectedValue, open } = props;
 
   const [selectDefaultAddress] = useSelectDefaultAddressMutation();
-
 
   const handleClose = () => {
     onClose(selectedValue);
@@ -90,7 +95,13 @@ function AddressSelectionDialog(props) {
           ))
         )}
 
-        <ListItem autoFocus button onClick={() => {window.location.href=`/profile?${PROFILE_QUERY_STRING[0]}=${SIDEBAR_STATE[1]}`}}>
+        <ListItem
+          autoFocus
+          button
+          onClick={() => {
+            window.location.href = `/profile?${PROFILE_QUERY_STRING[0]}=${SIDEBAR_STATE[1]}`;
+          }}
+        >
           <ListItemAvatar>
             <Avatar>
               <AddIcon />

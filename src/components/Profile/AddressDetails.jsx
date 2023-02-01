@@ -16,7 +16,8 @@ import DeleteAlertDialog from "./DeleteAlertDialog";
 import { useGetUserAddressQuery } from "../../services/userApis";
 
 const AddressDetails = (props) => {
-  const { data: dataAddresses, isFetching: isFetchingDataAddresses } = useGetUserAddressQuery();
+  const { data: dataAddresses, isFetching: isFetchingDataAddresses } =
+    useGetUserAddressQuery();
 
   // Dialog's states
   const [openNewAddressDialog, setOpenNewAddressDialog] = useState(false);
@@ -74,7 +75,7 @@ const AddressDetails = (props) => {
 
       <Container sx={{ mt: 3 }}>
         {!dataAddresses?.length ? (
-          <Box mt={5} sx={{display:"flex", justifyContent:"center"}}>
+          <Box mt={5} sx={{ display: "flex", justifyContent: "center" }}>
             <Typography width={200} fontSize="20px" fontWeight="bold">
               Không có địa chỉ
             </Typography>
@@ -138,7 +139,7 @@ const AddressDetails = (props) => {
                         style={{ color: "white" }}
                         startIcon={<DeleteIcon />}
                         onClick={() => handleClickDeleteAddress(data.id)}
-                        sx = {{width: "100%"}}
+                        sx={{ width: "100%" }}
                       >
                         Xóa
                       </Button>

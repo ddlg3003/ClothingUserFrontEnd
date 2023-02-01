@@ -52,20 +52,20 @@ export default makeStyles((theme) => ({
   },
 
   itemsTable: {
-    minWidth: "650px"
+    minWidth: "650px",
   },
 
   itemLink: {
-    alignItems: 'left',
-    fontWeight: 'bolder',
-    textDecoration: 'none',
-    position: 'relative',        
-    [theme.breakpoints.up('xs')]: {
-        display: 'flex',
-        flexDirection: 'column'
+    alignItems: "left",
+    fontWeight: "bolder",
+    textDecoration: "none",
+    position: "relative",
+    [theme.breakpoints.up("xs")]: {
+      display: "flex",
+      flexDirection: "column",
     },
-    '&:hover': {
-        cursor: 'pointer',
+    "&:hover": {
+      cursor: "pointer",
     },
-  }
+  },
 }));

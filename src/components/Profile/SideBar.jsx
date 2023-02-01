@@ -3,15 +3,15 @@ import LockIcon from "@mui/icons-material/Lock";
 import PersonIcon from "@mui/icons-material/Person";
 import { SIDEBAR_STATE } from "../../utils/globalVariables";
 
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ReceiptIcon from '@mui/icons-material/Receipt';
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import ReceiptIcon from "@mui/icons-material/Receipt";
 import {
   Divider,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
-  Typography
+  Typography,
 } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import React from "react";
@@ -24,7 +24,11 @@ const SideBar = (props) => {
           <Stack direction="row" mb={5}>
             <img
               alt=""
-              src={props.userInfo?.avatar ? props.userInfo?.avatar : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"}
+              src={
+                props.userInfo?.avatar
+                  ? props.userInfo?.avatar
+                  : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"
+              }
               width={80}
               height={80}
               className={props.classes.image}
@@ -83,7 +87,7 @@ const SideBar = (props) => {
               <ListItemText primary="Yêu thích" />
             </ListItem>
             <Divider />
-            
+
             <ListItem
               button
               onClick={() => props.handleNavSelectionChange(SIDEBAR_STATE[4])}
@@ -94,7 +98,6 @@ const SideBar = (props) => {
               <ListItemText primary="Đơn mua" />
             </ListItem>
           </List>
-          
         </Stack>
       </div>
     </>

@@ -48,7 +48,12 @@ const RatingDialog = (props) => {
       transactionId: orderDetails.id,
     });
     onClose();
-    props.setToastData(prev => ({ ...prev, color: 'success', severity: 'success', message: 'Đánh giá thành công!' }));
+    props.setToastData((prev) => ({
+      ...prev,
+      color: "success",
+      severity: "success",
+      message: "Đánh giá thành công!",
+    }));
     props.setOpenToast(true);
     window.location.reload();
   };

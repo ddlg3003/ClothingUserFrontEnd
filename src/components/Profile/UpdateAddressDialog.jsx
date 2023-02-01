@@ -21,7 +21,7 @@ const UpdateAddressDialog = (props) => {
   const [updateAddress] = useUpdateAddressMutation();
 
   const handleConfirmClick = async () => {
-    await updateAddress(addressInfo);  
+    await updateAddress(addressInfo);
     onClose();
   };
 
@@ -70,7 +70,7 @@ const UpdateAddressDialog = (props) => {
         </DialogContent>
 
         <DialogActions>
-        <Button
+          <Button
             sx={{ mb: 1 }}
             color="white"
             variant="contained"

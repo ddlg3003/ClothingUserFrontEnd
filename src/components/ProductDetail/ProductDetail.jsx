@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Typography,
   Button,
@@ -13,37 +13,37 @@ import {
   Stack,
   Tooltip,
   Divider,
-} from '@mui/material';
-import Alert from '../Alert/Alert';
-import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied';
-import RemoveIcon from '@mui/icons-material/Remove';
-import AddIcon from '@mui/icons-material/Add';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams, Link } from 'react-router-dom';
+} from "@mui/material";
+import Alert from "../Alert/Alert";
+import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied";
+import RemoveIcon from "@mui/icons-material/Remove";
+import AddIcon from "@mui/icons-material/Add";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import {
   useGetProductQuery,
   useGetTypesQuery,
   useGetTypesPropsQuery,
   useGetProductsImagesQuery,
-} from '../../services/productApis';
+} from "../../services/productApis";
 import {
   useAddItemToCartMutation,
   useGetCartQuery,
-} from '../../services/cartApis';
-import { updateCheckout } from '../../features/checkout';
+} from "../../services/cartApis";
+import { updateCheckout } from "../../features/checkout";
 import {
   useToggleWishlistMutation,
   useGetUserWishlistQuery,
-} from '../../services/wishlistApis';
+} from "../../services/wishlistApis";
 import {
   ACTIVE_STATUS,
   PRODUCT_QUERY_STRING,
-} from '../../utils/globalVariables';
-import useStyles from './styles';
-import Comment from './Comment';
-import { useGetCommentsByProductIdQuery } from '../../services/commentApis';
+} from "../../utils/globalVariables";
+import useStyles from "./styles";
+import Comment from "./Comment";
+import { useGetCommentsByProductIdQuery } from "../../services/commentApis";
 
 const ProductDetail = () => {
   const classes = useStyles();
@@ -51,7 +51,7 @@ const ProductDetail = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const id = parseInt(name.slice(name.indexOf('.') + 1));
+  const id = parseInt(name.slice(name.indexOf(".") + 1));
 
   const { isAuthenticated } = useSelector((state) => state.auth);
 
@@ -83,24 +83,24 @@ const ProductDetail = () => {
 
   const [open, setOpen] = useState(false);
   const [toastData, setToastData] = useState({
-    message: '',
-    severity: '',
-    color: '',
+    message: "",
+    severity: "",
+    color: "",
   });
-  const [image, setImage] = useState(''); // set image for modal
+  const [image, setImage] = useState(""); // set image for modal
   const [isSelectedImg, setIsSelectedImg] = useState(0);
   const [fav, setFav] = useState(false);
 
-  const isMobile = useMediaQuery('(max-width: 800px)');
+  const isMobile = useMediaQuery("(max-width: 800px)");
 
   // Type props state
   const [quantity, setQuantity] = useState(1);
-  const [currentColor, setCurrentColor] = useState('');
+  const [currentColor, setCurrentColor] = useState("");
   const [sizesByColorArr, setSizesByColorArr] = useState([]);
   const [currentSize, setCurrentSize] = useState(null);
 
   // Set image state for product image
-  const [mainImg, setMainImg] = useState('');
+  const [mainImg, setMainImg] = useState("");
   const [openToast, setOpenToast] = useState(false);
   const [currentPrice, setCurrentPrice] = useState(0);
 
@@ -108,7 +108,7 @@ const ProductDetail = () => {
 
   // Run the callback for changing the initial main image when isFetching changes
   useEffect(() => {
-    setMainImg(imgArr ? imgArr[0]?.image : '');
+    setMainImg(imgArr ? imgArr[0]?.image : "");
     setCurrentPrice(data?.price);
     setCurrentColor(typePropsData?.colorList[0]);
   }, [isFetching, data, isFetchingImgArr, imgArr]);
@@ -188,9 +188,9 @@ const ProductDetail = () => {
         if (response?.error && response?.error?.originalStatus === 409) {
           setToastData((prev) => ({
             ...prev,
-            message: 'THÔNG TIN SẢN PHẨM ĐÃ ĐƯỢC CẬP NHẬT',
-            severity: 'error',
-            color: 'error',
+            message: "THÔNG TIN SẢN PHẨM ĐÃ ĐƯỢC CẬP NHẬT",
+            severity: "error",
+            color: "error",
           }));
 
           setOpenToast(true);
@@ -211,31 +211,31 @@ const ProductDetail = () => {
           setToastData((prev) => ({
             ...prev,
             message: `TRONG GIỎ HÀNG HIỆN ĐÃ CÓ ${product?.quantity} SẢN PHẨM. KHÔNG THỂ THÊM VÌ SẼ VƯỢT SỐ LƯỢNG MUA HÀNG`,
-            severity: 'error',
-            color: 'error',
+            severity: "error",
+            color: "error",
           }));
         } else {
           setToastData((prev) => ({
             ...prev,
-            message: 'THÊM SẢN PHẨM VÀO GIỎ HÀNG THÀNH CÔNG',
-            severity: 'success',
-            color: 'black',
+            message: "THÊM SẢN PHẨM VÀO GIỎ HÀNG THÀNH CÔNG",
+            severity: "success",
+            color: "black",
           }));
         }
       } else {
         setToastData((prev) => ({
           ...prev,
-          message: 'VUI LÒNG CHỌN ĐỦ THÔNG TIN SẢN PHẨM',
-          severity: 'info',
-          color: 'error',
+          message: "VUI LÒNG CHỌN ĐỦ THÔNG TIN SẢN PHẨM",
+          severity: "info",
+          color: "error",
         }));
       }
       setOpenToast(true);
-    } else navigate('/auth');
+    } else navigate("/auth");
   };
 
   const handleCloseToast = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
 
@@ -252,24 +252,24 @@ const ProductDetail = () => {
     dispatch(updateCheckout());
     if (isAuthenticated) {
       if (submitData.size && submitData.color && submitData.quantity) {
-        sessionStorage.setItem('cartItems', JSON.stringify([submitData]));
-        navigate('/checkout');
+        sessionStorage.setItem("cartItems", JSON.stringify([submitData]));
+        navigate("/checkout");
       } else {
         setToastData((prev) => ({
           ...prev,
-          message: 'VUI LÒNG CHỌN ĐỦ THÔNG TIN SẢN PHẨM',
-          severity: 'info',
-          color: 'error',
+          message: "VUI LÒNG CHỌN ĐỦ THÔNG TIN SẢN PHẨM",
+          severity: "info",
+          color: "error",
         }));
         setOpenToast(true);
       }
-    } else navigate('/auth');
+    } else navigate("/auth");
   };
 
   const handleFavorite = async () => {
     if (isAuthenticated) {
       await toggleWishlist(id);
-    } else navigate('/auth');
+    } else navigate("/auth");
   };
 
   const handleSetCurrentSize = (size, quantity) => {
@@ -301,12 +301,12 @@ const ProductDetail = () => {
   return (
     <Grid container className={classes.container}>
       <Grid item container justifyContent="center" spacing={3}>
-        <Grid item style={{ position: 'relative' }}>
+        <Grid item style={{ position: "relative" }}>
           <img
             className={classes.image}
             src={mainImg}
             onClick={(e) => handleImage(mainImg)}
-            alt={''}
+            alt={""}
           />
           <div className={classes.subImageContainer}>
             {imgArr?.map(({ image }, i) => (
@@ -316,10 +316,10 @@ const ProductDetail = () => {
                 src={image}
                 onClick={(e) => handleMainImg(image, i)}
                 style={{
-                  opacity: isSelectedImg === i && '1',
-                  borderColor: isSelectedImg === i && 'black',
+                  opacity: isSelectedImg === i && "1",
+                  borderColor: isSelectedImg === i && "black",
                 }}
-                alt={''}
+                alt={""}
               />
             ))}
             {/* <img
@@ -350,13 +350,13 @@ const ProductDetail = () => {
             <>
               <div>
                 <Typography color="error" fontWeight="bold" fontSize={18}>
-                  {Intl.NumberFormat('vi-VN', {
-                    style: 'currency',
-                    currency: 'VND',
+                  {Intl.NumberFormat("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
                   }).format(currentPrice)}
                 </Typography>
               </div>
-              <div style={{ marginTop: '20px' }}>
+              <div style={{ marginTop: "20px" }}>
                 <Typography fontWeight="normal" variant="title1" fontSize={20}>
                   Màu sắc:
                 </Typography>
@@ -369,14 +369,14 @@ const ProductDetail = () => {
                         background: `#${color}`,
                         border:
                           `#${color}` === `#${currentColor}` &&
-                          '2px solid blue',
+                          "2px solid blue",
                       }}
                       onClick={() => handleSetCurrentColor(color)}
                     />
                   ))}
                 </div>
               </div>
-              <div style={{ marginTop: '20px' }}>
+              <div style={{ marginTop: "20px" }}>
                 <Typography fontWeight="normal" variant="title1" fontSize={20}>
                   Kích cỡ:
                 </Typography>
@@ -391,7 +391,7 @@ const ProductDetail = () => {
                           type &&
                           size === currentSize &&
                           quantity &&
-                          '2px solid blue',
+                          "2px solid blue",
                       }}
                       key={i}
                       onClick={() => handleSetCurrentSize(size, quantity)}
@@ -401,14 +401,14 @@ const ProductDetail = () => {
                   ))}
                 </div>
               </div>
-              <div style={{ marginTop: '20px' }}>
+              <div style={{ marginTop: "20px" }}>
                 <Typography
                   fontWeight="normal"
                   variant="title1"
                   fontSize={20}
                   marginBottom={4}
                 >
-                  Số lượng: {type ? `(Còn ${type.quantity} sản phẩm)` : ''}
+                  Số lượng: {type ? `(Còn ${type.quantity} sản phẩm)` : ""}
                 </Typography>
                 <div className={classes.wrapper}>
                   <Button color="black" onClick={reduceQuantity}>
@@ -424,12 +424,12 @@ const ProductDetail = () => {
                   </Button>
                 </div>
               </div>
-              <div style={{ marginTop: '40px' }}>
-                <Stack spacing={2} direction={isMobile ? 'column' : 'row'}>
+              <div style={{ marginTop: "40px" }}>
+                <Stack spacing={2} direction={isMobile ? "column" : "row"}>
                   <Button
                     variant="contained"
                     color="black"
-                    style={{ color: 'white', padding: '20px' }}
+                    style={{ color: "white", padding: "20px" }}
                     size="large"
                     onClick={handleSubmit}
                   >
@@ -438,17 +438,17 @@ const ProductDetail = () => {
                   <Button
                     variant="contained"
                     color="error"
-                    style={{ color: 'white', padding: '20px' }}
+                    style={{ color: "white", padding: "20px" }}
                     size="large"
                     onClick={handleBuyNow}
                   >
                     Mua ngay
                   </Button>
-                  <Tooltip title={!fav ? 'Thích' : 'Bỏ thích'}>
+                  <Tooltip title={!fav ? "Thích" : "Bỏ thích"}>
                     <Button
                       variant="outlined"
                       color="error"
-                      style={{ padding: '20px' }}
+                      style={{ padding: "20px" }}
                       size="large"
                       onClick={handleFavorite}
                     >
@@ -472,18 +472,18 @@ const ProductDetail = () => {
                   SẢN PHẨM TẠM NGỪNG KINH DOANH
                 </Typography>
               </div>
-              <Tooltip title={!fav ? 'Thích' : 'Bỏ thích'}>
+              <Tooltip title={!fav ? "Thích" : "Bỏ thích"}>
                 <Button
                   variant="outlined"
                   color="error"
-                  style={{ padding: '20px' }}
+                  style={{ padding: "20px" }}
                   size="large"
                   onClick={handleFavorite}
                 >
                   {!fav ? <FavoriteBorderIcon /> : <FavoriteIcon />}
                 </Button>
               </Tooltip>
-              <div style={{ marginTop: '8px' }}>
+              <div style={{ marginTop: "8px" }}>
                 <Typography
                   color="#000"
                   fontSize={18}
@@ -551,8 +551,8 @@ const ProductDetail = () => {
         <Grid
           item
           sx={{
-            height: '460px',
-            overflow: commentsData?.length > 3 ? 'scroll' : 'none',
+            height: "460px",
+            overflow: commentsData?.length > 3 ? "scroll" : "none",
           }}
         >
           {commentsData?.length === 0 ? (
@@ -583,7 +583,7 @@ const ProductDetail = () => {
         open={open}
         onClose={() => setOpen(false)}
       >
-        <Fade in={open} timeout={500} style={{ outline: 'none' }}>
+        <Fade in={open} timeout={500} style={{ outline: "none" }}>
           <img src={image} className={classes.image} />
         </Fade>
       </Modal>

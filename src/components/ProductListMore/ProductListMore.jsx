@@ -1,78 +1,84 @@
-import React, { useEffect, useState } from 'react';
-import Products from '../Products/Products';
-import { Box, CircularProgress, Pagination, Stack, useMediaQuery } from '@mui/material';
-import { useGetProductsQuery } from '../../services/productApis';
-import { useSearchParams } from 'react-router-dom';
-import { LIMIT, PRODUCT_QUERY_STRING } from '../../utils/globalVariables';
-import useStyles from './styles';
+import React, { useEffect, useState } from "react";
+import Products from "../Products/Products";
+import {
+  Box,
+  CircularProgress,
+  Pagination,
+  Stack,
+  useMediaQuery,
+} from "@mui/material";
+import { useGetProductsQuery } from "../../services/productApis";
+import { useSearchParams } from "react-router-dom";
+import { LIMIT, PRODUCT_QUERY_STRING } from "../../utils/globalVariables";
+import useStyles from "./styles";
 
 const ProductListMore = () => {
-    const classes = useStyles();
-    // Hook for set query string state
-    const [searchParams, setSearchParams] = useSearchParams();
+  const classes = useStyles();
+  // Hook for set query string state
+  const [searchParams, setSearchParams] = useSearchParams();
 
-    // Query string validation, isInteger check if the passing arg is an integer or not 
-    // 3 main query: page, limit, cat
-    const pageNum = parseInt(searchParams.get(PRODUCT_QUERY_STRING[0])); // Get the query of page for validation
-    const pageInit = Number.isInteger(pageNum) && pageNum > 0 ? pageNum : 1;
+  // Query string validation, isInteger check if the passing arg is an integer or not
+  // 3 main query: page, limit, cat
+  const pageNum = parseInt(searchParams.get(PRODUCT_QUERY_STRING[0])); // Get the query of page for validation
+  const pageInit = Number.isInteger(pageNum) && pageNum > 0 ? pageNum : 1;
 
-    // const limitNum = parseInt(searchParams.get(PRODUCT_QUERY_STRING[1])); // Get the query of limit for validation
-    // const limitInit = Number.isInteger(limitNum) && limitNum > 0 ? limitNum : LIMIT;
-    const searchInit = searchParams.get(PRODUCT_QUERY_STRING[3]) || '';
+  // const limitNum = parseInt(searchParams.get(PRODUCT_QUERY_STRING[1])); // Get the query of limit for validation
+  // const limitInit = Number.isInteger(limitNum) && limitNum > 0 ? limitNum : LIMIT;
+  const searchInit = searchParams.get(PRODUCT_QUERY_STRING[3]) || "";
 
-    const catNum = parseInt(searchParams.get(PRODUCT_QUERY_STRING[2])); // Get the query of cat for validation
-    const catInit = Number.isInteger(catNum) ? catNum : '';
+  const catNum = parseInt(searchParams.get(PRODUCT_QUERY_STRING[2])); // Get the query of cat for validation
+  const catInit = Number.isInteger(catNum) ? catNum : "";
 
-    const { data, isFetching } = useGetProductsQuery({
-        pageNumber: pageInit,
-        pageSize: LIMIT,
-        cat: catInit,
-        keyword: searchInit,
-    });
+  const { data, isFetching } = useGetProductsQuery({
+    pageNumber: pageInit,
+    pageSize: LIMIT,
+    cat: catInit,
+    keyword: searchInit,
+  });
 
-    const isMobile = useMediaQuery('(max-width: 800px)');
+  const isMobile = useMediaQuery("(max-width: 800px)");
 
-    const onPageChange = (e, value) => {
-        let query = {};
+  const onPageChange = (e, value) => {
+    let query = {};
 
-        // Check if cat query exist 
-        if(searchParams.get(PRODUCT_QUERY_STRING[2])) {
-            query = { ...query, [PRODUCT_QUERY_STRING[2]]: catInit };
-        }
-
-        // Check if search query exist 
-        if(searchParams.get(PRODUCT_QUERY_STRING[3])) {
-            query = { ...query, [PRODUCT_QUERY_STRING[3]]: searchInit };
-        }
-
-        query = { ...query, [PRODUCT_QUERY_STRING[0]]: value };
-        
-        setSearchParams(query);
+    // Check if cat query exist
+    if (searchParams.get(PRODUCT_QUERY_STRING[2])) {
+      query = { ...query, [PRODUCT_QUERY_STRING[2]]: catInit };
     }
 
-    return (
-        <div className={classes.container}>
-            {isFetching ? (
-                <Box display="flex" justifyContent="center">
-                    <CircularProgress color="black" size="4rem" />
-                </Box>
-            ) : (
-                <>
-                    <Products data={data?.list} />
-                    <Stack spacing={2} className={classes.pagination}>
-                        <Pagination
-                            count={Math.ceil(data?.numberItem / LIMIT)}
-                            shape="rounded"
-                            page={pageInit}
-                            size={isMobile ? 'small' : 'large'}
-                            siblingCount={isMobile ? -1 : 2}
-                            onChange={onPageChange}
-                        />
-                    </Stack>
-                </>
-            )}
-        </div>
-    );
+    // Check if search query exist
+    if (searchParams.get(PRODUCT_QUERY_STRING[3])) {
+      query = { ...query, [PRODUCT_QUERY_STRING[3]]: searchInit };
+    }
+
+    query = { ...query, [PRODUCT_QUERY_STRING[0]]: value };
+
+    setSearchParams(query);
+  };
+
+  return (
+    <div className={classes.container}>
+      {isFetching ? (
+        <Box display="flex" justifyContent="center">
+          <CircularProgress color="black" size="4rem" />
+        </Box>
+      ) : (
+        <>
+          <Products data={data?.list} />
+          <Stack spacing={2} className={classes.pagination}>
+            <Pagination
+              count={Math.ceil(data?.numberItem / LIMIT)}
+              shape="rounded"
+              page={pageInit}
+              size={isMobile ? "small" : "large"}
+              siblingCount={isMobile ? -1 : 2}
+              onChange={onPageChange}
+            />
+          </Stack>
+        </>
+      )}
+    </div>
+  );
 };
 
 export default ProductListMore;

@@ -35,31 +35,30 @@ export default makeStyles((theme) => ({
     padding: "25px",
   },
 
-
   checkoutButton: {
-    color: 'white!important',
-    backgroundColor: 'black!important',
-    paddingRight: '50px!important',
-    paddingLeft: '50px!important',
-    paddingTop: '14px!important',
-    paddingBottom: '14px!important',
-    },
+    color: "white!important",
+    backgroundColor: "black!important",
+    paddingRight: "50px!important",
+    paddingLeft: "50px!important",
+    paddingTop: "14px!important",
+    paddingBottom: "14px!important",
+  },
 
   paymentContainer: {
-      marginTop: '30px'
+    marginTop: "30px",
   },
 
   itemLink: {
-    alignItems: 'left',
-    fontWeight: 'bolder',
-    textDecoration: 'none',
-    position: 'relative',        
-    [theme.breakpoints.up('xs')]: {
-        display: 'flex',
-        flexDirection: 'column'
+    alignItems: "left",
+    fontWeight: "bolder",
+    textDecoration: "none",
+    position: "relative",
+    [theme.breakpoints.up("xs")]: {
+      display: "flex",
+      flexDirection: "column",
     },
-    '&:hover': {
-        cursor: 'pointer',
+    "&:hover": {
+      cursor: "pointer",
     },
   },
 }));

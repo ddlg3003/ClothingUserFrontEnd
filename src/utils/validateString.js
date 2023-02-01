@@ -7,4 +7,3 @@ export function validateEmail(str) {
   var regExp = /\S+@\S+\.\S+/;
   return regExp.test(str);
 }
-

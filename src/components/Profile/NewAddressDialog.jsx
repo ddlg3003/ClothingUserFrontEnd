@@ -28,14 +28,13 @@ const NewAddressDialog = (props) => {
   const handleConfirmClick = async () => {
     setAddressInfo(initialState);
     onClose();
-        
+
     await addAddress(addressInfo);
   };
 
   const handleNameChange = (event) => {
     const name = event.target.value;
-    if (name.length <= 45)
-      setAddressInfo((prev) => ({ ...prev, name: name }));
+    if (name.length <= 45) setAddressInfo((prev) => ({ ...prev, name: name }));
   };
   const handlePhoneChange = (event) => {
     const phone = event.target.value;
@@ -80,7 +79,7 @@ const NewAddressDialog = (props) => {
         </DialogContent>
 
         <DialogActions>
-        <Button
+          <Button
             sx={{ mb: 1 }}
             color="white"
             variant="contained"

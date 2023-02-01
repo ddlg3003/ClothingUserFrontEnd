@@ -7,9 +7,12 @@ import {
   Divider,
   Grid,
   Typography,
-  CircularProgress
+  CircularProgress,
 } from "@mui/material";
-import { useGetUserWishlistQuery, useToggleWishlistMutation } from "../../services/wishlistApis";
+import {
+  useGetUserWishlistQuery,
+  useToggleWishlistMutation,
+} from "../../services/wishlistApis";
 import { URL_REGEX } from "../../utils/globalVariables";
 import { Link } from "react-router-dom";
 
@@ -22,7 +25,7 @@ const Favorites = (props) => {
 
   const handleDeleteFav = async (productId) => {
     await toggleWishlist(productId);
-  }
+  };
 
   return (
     <>
@@ -38,14 +41,22 @@ const Favorites = (props) => {
           <CircularProgress color="black" size="4rem" />
         </Box>
       ) : (
-        <Container sx={{ mt: 3, height: "460px", overflow: data?.length > 2 ? "scroll" : "none" }}>
+        <Container
+          sx={{
+            mt: 3,
+            height: "460px",
+            overflow: data?.length > 2 ? "scroll" : "none",
+          }}
+        >
           {data?.map((favorite, i) => (
             <div key={i}>
               <Box>
                 <Grid container spacing={2} sx={{ mb: 3, mt: 4 }}>
                   <Grid item xs container direction="column" spacing={2}>
                     <Link
-                      to={`/products/${favorite.name.replace(URL_REGEX, '-').toLowerCase()}-i.${favorite.productId}`} 
+                      to={`/products/${favorite.name
+                        .replace(URL_REGEX, "-")
+                        .toLowerCase()}-i.${favorite.productId}`}
                       className={props.classes.favoriteItems}
                     >
                       <Grid container spacing={2}>

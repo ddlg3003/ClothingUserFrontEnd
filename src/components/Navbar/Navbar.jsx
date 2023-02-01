@@ -1,377 +1,377 @@
-import React, { useState, useEffect } from 'react';
-import { BLACK_LOGO, LIMIT, PRODUCT_QUERY_STRING } from '../../utils/globalVariables';
+import React, { useState, useEffect } from "react";
 import {
-    AppBar,
-    Toolbar,
-    Drawer,
-    Button,
-    IconButton,
-    useMediaQuery,
-    Menu,
-    MenuItem,
-    Avatar,
-    Badge,
-} from '@mui/material';
-import { TextField, InputAdornment } from '@mui/material';
+  BLACK_LOGO,
+  LIMIT,
+  PRODUCT_QUERY_STRING,
+} from "../../utils/globalVariables";
 import {
-    Search as SearchIcon,
-    AccountCircle,
-    Menu as MenuIcon,
-} from '@mui/icons-material';
-import LoginIcon from '@mui/icons-material/Login';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import SecondNavbar from '../SecondNavbar/SecondNavbar';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { useGetCategoriesQuery } from '../../services/catApis';
-import { useGetCartQuery } from '../../services/cartApis';
+  AppBar,
+  Toolbar,
+  Drawer,
+  Button,
+  IconButton,
+  useMediaQuery,
+  Menu,
+  MenuItem,
+  Avatar,
+  Badge,
+} from "@mui/material";
+import { TextField, InputAdornment } from "@mui/material";
+import {
+  Search as SearchIcon,
+  AccountCircle,
+  Menu as MenuIcon,
+} from "@mui/icons-material";
+import LoginIcon from "@mui/icons-material/Login";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import SecondNavbar from "../SecondNavbar/SecondNavbar";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { useGetCategoriesQuery } from "../../services/catApis";
+import { useGetCartQuery } from "../../services/cartApis";
 // import { useGetProductsQuery } from '../../services/productApis';
-import AutoCompleteSearch from './AutoCompleteSearch';
-import { logout } from '../../features/auth';
-import decode from 'jwt-decode';
-import { useDebounce } from '../../utils/helperFunction';
-import useStyles from './styles';
-import { useGetProfileQuery } from '../../services/userApis';
-import { useRef } from 'react';
+import AutoCompleteSearch from "./AutoCompleteSearch";
+import { logout } from "../../features/auth";
+import decode from "jwt-decode";
+import { useDebounce } from "../../utils/helperFunction";
+import useStyles from "./styles";
+import { useGetProfileQuery } from "../../services/userApis";
+import { useRef } from "react";
 
 const Navbar = () => {
-    const classes = useStyles();
-    const dispatch = useDispatch();
-    const location = useLocation();
-    const navigate = useNavigate();
+  const classes = useStyles();
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
 
-    const { isAuthenticated } = useSelector((state) => state.auth);
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
-    const { data: user, isFetching: isFetchingUser } = useGetProfileQuery({ skip: !isAuthenticated });
+  const { data: user, isFetching: isFetchingUser } = useGetProfileQuery({
+    skip: !isAuthenticated,
+  });
 
-    const { data: dataCartList, isFetching: isFetchingCartList } = useGetCartQuery({ skip: !isAuthenticated });
+  const { data: dataCartList, isFetching: isFetchingCartList } =
+    useGetCartQuery({ skip: !isAuthenticated });
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-    
-        if(token) {
-          const decodedToken = decode(token);
-    
-          if(decodedToken.exp * 1000 < new Date().getTime()) dispatch(logout());; 
-        }
-    }, [location]);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
 
-    // const cartData = useSelector((state) => state.cart.data);
-    const { data, isFetching } = useGetCategoriesQuery();
+    if (token) {
+      const decodedToken = decode(token);
 
-    let currentHovering = false;
-    let currentAuthHovering = false;
-
-    const logo = BLACK_LOGO;
-    const isMobile = useMediaQuery('(max-width: 800px)');
-
-    const [mobileOpen, setMobileOpen] = useState(false);
-    const [anchorEl, setAnchorEl] = useState(null);
-    const [anchorElAuth, setAnchorElAuth] = useState(null);
-    const [query, setQuery] = useState('');
-    const [notOpenAutoComplete, setNotOpenAutoComplete] = useState(true);
-
-    // Debounce search query
-    const debouncedQuery = useDebounce(query, 500);
-
-    // Handle search
-    const handleKeyPress = (event) => {
-        if(event.key === 'Enter') {
-            navigate(`/products?${PRODUCT_QUERY_STRING[3]}=${query}&${PRODUCT_QUERY_STRING[0]}=1`);
-            setNotOpenAutoComplete(true);
-            setQuery('');
-        }
+      if (decodedToken.exp * 1000 < new Date().getTime()) dispatch(logout());
     }
+  }, [location]);
 
-    // handle click outside search text
-    const searchRef = useRef(null);
+  // const cartData = useSelector((state) => state.cart.data);
+  const { data, isFetching } = useGetCategoriesQuery();
 
-    // Use effect to check when click outside of search div
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (searchRef.current && !searchRef.current.contains(event.target)) {
-                setNotOpenAutoComplete(true);
-            }
-        };
-        document.addEventListener('click', handleClickOutside, true);
-        return () => {
-            document.removeEventListener('click', handleClickOutside, true);
-        };
-      }, [setNotOpenAutoComplete]);
+  let currentHovering = false;
+  let currentAuthHovering = false;
 
-    const handleSearchChange = (e) => {
-        setQuery(e.target.value);
+  const logo = BLACK_LOGO;
+  const isMobile = useMediaQuery("(max-width: 800px)");
 
-        if(e.target.value === '') {
-            setNotOpenAutoComplete(true);
-        } else {
-            setNotOpenAutoComplete(false);
-        }
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorElAuth, setAnchorElAuth] = useState(null);
+  const [query, setQuery] = useState("");
+  const [notOpenAutoComplete, setNotOpenAutoComplete] = useState(true);
+
+  // Debounce search query
+  const debouncedQuery = useDebounce(query, 500);
+
+  // Handle search
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      navigate(
+        `/products?${PRODUCT_QUERY_STRING[3]}=${query}&${PRODUCT_QUERY_STRING[0]}=1`
+      );
+      setNotOpenAutoComplete(true);
+      setQuery("");
     }
-    // Auth hover functions
-    const handleClickAuth = (e) => {
-        if (anchorElAuth !== e.currentTarget) {
-            setAnchorElAuth(e.currentTarget);
-        }
+  };
+
+  // handle click outside search text
+  const searchRef = useRef(null);
+
+  // Use effect to check when click outside of search div
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setNotOpenAutoComplete(true);
+      }
     };
-
-    const handleHoverAuth = (e) => {
-        currentAuthHovering = true;
+    document.addEventListener("click", handleClickOutside, true);
+    return () => {
+      document.removeEventListener("click", handleClickOutside, true);
     };
+  }, [setNotOpenAutoComplete]);
 
-    const handleCloseAuth = () => {
-        setAnchorElAuth(null);
-    };
+  const handleSearchChange = (e) => {
+    setQuery(e.target.value);
 
-    const handleLogout = () => {
-        setAnchorElAuth(null);
+    if (e.target.value === "") {
+      setNotOpenAutoComplete(true);
+    } else {
+      setNotOpenAutoComplete(false);
+    }
+  };
+  // Auth hover functions
+  const handleClickAuth = (e) => {
+    if (anchorElAuth !== e.currentTarget) {
+      setAnchorElAuth(e.currentTarget);
+    }
+  };
 
-        window.location.href = 'http://localhost:3000/auth';
+  const handleHoverAuth = (e) => {
+    currentAuthHovering = true;
+  };
 
-        dispatch(logout());
-    };
+  const handleCloseAuth = () => {
+    setAnchorElAuth(null);
+  };
 
-    const handleCloseHoverAuth = (e) => {
-        currentAuthHovering = false;
+  const handleLogout = () => {
+    setAnchorElAuth(null);
 
-        setTimeout(() => {
-            if (!currentAuthHovering) {
-                handleCloseAuth();
-            }
-        }, 50);
-    };
+    window.location.href = "http://localhost:3000/auth";
 
-    // Category hover functions
-    const handleClick = (e) => {
-        if (anchorEl !== e.currentTarget) {
-            setAnchorEl(e.currentTarget);
-        }
-    };
+    dispatch(logout());
+  };
 
-    const handleHover = (e) => {
-        currentHovering = true;
-    };
+  const handleCloseHoverAuth = (e) => {
+    currentAuthHovering = false;
 
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
+    setTimeout(() => {
+      if (!currentAuthHovering) {
+        handleCloseAuth();
+      }
+    }, 50);
+  };
 
-    const handleCloseHover = (e) => {
-        currentHovering = false;
+  // Category hover functions
+  const handleClick = (e) => {
+    if (anchorEl !== e.currentTarget) {
+      setAnchorEl(e.currentTarget);
+    }
+  };
 
-        setTimeout(() => {
-            if (!currentHovering) {
-                handleClose();
-            }
-        }, 50);
-    };
+  const handleHover = (e) => {
+    currentHovering = true;
+  };
 
-    return (
-        <>
-            <AppBar position="fixed">
-                <Toolbar className={classes.toolbar}>
-                    {!isMobile && (
-                        <Link to="/">
-                            <img src={logo} />
-                        </Link>
-                    )}
-                    {isMobile && (
-                        <IconButton
-                            onClick={() =>
-                                setMobileOpen(
-                                    (prevMobileOpen) => !prevMobileOpen
-                                )
-                            }
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                    )}
-                    <div ref={searchRef} className={classes.search}>
-                        <TextField
-                            onKeyPress={handleKeyPress}
-                            value={query}
-                            sx={{ width: '100%' }}
-                            onChange={handleSearchChange}
-                            variant="standard"
-                            InputProps={{
-                                // className: classes.input,
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <SearchIcon />
-                                    </InputAdornment>
-                                ),
-                            }}
-                        />
-                        {!isMobile ? (
-                            <AutoCompleteSearch 
-                                hidden={notOpenAutoComplete} 
-                                query={debouncedQuery} 
-                                setQuery={setQuery} 
-                                setNotOpenAutoComplete={setNotOpenAutoComplete} 
-                            />
-                        ) : (<></>)}
-                    </div>
-                    <div>
-                        <Button component={Link} to="/cart" color="black">
-                            <Badge badgeContent={dataCartList?.length} color="error">
-                                <ShoppingCartIcon />
-                            </Badge>
-                        </Button>
-                        {!isAuthenticated ? (
-                            <Button
-                                component={Link}
-                                to="/auth"
-                                color="black"
-                                onClick={() => {}}
-                            >
-                                {!isMobile && <>Đăng nhập &nbsp;</>}
-                                <LoginIcon />
-                            </Button>
-                        ) : (
-                            <>
-                                <Button
-                                    color="black"
-                                    onClick={handleClickAuth}
-                                    onMouseOver={handleClickAuth}
-                                    onMouseLeave={handleCloseHoverAuth}
-                                >
-                                    <Avatar sx={{ width: 32, height: 32 }} src={user?.avatar ? user?.avatar : ''} />
-                                    {!isMobile && <>&nbsp; {user?.username}</>}
-                                </Button>
-                                <Menu
-                                    // className={classes.dropdown}
-                                    anchorEl={anchorElAuth}
-                                    keepMounted
-                                    open={Boolean(anchorElAuth)}
-                                    onClose={handleCloseAuth}
-                                    MenuListProps={{
-                                        onMouseEnter: handleHoverAuth,
-                                        onMouseLeave: handleCloseHoverAuth,
-                                        style: { pointerEvents: 'auto' },
-                                    }}
-                                    anchorOrigin={{
-                                        horizontal: 'left',
-                                        vertical: 'bottom',
-                                    }}
-                                    PopoverClasses={{
-                                        root: classes.popOverRoot,
-                                    }}
-                                    PaperProps={{
-                                        style: {
-                                            width: !isMobile ? 160 : 140,
-                                        },
-                                    }}
-                                >
-                                    <Link
-                                        to="/profile"
-                                        style={{
-                                            textDecoration: 'none',
-                                            color: 'black',
-                                        }}
-                                    >
-                                        <MenuItem onClick={handleCloseAuth}>
-                                            Trang cá nhân
-                                        </MenuItem>
-                                    </Link>
-                                    <Link
-                                        to="/"
-                                        style={{
-                                            textDecoration: 'none',
-                                            color: 'black',
-                                        }}
-                                    >
-                                        <MenuItem onClick={handleLogout}>
-                                            Đăng xuất
-                                        </MenuItem>
-                                    </Link>
-                                </Menu>
-                            </>
-                        )}
-                    </div>
-                </Toolbar>
-                {!isMobile && (
-                    <Toolbar className={classes.nav}>
-                        <SecondNavbar
-                            handleClick={handleClick}
-                            handleCloseHover={handleCloseHover}
-                            spacing={3}
-                            direction="row"
-                        />
-                    </Toolbar>
-                )}
-            </AppBar>
-            <div>
-                <nav className={classes.drawer}>
-                    {isMobile && (
-                        <Drawer
-                            variant="temporary"
-                            anchor="right"
-                            open={mobileOpen}
-                            ModalProps={{ keepMounted: true }}
-                            onClose={() =>
-                                setMobileOpen(
-                                    (prevMobileOpen) => !prevMobileOpen
-                                )
-                            }
-                            classes={{ paper: classes.drawerPaper }}
-                        >
-                            <Link to="/" className={classes.responsiveLogo}>
-                                <img style={{ margin: '20px 0' }} src={logo} />
-                            </Link>
-                            <SecondNavbar
-                                handleClick={handleClick}
-                                handleCloseHover={handleCloseHover}
-                                spacing={2}
-                                direction="column"
-                            />
-                        </Drawer>
-                    )}
-                </nav>
-                <Menu
-                    className={classes.dropdown}
-                    anchorEl={anchorEl}
-                    keepMounted
-                    open={Boolean(anchorEl)}
-                    onClose={handleClose}
-                    MenuListProps={{
-                        onMouseEnter: handleHover,
-                        onMouseLeave: handleCloseHover,
-                        style: { pointerEvents: 'auto' },
-                    }}
-                    anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-                    PopoverClasses={{
-                        root: classes.popOverRoot,
-                    }}
-                    PaperProps={{
-                        style: {
-                            width: !isMobile ? 400 : 240,
-                        },
-                    }}
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleCloseHover = (e) => {
+    currentHovering = false;
+
+    setTimeout(() => {
+      if (!currentHovering) {
+        handleClose();
+      }
+    }, 50);
+  };
+
+  return (
+    <>
+      <AppBar position="fixed">
+        <Toolbar className={classes.toolbar}>
+          {!isMobile && (
+            <Link to="/">
+              <img src={logo} />
+            </Link>
+          )}
+          {isMobile && (
+            <IconButton
+              onClick={() => setMobileOpen((prevMobileOpen) => !prevMobileOpen)}
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
+          <div ref={searchRef} className={classes.search}>
+            <TextField
+              onKeyPress={handleKeyPress}
+              value={query}
+              sx={{ width: "100%" }}
+              onChange={handleSearchChange}
+              variant="standard"
+              InputProps={{
+                // className: classes.input,
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+            {!isMobile ? (
+              <AutoCompleteSearch
+                hidden={notOpenAutoComplete}
+                query={debouncedQuery}
+                setQuery={setQuery}
+                setNotOpenAutoComplete={setNotOpenAutoComplete}
+              />
+            ) : (
+              <></>
+            )}
+          </div>
+          <div>
+            <Button component={Link} to="/cart" color="black">
+              <Badge badgeContent={dataCartList?.length} color="error">
+                <ShoppingCartIcon />
+              </Badge>
+            </Button>
+            {!isAuthenticated ? (
+              <Button
+                component={Link}
+                to="/auth"
+                color="black"
+                onClick={() => {}}
+              >
+                {!isMobile && <>Đăng nhập &nbsp;</>}
+                <LoginIcon />
+              </Button>
+            ) : (
+              <>
+                <Button
+                  color="black"
+                  onClick={handleClickAuth}
+                  onMouseOver={handleClickAuth}
+                  onMouseLeave={handleCloseHoverAuth}
                 >
-                    {isFetching ? (
-                        <MenuItem onClick={handleClose}>
-                            Đang tải danh mục...
-                        </MenuItem>
-                    ) : (
-                        data.map((category) => (
-                            <Link
-                                key={category.id}
-                                to={`/products?${PRODUCT_QUERY_STRING[2]}=${category.id}&${PRODUCT_QUERY_STRING[0]}=${1}`} 
-                                style={{
-                                    textDecoration: 'none',
-                                    color: 'black',
-                                }}
-                            >
-                                <MenuItem onClick={handleClose}>
-                                    {category.name}
-                                </MenuItem>
-                            </Link>
-                        ))
-                    )}
+                  <Avatar
+                    sx={{ width: 32, height: 32 }}
+                    src={user?.avatar ? user?.avatar : ""}
+                  />
+                  {!isMobile && <>&nbsp; {user?.username}</>}
+                </Button>
+                <Menu
+                  // className={classes.dropdown}
+                  anchorEl={anchorElAuth}
+                  keepMounted
+                  open={Boolean(anchorElAuth)}
+                  onClose={handleCloseAuth}
+                  MenuListProps={{
+                    onMouseEnter: handleHoverAuth,
+                    onMouseLeave: handleCloseHoverAuth,
+                    style: { pointerEvents: "auto" },
+                  }}
+                  anchorOrigin={{
+                    horizontal: "left",
+                    vertical: "bottom",
+                  }}
+                  PopoverClasses={{
+                    root: classes.popOverRoot,
+                  }}
+                  PaperProps={{
+                    style: {
+                      width: !isMobile ? 160 : 140,
+                    },
+                  }}
+                >
+                  <Link
+                    to="/profile"
+                    style={{
+                      textDecoration: "none",
+                      color: "black",
+                    }}
+                  >
+                    <MenuItem onClick={handleCloseAuth}>Trang cá nhân</MenuItem>
+                  </Link>
+                  <Link
+                    to="/"
+                    style={{
+                      textDecoration: "none",
+                      color: "black",
+                    }}
+                  >
+                    <MenuItem onClick={handleLogout}>Đăng xuất</MenuItem>
+                  </Link>
                 </Menu>
-            </div>
-        </>
-    );
+              </>
+            )}
+          </div>
+        </Toolbar>
+        {!isMobile && (
+          <Toolbar className={classes.nav}>
+            <SecondNavbar
+              handleClick={handleClick}
+              handleCloseHover={handleCloseHover}
+              spacing={3}
+              direction="row"
+            />
+          </Toolbar>
+        )}
+      </AppBar>
+      <div>
+        <nav className={classes.drawer}>
+          {isMobile && (
+            <Drawer
+              variant="temporary"
+              anchor="right"
+              open={mobileOpen}
+              ModalProps={{ keepMounted: true }}
+              onClose={() => setMobileOpen((prevMobileOpen) => !prevMobileOpen)}
+              classes={{ paper: classes.drawerPaper }}
+            >
+              <Link to="/" className={classes.responsiveLogo}>
+                <img style={{ margin: "20px 0" }} src={logo} />
+              </Link>
+              <SecondNavbar
+                handleClick={handleClick}
+                handleCloseHover={handleCloseHover}
+                spacing={2}
+                direction="column"
+              />
+            </Drawer>
+          )}
+        </nav>
+        <Menu
+          className={classes.dropdown}
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+          MenuListProps={{
+            onMouseEnter: handleHover,
+            onMouseLeave: handleCloseHover,
+            style: { pointerEvents: "auto" },
+          }}
+          anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
+          PopoverClasses={{
+            root: classes.popOverRoot,
+          }}
+          PaperProps={{
+            style: {
+              width: !isMobile ? 400 : 240,
+            },
+          }}
+        >
+          {isFetching ? (
+            <MenuItem onClick={handleClose}>Đang tải danh mục...</MenuItem>
+          ) : (
+            data.map((category) => (
+              <Link
+                key={category.id}
+                to={`/products?${PRODUCT_QUERY_STRING[2]}=${category.id}&${
+                  PRODUCT_QUERY_STRING[0]
+                }=${1}`}
+                style={{
+                  textDecoration: "none",
+                  color: "black",
+                }}
+              >
+                <MenuItem onClick={handleClose}>{category.name}</MenuItem>
+              </Link>
+            ))
+          )}
+        </Menu>
+      </div>
+    </>
+  );
 };
 
 export default Navbar;

@@ -1,47 +1,47 @@
-import { Button, Container, Paper, Typography, Link } from '@mui/material';
-import React, { useEffect, useRef, useState } from 'react';
-import Input from '../Input/Input';
-import Alert from '../Alert/Alert';
-import { useSearchParams } from 'react-router-dom';
+import { Button, Container, Paper, Typography, Link } from "@mui/material";
+import React, { useEffect, useRef, useState } from "react";
+import Input from "../Input/Input";
+import Alert from "../Alert/Alert";
+import { useSearchParams } from "react-router-dom";
 import {
   EMAIL_REGEX,
   RECOVERY_QUERY_STRING,
   RECOVERY_FLOW,
   PASSWORD_REGEX,
   OTP_REGEX,
-} from '../../utils/globalVariables';
+} from "../../utils/globalVariables";
 import {
   useSendOtpMutation,
   useResetPasswordMutation,
-} from '../../services/forgotPasswordApis';
-import useStyles from './styles';
-import { LoadingButton } from '@mui/lab';
+} from "../../services/forgotPasswordApis";
+import useStyles from "./styles";
+import { LoadingButton } from "@mui/lab";
 
 const ForgotPassword = () => {
   const classes = useStyles();
 
   const [formData, setFormData] = useState({
-    email: '',
-    otp: '',
-    newPassword: '',
-    rePassword: '',
+    email: "",
+    otp: "",
+    newPassword: "",
+    rePassword: "",
   });
 
   const [invalidOtp, setInvalidOtp] = useState({
     error: false,
-    helperText: '',
+    helperText: "",
   });
   const [invalidPassword, setInvalidPassword] = useState({
     error: false,
-    helperText: '',
+    helperText: "",
   });
   const [invalidRetypePassword, setInvalidRetypePassword] = useState({
     error: false,
-    helperText: '',
+    helperText: "",
   });
   const [invalidEmail, setInvalidEmail] = useState({
     error: false,
-    helperText: '',
+    helperText: "",
   });
   const [enableButton, setEnableButton] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -89,13 +89,13 @@ const ForgotPassword = () => {
 
   const [openToast, setOpenToast] = useState(false);
   const [toastData, setToastData] = useState({
-    color: '',
-    severity: '',
-    message: '',
+    color: "",
+    severity: "",
+    message: "",
   });
 
   const handleCloseToast = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
 
@@ -104,9 +104,9 @@ const ForgotPassword = () => {
 
   const handleInvalid = (e, REGEX, setInvalidData, helperText) => {
     if (e.target.value.match(REGEX)) {
-      setInvalidData({ error: false, helperText: '' });
+      setInvalidData(prev => ({ ...prev, error: false, helperText: "" }));
     } else {
-      setInvalidData({ error: true, helperText });
+      setInvalidData(prev => ({ ...prev, error: true, helperText }));
     }
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -116,12 +116,12 @@ const ForgotPassword = () => {
       e,
       EMAIL_REGEX,
       setInvalidEmail,
-      'Vui lòng nhập đúng định dạng Email'
+      "Vui lòng nhập đúng định dạng Email"
     );
   };
 
   const handleOtpChange = (e) => {
-    return handleInvalid(e, OTP_REGEX, setInvalidOtp, 'Nhập mã gồm 6 chữ số');
+    return handleInvalid(e, OTP_REGEX, setInvalidOtp, "Nhập mã gồm 6 chữ số");
   };
 
   const handlePasswordChange = (e) => {
@@ -129,18 +129,19 @@ const ForgotPassword = () => {
       e,
       PASSWORD_REGEX,
       setInvalidPassword,
-      'Có 8-15 ký tự, chữ số, ký tự đặc biệt & in hoa'
+      "Có 8-15 ký tự, chữ số, ký tự đặc biệt & in hoa"
     );
   };
 
   const handleRetypePasswordChange = (e) => {
     if (e.target.value === formData.newPassword) {
-      setInvalidRetypePassword({ error: false, helperText: '' });
+      setInvalidRetypePassword(prev => ({ ...prev, error: false, helperText: "" }));
     } else {
-      setInvalidRetypePassword({
+      setInvalidRetypePassword(prev => ({
+        ...prev,
         error: true,
-        helperText: 'Mật khẩu nhập lại không khớp',
-      });
+        helperText: "Mật khẩu nhập lại không khớp",
+      }));
     }
 
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -163,8 +164,8 @@ const ForgotPassword = () => {
         setToastData((prev) => ({
           ...prev,
           message: response?.error.data,
-          color: 'error',
-          severity: 'error',
+          color: "error",
+          severity: "error",
         }));
       }
       // Not error case then jump to next flow
@@ -174,17 +175,17 @@ const ForgotPassword = () => {
         setToastData((prev) => ({
           ...prev,
           message:
-            'ADNCloth đã gửi một Email cho bạn, vui lòng kiểm tra và nhập mã',
-            color: 'success',
-            severity: 'success',
+            "ADNCloth đã gửi một Email cho bạn, vui lòng kiểm tra và nhập mã",
+          color: "success",
+          severity: "success",
         }));
       }
     } catch (e) {
       setToastData((prev) => ({
         ...prev,
-        message: 'Đã có lỗi xảy ra vui lòng thử lại sau',
-        color: 'error',
-        severity: 'error',
+        message: "Đã có lỗi xảy ra vui lòng thử lại sau",
+        color: "error",
+        severity: "error",
       }));
     }
     setOpenToast(true);
@@ -199,32 +200,32 @@ const ForgotPassword = () => {
 
       // Check if response is error and status !== 200
       if (response?.error.originalStatus !== 200) {
-        console.log(response)
+        console.log(response);
         setToastData((prev) => ({
           ...prev,
           message: response?.error.data,
-          color: 'error',
-          severity: 'error',
+          color: "error",
+          severity: "error",
         }));
-        setOpenToast(true); 
+        setOpenToast(true);
       }
       // Success change password
       else {
         setToastData((prev) => ({
           ...prev,
-          message: 'Cập nhật mật khẩu thành công',
-          color: 'success',
-          severity: 'success',
+          message: "Cập nhật mật khẩu thành công",
+          color: "success",
+          severity: "success",
         }));
         setOpenToast(true);
-        window.location.href = '/auth';
+        window.location.href = "/auth";
       }
     } catch {
       setToastData((prev) => ({
         ...prev,
-        message: 'Đã có lỗi xảy ra vui lòng thử lại sau',
-        color: 'error',
-        severity: 'error',
+        message: "Đã có lỗi xảy ra vui lòng thử lại sau",
+        color: "error",
+        severity: "error",
       }));
 
       setOpenToast(true);
@@ -260,7 +261,7 @@ const ForgotPassword = () => {
                 label="Mật khẩu mới"
                 handleChange={handlePasswordChange}
                 error={invalidPassword.error}
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 helperText={invalidPassword.helperText}
                 handleShowPassword={() => setShowPassword((prev) => !prev)}
                 // inputRef={emailInput}
@@ -270,7 +271,7 @@ const ForgotPassword = () => {
                 label="Nhập lại mật khẩu"
                 handleChange={handleRetypePasswordChange}
                 error={invalidRetypePassword.error}
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 helperText={invalidRetypePassword.helperText}
                 // inputRef={emailInput}
               />
@@ -288,7 +289,7 @@ const ForgotPassword = () => {
           <LoadingButton
             variant="contained"
             size="medium"
-            style={{ padding: '16px', width: '100%', color: 'white' }}
+            style={{ padding: "16px", width: "100%", color: "white" }}
             type="submit"
             color="black"
             loading={
@@ -297,12 +298,12 @@ const ForgotPassword = () => {
             disabled={!enableButton}
           >
             {queryValue === RECOVERY_FLOW[1] && formData.email
-              ? 'Cập nhật'
-              : 'Gửi mã'}
+              ? "Cập nhật"
+              : "Gửi mã"}
           </LoadingButton>
         </form>
         <Typography variant="title1" fontSize="14px" marginBottom="20px">
-          Nhớ mật khẩu?{' '}
+          Nhớ mật khẩu?{" "}
           <Link color="#000" href="/auth">
             Về trang đăng nhập
           </Link>

@@ -1,17 +1,17 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    isCheckout: sessionStorage.getItem('cartItems') ? true : false,
+  isCheckout: sessionStorage.getItem("cartItems") ? true : false,
 };
 
 export const checkout = createSlice({
-    name: 'checkout',
-    initialState,
-    reducers: {
-        updateCheckout: (state, action) => {
-            state.isCheckout = true;
-        },
-    }
+  name: "checkout",
+  initialState,
+  reducers: {
+    updateCheckout: (state, action) => {
+      state.isCheckout = true;
+    },
+  },
 });
 
 export const { updateCheckout } = checkout.actions;

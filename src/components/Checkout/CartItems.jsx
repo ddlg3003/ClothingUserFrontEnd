@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { Container } from "@mui/system";
 import { Link } from "react-router-dom";
-import { URL_REGEX, COLOR_LIST } from '../../utils/globalVariables';
+import { URL_REGEX, COLOR_LIST } from "../../utils/globalVariables";
 import useStyles from "./styles";
 
 const CartItems = ({ cartItems }) => {
@@ -55,14 +55,24 @@ const CartItems = ({ cartItems }) => {
                 >
                   <TableCell component="th" scope="row">
                     <div>
-                      <Link to={`/products/${item.proName.replace(URL_REGEX, '-').toLowerCase()}-i.${item.product_id}`} className={classes.itemLink}>
+                      <Link
+                        to={`/products/${item.proName
+                          .replace(URL_REGEX, "-")
+                          .toLowerCase()}-i.${item.product_id}`}
+                        className={classes.itemLink}
+                      >
                         <img width={80} src={item.proImage} alt="" />
                       </Link>
                     </div>
                   </TableCell>
                   <TableCell component="th" scope="row">
                     <Stack direction="column">
-                      <Link to={`/products/${item.proName.replace(URL_REGEX, '-').toLowerCase()}-i.${item.product_id}`} className={classes.itemLink}>
+                      <Link
+                        to={`/products/${item.proName
+                          .replace(URL_REGEX, "-")
+                          .toLowerCase()}-i.${item.product_id}`}
+                        className={classes.itemLink}
+                      >
                         <Typography
                           fontSize="18px"
                           maxWidth={200}
@@ -77,7 +87,12 @@ const CartItems = ({ cartItems }) => {
                           maxWidth={200}
                           className={classes.itemName}
                         >
-                          {COLOR_LIST.find(colorItem => colorItem.color === item.color).name}, {item.size}
+                          {
+                            COLOR_LIST.find(
+                              (colorItem) => colorItem.color === item.color
+                            ).name
+                          }
+                          , {item.size}
                         </Typography>
                       </Link>
                     </Stack>
@@ -96,7 +111,6 @@ const CartItems = ({ cartItems }) => {
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
-                    
                     <Typography
                       className={classes.itemName}
                       fontSize={18}

@@ -20,11 +20,17 @@ import React, { useState } from "react";
 import useStyles from "./styles";
 import DeleteAlertDialog from "./DeleteAlertDialog";
 import { useDispatch, useSelector } from "react-redux";
-import { LIMIT, PRODUCT_QUERY_STRING, URL_REGEX, COLOR_LIST } from "../../utils/globalVariables";
+import {
+  LIMIT,
+  PRODUCT_QUERY_STRING,
+  URL_REGEX,
+  COLOR_LIST,
+} from "../../utils/globalVariables";
 import { Link } from "react-router-dom";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
-import { useGetCartQuery, 
-  useIncreaseCartItemMutation, 
+import {
+  useGetCartQuery,
+  useIncreaseCartItemMutation,
   useDecreaseCartItemMutation,
   useDeleteCartItemMutation,
 } from "../../services/cartApis";
@@ -36,7 +42,8 @@ const Cart = () => {
 
   const [openDeleteItemDialog, setOpenDeleteItemDialog] = useState("");
 
-  const { data: dataCartList, isFetching: isFetchingCartList } = useGetCartQuery();
+  const { data: dataCartList, isFetching: isFetchingCartList } =
+    useGetCartQuery();
 
   const [increaseCartItem] = useIncreaseCartItemMutation();
   const [decreaseCartItem] = useDecreaseCartItemMutation();
@@ -59,22 +66,22 @@ const Cart = () => {
   };
 
   const handleIncrease = async ({ color, size, product_id: productId }) => {
-    const product = dataCartList?.find(item => (
-      item?.color === color && 
-      item?.size === size && 
-      item?.product_id === productId));
-      
+    const product = dataCartList?.find(
+      (item) =>
+        item?.color === color &&
+        item?.size === size &&
+        item?.product_id === productId
+    );
+
     if (product.quantity < product.availableQuantity) {
       await increaseCartItem({ color, size, productId }).unwrap();
     }
   };
 
-  const handleDecrease = async ({
-    color,
-    size,
-    product_id: productId,
-    quantity,
-  }, i) => {
+  const handleDecrease = async (
+    { color, size, product_id: productId, quantity },
+    i
+  ) => {
     if (quantity === 1) {
       handleClickDeleteItem(i);
       return;
@@ -85,7 +92,7 @@ const Cart = () => {
   const handleBuyButton = () => {
     if (dataCartList?.length) {
       dispatch(updateCheckout());
-      console.log('hehe')
+      console.log("hehe");
       sessionStorage.setItem("cartItems", JSON.stringify(dataCartList));
     }
   };
@@ -134,7 +141,12 @@ const Cart = () => {
                   <TableRow>
                     <TableCell colSpan={6} align="center">
                       <LocalMallIcon sx={{ fontSize: 70, mt: 2 }} />
-                      <Typography fontWeight="bold" width={80} fontSize="20px" sx={{width:"200px", margin:"auto"}}>
+                      <Typography
+                        fontWeight="bold"
+                        width={80}
+                        fontSize="20px"
+                        sx={{ width: "200px", margin: "auto" }}
+                      >
                         Không có sản phẩm
                       </Typography>
                     </TableCell>
@@ -181,7 +193,12 @@ const Cart = () => {
                               maxWidth={200}
                               className={classes.itemName}
                             >
-                              Màu: {COLOR_LIST.find(item => item.color === data?.color).name}
+                              Màu:{" "}
+                              {
+                                COLOR_LIST.find(
+                                  (item) => item.color === data?.color
+                                ).name
+                              }
                             </Typography>
                             <Typography
                               fontSize="16px"
@@ -278,15 +295,16 @@ const Cart = () => {
             fontWeight="bold"
             fontSize={20}
           >
-            {
-                Intl.NumberFormat("vi-VN", {
-                  style: "currency",
-                  currency: "VND",
-                }).format(isFetchingCartList ? 0 :
-                  dataCartList?.reduce((acc, data) => {
+            {Intl.NumberFormat("vi-VN", {
+              style: "currency",
+              currency: "VND",
+            }).format(
+              isFetchingCartList
+                ? 0
+                : dataCartList?.reduce((acc, data) => {
                     return (acc = acc + data?.price * data?.quantity);
-                }, 0))
-            }
+                  }, 0)
+            )}
           </Typography>
         </div>
         <div>
@@ -297,7 +315,11 @@ const Cart = () => {
             onClick={handleBuyButton}
             component={Link}
             disabled={isFetchingCartList}
-            to= {dataCartList?.length ? "/checkout" : `/products?${PRODUCT_QUERY_STRING[0]}=${1}`}
+            to={
+              dataCartList?.length
+                ? "/checkout"
+                : `/products?${PRODUCT_QUERY_STRING[0]}=${1}`
+            }
             className={classes.checkoutButton}
           >
             Mua Hàng

@@ -1,15 +1,11 @@
 import React, { useState } from "react";
-import {
-    Button, Divider,
-    Grid, Typography
-} from "@mui/material";
+import { Button, Divider, Grid, Typography } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { useChangePasswordMutation } from "../../services/userApis";
 import { PASSWORD_REGEX } from "../../utils/globalVariables";
 import { logout } from "../../features/auth";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
 
 const PasswordChange = (props) => {
   const dispatch = useDispatch();
@@ -48,25 +44,29 @@ const PasswordChange = (props) => {
   const [newPasswordValid, setNewPasswordValid] = useState(true);
   const [confirmNewPasswordValid, setConfirmNewPasswordValid] = useState(true);
   const [changePassword] = useChangePasswordMutation();
-   
+
   const handleSubmit = async () => {
     if (!newPasswordValid || !confirmNewPasswordValid) {
       alert("Không đúng định dạng mật khẩu!");
       return;
     }
 
-    const { error: { originalStatus } } = await changePassword({ 
-      curPassword: currentPassword, newPassword , 
-      rePassword: confirmNewPassword 
+    const {
+      error: { originalStatus },
+    } = await changePassword({
+      curPassword: currentPassword,
+      newPassword,
+      rePassword: confirmNewPassword,
     });
     console.log(originalStatus);
-    
+
     if (originalStatus === 200) {
-      alert("Đổi mật khẩu thành công, vui lòng đăng nhập lại bằng mật khẩu mới!");
+      alert(
+        "Đổi mật khẩu thành công, vui lòng đăng nhập lại bằng mật khẩu mới!"
+      );
       dispatch(logout());
       navigate("/auth");
-    }
-    else {
+    } else {
       alert("Mật khẩu không chính xác!");
     }
   };
@@ -92,7 +92,6 @@ const PasswordChange = (props) => {
           <Grid item xs={8} mb="10px">
             <TextField
               width="1000px"
-              
               variant="outlined"
               value={currentPassword}
               onChange={handleCurrentPasswordChange}
@@ -105,7 +104,6 @@ const PasswordChange = (props) => {
           <Grid item xs={8}>
             <TextField
               type="password"
-              
               variant="outlined"
               value={newPassword}
               onChange={handleNewPasswordChange}
@@ -123,7 +121,6 @@ const PasswordChange = (props) => {
           <Grid item xs={8}>
             <TextField
               type="password"
-              
               variant="outlined"
               value={confirmNewPassword}
               onChange={handleComfirmNewPasswordChange}
