@@ -4,7 +4,7 @@ export default makeStyles((theme) => ({
   slider: {
     paddingTop: "35%",
     background:
-      'url("https://cdn.kapwing.com/video_image-HshWaPrrBw.jpeg") top center / cover no-repeat',
+      'url("https://res.cloudinary.com/dgyqhnavx/image/upload/v1675237804/samples/ecommerce/Clothing%20assets/video_image-b9z3XOwdli_kxpguy.jpg") top center / cover no-repeat',
     position: "relative",
   },
   container: {
