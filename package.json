@@ -35,7 +35,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "prepare": "husky install",
-    "beautify": "prettier --single-quote --trailing-comma all --tab-width 2 --write \"./**/*.{js,jsx,ts,tsx,json}\""
+    "beautify": "lint-staged"
   },
   "eslintConfig": {
     "extends": [
@@ -61,6 +61,6 @@
     "prettier": "^2.8.4"
   },
   "lint-staged": {
-    "\"./**/*.{js,jsx,ts,tsx,json}\"": "prettier --single-quote --trailing-comma all --tab-width 2 --write"
+    "src/**/*.{js,jsx,ts,tsx,json}": "prettier --single-quote --trailing-comma all --tab-width 2 --write"
   }
 }
