@@ -13,8 +13,8 @@ const Category = ({ category }) => {
   return (
     <Grid item>
       <Link
-        to={`/products?${PRODUCT_QUERY_STRING[2]}=${category.id}&${
-          PRODUCT_QUERY_STRING[0]
+        to={`/products?${PRODUCT_QUERY_STRING.cat}=${category.id}&${
+          PRODUCT_QUERY_STRING.page
         }=${1}`}
         className={classes.links}
       >

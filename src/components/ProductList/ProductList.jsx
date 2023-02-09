@@ -38,7 +38,7 @@ const PorductList = () => {
       <div className={classes.moreButton}>
         <Button
           component={Link}
-          to={`/products?${PRODUCT_QUERY_STRING[0]}=${1}`}
+          to={`/products?${PRODUCT_QUERY_STRING.page}=${1}`}
           variant="contained"
           color="black"
           style={{ margin: "20px 0 40px 0", color: "white" }}

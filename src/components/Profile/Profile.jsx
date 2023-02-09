@@ -45,11 +45,11 @@ const Profile = () => {
 
   // Init tab query string for user friendly url
   // Main query tab
-  const tabParamInit = SIDEBAR_STATE.includes(
-    searchParams.get(PROFILE_QUERY_STRING[0])
+  const tabParamInit = Object.values(SIDEBAR_STATE).includes(
+    searchParams.get(PROFILE_QUERY_STRING.tab)
   )
-    ? searchParams.get(PROFILE_QUERY_STRING[0])
-    : SIDEBAR_STATE[0];
+    ? searchParams.get(PROFILE_QUERY_STRING.tab)
+    : SIDEBAR_STATE.profile;
 
   const [tabValue, setTabValue] = useState(false);
 
@@ -67,9 +67,9 @@ const Profile = () => {
   };
 
   const handleNavSelectionChange = (value) => {
-    if (tabValue !== SIDEBAR_STATE[4]) setTabValue(false);
+    if (tabValue !== SIDEBAR_STATE.orders) setTabValue(false);
 
-    setSearchParams({ [PROFILE_QUERY_STRING[0]]: value });
+    setSearchParams({ [PROFILE_QUERY_STRING.tab]: value });
   };
 
   return (
@@ -94,7 +94,7 @@ const Profile = () => {
             />
             <Paper elevation={10}>
               <div className={classes.profileMain}>
-                <div hidden={tabParamInit !== SIDEBAR_STATE[0]}>
+                <div hidden={tabParamInit !== SIDEBAR_STATE.profile}>
                   <ProfileDetails
                     classes={classes}
                     toastData={toastData}
@@ -106,18 +106,18 @@ const Profile = () => {
                     setUserInfo={setUserInfo}
                   />
                 </div>
-                <div hidden={tabParamInit !== SIDEBAR_STATE[1]}>
+                <div hidden={tabParamInit !== SIDEBAR_STATE.address}>
                   <AddressDetails classes={classes} />
                 </div>
 
-                <div hidden={tabParamInit !== SIDEBAR_STATE[2]}>
+                <div hidden={tabParamInit !== SIDEBAR_STATE.password}>
                   <PasswordChange classes={classes} />
                 </div>
 
-                <div hidden={tabParamInit !== SIDEBAR_STATE[3]}>
+                <div hidden={tabParamInit !== SIDEBAR_STATE.favorites}>
                   <Favorites classes={classes} />
                 </div>
-                <div hidden={tabParamInit !== SIDEBAR_STATE[4]}>
+                <div hidden={tabParamInit !== SIDEBAR_STATE.orders}>
                   <Orders
                     tabValue={tabValue}
                     setTabValue={setTabValue}

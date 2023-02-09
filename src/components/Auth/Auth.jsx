@@ -361,7 +361,7 @@ const Auth = () => {
                 <Grid item>
                   <Typography
                     component={Link}
-                    to={`/recovery?${RECOVERY_QUERY_STRING[0]}=${RECOVERY_FLOW[0]}`}
+                    to={`/recovery?${RECOVERY_QUERY_STRING.step}=${RECOVERY_FLOW.email}`}
                     className={classes.text}
                     variant="title1"
                     fontSize="14px"

@@ -28,7 +28,7 @@ const SecondNavbar = ({
       </Button>
       <Button
         component={Link}
-        to={`/products?${PRODUCT_QUERY_STRING[0]}=${1}`}
+        to={`/products?${PRODUCT_QUERY_STRING.page}=${1}`}
         className={classes.navButton}
         color="black"
         size="large"

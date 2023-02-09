@@ -53,17 +53,17 @@ const ForgotPassword = () => {
 
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const queryValue = searchParams.get(RECOVERY_QUERY_STRING[0]);
+  const queryValue = searchParams.get(RECOVERY_QUERY_STRING.step);
 
   useEffect(() => {
-    if (queryValue !== RECOVERY_FLOW[0] && !formData.email) {
-      window.location.href = `/recovery?${RECOVERY_QUERY_STRING[0]}=${RECOVERY_FLOW[0]}`;
+    if (queryValue !== RECOVERY_FLOW.email && !formData.email) {
+      window.location.href = `/recovery?${RECOVERY_QUERY_STRING.step}=${RECOVERY_FLOW.email}`;
     }
   }, [queryValue]);
 
   // Enable button
   useEffect(() => {
-    if (queryValue === RECOVERY_FLOW[0]) {
+    if (queryValue === RECOVERY_FLOW.email) {
       if (formData.email && formData.email.match(EMAIL_REGEX)) {
         setEnableButton(true);
       } else setEnableButton(false);
@@ -83,8 +83,8 @@ const ForgotPassword = () => {
 
   // Reset email if return previous page
   window.onpopstate = () => {
-    if (queryValue === RECOVERY_FLOW[1])
-      window.location.href = `/recovery?${RECOVERY_QUERY_STRING[0]}=${RECOVERY_FLOW[0]}`;
+    if (queryValue === RECOVERY_FLOW.update_password)
+      window.location.href = `/recovery?${RECOVERY_QUERY_STRING.step}=${RECOVERY_FLOW.email}`;
   };
 
   const [openToast, setOpenToast] = useState(false);
@@ -170,7 +170,7 @@ const ForgotPassword = () => {
       }
       // Not error case then jump to next flow
       else {
-        setSearchParams({ [RECOVERY_QUERY_STRING[0]]: RECOVERY_FLOW[1] });
+        setSearchParams({ [RECOVERY_QUERY_STRING.step]: RECOVERY_FLOW.update_password });
 
         setToastData((prev) => ({
           ...prev,
@@ -241,12 +241,12 @@ const ForgotPassword = () => {
         <form
           className={classes.form}
           onSubmit={
-            queryValue === RECOVERY_FLOW[0]
+            queryValue === RECOVERY_FLOW.email
               ? handleSendMail
               : handleResetPassword
           }
         >
-          {queryValue === RECOVERY_FLOW[1] && formData.email ? (
+          {queryValue === RECOVERY_FLOW.update_password && formData.email ? (
             <>
               <Input
                 name="otp"
@@ -293,11 +293,11 @@ const ForgotPassword = () => {
             type="submit"
             color="black"
             loading={
-              queryValue === RECOVERY_FLOW[0] ? isLoading : isLoadingReset
+              queryValue === RECOVERY_FLOW.email ? isLoading : isLoadingReset
             }
             disabled={!enableButton}
           >
-            {queryValue === RECOVERY_FLOW[1] && formData.email
+            {queryValue === RECOVERY_FLOW.update_password && formData.email
               ? "Cập nhật"
               : "Gửi mã"}
           </LoadingButton>

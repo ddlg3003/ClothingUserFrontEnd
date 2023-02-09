@@ -99,7 +99,7 @@ function AddressSelectionDialog(props) {
           autoFocus
           button
           onClick={() => {
-            window.location.href = `/profile?${PROFILE_QUERY_STRING[0]}=${SIDEBAR_STATE[1]}`;
+            window.location.href = `/profile?${PROFILE_QUERY_STRING.tab}=${SIDEBAR_STATE.address}`;
           }}
         >
           <ListItemAvatar>

@@ -85,7 +85,7 @@ const Navbar = () => {
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       navigate(
-        `/products?${PRODUCT_QUERY_STRING[3]}=${query}&${PRODUCT_QUERY_STRING[0]}=1`
+        `/products?${PRODUCT_QUERY_STRING.keyword}=${query}&${PRODUCT_QUERY_STRING.page}=1`
       );
       setNotOpenAutoComplete(true);
       setQuery("");
@@ -356,8 +356,8 @@ const Navbar = () => {
             data.map((category) => (
               <Link
                 key={category.id}
-                to={`/products?${PRODUCT_QUERY_STRING[2]}=${category.id}&${
-                  PRODUCT_QUERY_STRING[0]
+                to={`/products?${PRODUCT_QUERY_STRING.cat}=${category.id}&${
+                  PRODUCT_QUERY_STRING.page
                 }=${1}`}
                 style={{
                   textDecoration: "none",

@@ -195,7 +195,7 @@ const Cart = () => {
                             >
                               Màu:{" "}
                               {
-                                COLOR_LIST.find(
+                                Object.values(COLOR_LIST).find(
                                   (item) => item.color === data?.color
                                 ).name
                               }
@@ -318,7 +318,7 @@ const Cart = () => {
             to={
               dataCartList?.length
                 ? "/checkout"
-                : `/products?${PRODUCT_QUERY_STRING[0]}=${1}`
+                : `/products?${PRODUCT_QUERY_STRING.page}=${1}`
             }
             className={classes.checkoutButton}
           >

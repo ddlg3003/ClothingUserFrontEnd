@@ -113,7 +113,7 @@ const Orders = (props) => {
                                   <Typography color="text.secondary">
                                     Phân loại hàng:{" "}
                                     {
-                                      COLOR_LIST.find(
+                                      Object.values(COLOR_LIST).find(
                                         (item) => item.color === product?.color
                                       ).name
                                     }{" "}
@@ -138,7 +138,7 @@ const Orders = (props) => {
                           </Grid>
 
                           <Grid item>
-                            {order?.ordStatus === ORDER_STATUS[2].status ? (
+                            {order?.ordStatus === ORDER_STATUS.done.status ? (
                               product?.commented ? (
                                 <Button
                                   color="black"
@@ -203,14 +203,14 @@ const Orders = (props) => {
                       </Stack>
                       <Chip
                         color={
-                          ORDER_STATUS.find(
+                          Object.values(ORDER_STATUS).find(
                             (o) => o.status === order?.ordStatus
                           ).color
                         }
                         variant="outlined"
                         icon={<FiberManualRecordIcon />}
                         label={
-                          ORDER_STATUS.find(
+                          Object.values(ORDER_STATUS).find(
                             (o) => o.status === order?.ordStatus
                           ).string
                         }
@@ -237,7 +237,7 @@ const Orders = (props) => {
               <Container sx={{ mt: 0, height: "460px", overflow: "scroll" }}>
                 {allUserOrders
                   ?.filter(
-                    (order) => order.ordStatus === ORDER_STATUS[0].status
+                    (order) => order.ordStatus === ORDER_STATUS.pending.status
                   )
                   .map((order, i) => (
                     <div key={i} style={{ marginTop: i > 0 ? "40px" : "0px" }}>
@@ -280,7 +280,7 @@ const Orders = (props) => {
                                     <Typography color="text.secondary">
                                       Phân loại hàng:{" "}
                                       {
-                                        COLOR_LIST.find(
+                                        Object.values(COLOR_LIST).find(
                                           (item) =>
                                             item.color === product?.color
                                         ).name
@@ -343,14 +343,14 @@ const Orders = (props) => {
                         </Stack>
                         <Chip
                           color={
-                            ORDER_STATUS.find(
+                            Object.values(ORDER_STATUS).find(
                               (o) => o.status === order?.ordStatus
                             ).color
                           }
                           variant="outlined"
                           icon={<FiberManualRecordIcon />}
                           label={
-                            ORDER_STATUS.find(
+                            Object.values(ORDER_STATUS).find(
                               (o) => o.status === order?.ordStatus
                             ).string
                           }
@@ -379,7 +379,7 @@ const Orders = (props) => {
               <Container sx={{ mt: 0, height: "460px", overflow: "scroll" }}>
                 {allUserOrders
                   ?.filter(
-                    (order) => order.ordStatus === ORDER_STATUS[1].status
+                    (order) => order.ordStatus === ORDER_STATUS.delivering.status
                   )
                   .map((order, i) => (
                     <div key={i} style={{ marginTop: i > 0 ? "40px" : "0px" }}>
@@ -422,7 +422,7 @@ const Orders = (props) => {
                                     <Typography color="text.secondary">
                                       Phân loại hàng:{" "}
                                       {
-                                        COLOR_LIST.find(
+                                        Object.values(COLOR_LIST).find(
                                           (item) =>
                                             item.color === product?.color
                                         ).name
@@ -485,14 +485,14 @@ const Orders = (props) => {
                         </Stack>
                         <Chip
                           color={
-                            ORDER_STATUS.find(
+                            Object.values(ORDER_STATUS).find(
                               (o) => o.status === order?.ordStatus
                             ).color
                           }
                           variant="outlined"
                           icon={<FiberManualRecordIcon />}
                           label={
-                            ORDER_STATUS.find(
+                            Object.values(ORDER_STATUS).find(
                               (o) => o.status === order?.ordStatus
                             ).string
                           }
@@ -521,7 +521,7 @@ const Orders = (props) => {
               <Container sx={{ mt: 0, height: "460px", overflow: "scroll" }}>
                 {allUserOrders
                   ?.filter(
-                    (order) => order.ordStatus === ORDER_STATUS[2].status
+                    (order) => order.ordStatus === ORDER_STATUS.done.status
                   )
                   .map((filteredOrder, i) => (
                     <div key={i} style={{ marginTop: i > 0 ? "40px" : "0px" }}>
@@ -565,7 +565,7 @@ const Orders = (props) => {
                                       <Typography color="text.secondary">
                                         Phân loại hàng:{" "}
                                         {
-                                          COLOR_LIST.find(
+                                          Object.values(COLOR_LIST).find(
                                             (item) =>
                                               item.color === product?.color
                                           ).name
@@ -650,14 +650,14 @@ const Orders = (props) => {
                         </Stack>
                         <Chip
                           color={
-                            ORDER_STATUS.find(
+                            Object.values(ORDER_STATUS).find(
                               (o) => o.status === filteredOrder?.ordStatus
                             ).color
                           }
                           variant="outlined"
                           icon={<FiberManualRecordIcon />}
                           label={
-                            ORDER_STATUS.find(
+                            Object.values(ORDER_STATUS).find(
                               (o) => o.status === filteredOrder?.ordStatus
                             ).string
                           }
@@ -687,7 +687,7 @@ const Orders = (props) => {
               <Container sx={{ mt: 0, height: "460px", overflow: "scroll" }}>
                 {allUserOrders
                   ?.filter(
-                    (order) => order.ordStatus === ORDER_STATUS[3].status
+                    (order) => order.ordStatus === ORDER_STATUS.canceled.status
                   )
                   .map((order, i) => (
                     <div key={i} style={{ marginTop: i > 0 ? "40px" : "0px" }}>
@@ -730,7 +730,7 @@ const Orders = (props) => {
                                     <Typography color="text.secondary">
                                       Phân loại hàng:{" "}
                                       {
-                                        COLOR_LIST.find(
+                                        Object.values(COLOR_LIST).find(
                                           (item) =>
                                             item.color === product?.color
                                         ).name
@@ -793,14 +793,14 @@ const Orders = (props) => {
                         </Stack>
                         <Chip
                           color={
-                            ORDER_STATUS.find(
+                            Object.values(ORDER_STATUS).find(
                               (o) => o.status === order?.ordStatus
                             ).color
                           }
                           variant="outlined"
                           icon={<FiberManualRecordIcon />}
                           label={
-                            ORDER_STATUS.find(
+                            Object.values(ORDER_STATUS).find(
                               (o) => o.status === order?.ordStatus
                             ).string
                           }

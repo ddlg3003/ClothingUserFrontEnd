@@ -48,7 +48,7 @@ const SideBar = (props) => {
           >
             <ListItem
               button
-              onClick={() => props.handleNavSelectionChange(SIDEBAR_STATE[0])}
+              onClick={() => props.handleNavSelectionChange(SIDEBAR_STATE.profile)}
             >
               <ListItemIcon>
                 <PersonIcon />
@@ -59,7 +59,7 @@ const SideBar = (props) => {
             <ListItem
               button
               divider
-              onClick={() => props.handleNavSelectionChange(SIDEBAR_STATE[1])}
+              onClick={() => props.handleNavSelectionChange(SIDEBAR_STATE.address)}
             >
               <ListItemIcon>
                 <EditLocationAltIcon />
@@ -68,7 +68,7 @@ const SideBar = (props) => {
             </ListItem>
             <ListItem
               button
-              onClick={() => props.handleNavSelectionChange(SIDEBAR_STATE[2])}
+              onClick={() => props.handleNavSelectionChange(SIDEBAR_STATE.password)}
             >
               <ListItemIcon>
                 <LockIcon />
@@ -79,7 +79,7 @@ const SideBar = (props) => {
 
             <ListItem
               button
-              onClick={() => props.handleNavSelectionChange(SIDEBAR_STATE[3])}
+              onClick={() => props.handleNavSelectionChange(SIDEBAR_STATE.favorites)}
             >
               <ListItemIcon>
                 <FavoriteIcon />
@@ -90,7 +90,7 @@ const SideBar = (props) => {
 
             <ListItem
               button
-              onClick={() => props.handleNavSelectionChange(SIDEBAR_STATE[4])}
+              onClick={() => props.handleNavSelectionChange(SIDEBAR_STATE.orders)}
             >
               <ListItemIcon>
                 <ReceiptIcon />

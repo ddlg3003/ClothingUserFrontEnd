@@ -488,7 +488,7 @@ const ProductDetail = () => {
                   color="#000"
                   fontSize={18}
                   component={Link}
-                  to={`/products?${PRODUCT_QUERY_STRING[0]}=1`}
+                  to={`/products?${PRODUCT_QUERY_STRING.page}=1`}
                 >
                   Xem các sản phẩm khác
                 </Typography>

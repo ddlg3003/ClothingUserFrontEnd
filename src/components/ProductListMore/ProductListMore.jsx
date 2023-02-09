@@ -19,14 +19,14 @@ const ProductListMore = () => {
 
   // Query string validation, isInteger check if the passing arg is an integer or not
   // 3 main query: page, limit, cat
-  const pageNum = parseInt(searchParams.get(PRODUCT_QUERY_STRING[0])); // Get the query of page for validation
+  const pageNum = parseInt(searchParams.get(PRODUCT_QUERY_STRING.page)); // Get the query of page for validation
   const pageInit = Number.isInteger(pageNum) && pageNum > 0 ? pageNum : 1;
 
   // const limitNum = parseInt(searchParams.get(PRODUCT_QUERY_STRING[1])); // Get the query of limit for validation
   // const limitInit = Number.isInteger(limitNum) && limitNum > 0 ? limitNum : LIMIT;
-  const searchInit = searchParams.get(PRODUCT_QUERY_STRING[3]) || "";
+  const searchInit = searchParams.get(PRODUCT_QUERY_STRING.keyword) || "";
 
-  const catNum = parseInt(searchParams.get(PRODUCT_QUERY_STRING[2])); // Get the query of cat for validation
+  const catNum = parseInt(searchParams.get(PRODUCT_QUERY_STRING.cat)); // Get the query of cat for validation
   const catInit = Number.isInteger(catNum) ? catNum : "";
 
   const { data, isFetching } = useGetProductsQuery({
@@ -42,16 +42,16 @@ const ProductListMore = () => {
     let query = {};
 
     // Check if cat query exist
-    if (searchParams.get(PRODUCT_QUERY_STRING[2])) {
-      query = { ...query, [PRODUCT_QUERY_STRING[2]]: catInit };
+    if (searchParams.get(PRODUCT_QUERY_STRING.limit)) {
+      query = { ...query, [PRODUCT_QUERY_STRING.limit]: catInit };
     }
 
     // Check if search query exist
-    if (searchParams.get(PRODUCT_QUERY_STRING[3])) {
-      query = { ...query, [PRODUCT_QUERY_STRING[3]]: searchInit };
+    if (searchParams.get(PRODUCT_QUERY_STRING.keyword)) {
+      query = { ...query, [PRODUCT_QUERY_STRING.keyword]: searchInit };
     }
 
-    query = { ...query, [PRODUCT_QUERY_STRING[0]]: value };
+    query = { ...query, [PRODUCT_QUERY_STRING.page]: value };
 
     setSearchParams(query);
   };
