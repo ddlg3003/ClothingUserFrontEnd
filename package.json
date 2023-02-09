@@ -61,7 +61,6 @@
     "prettier": "^2.8.4"
   },
   "lint-staged": {
-    "\"./**/*.{js,jsx,ts,tsx,json}\"": "prettier --single-quote --trailing-comma all --tab-width 2 --write",
-    "*.{js,css,md}": "prettier --write"
+    "\"./**/*.{js,jsx,ts,tsx,json}\"": "prettier --single-quote --trailing-comma all --tab-width 2 --write"
   }
 }
