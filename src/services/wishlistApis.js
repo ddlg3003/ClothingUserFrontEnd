@@ -1,17 +1,17 @@
-import { clothing, onQueryStartedHandler } from "./clothingBaseApis";
+import { clothing, onQueryStartedHandler } from './clothingBaseApis';
 
 const wishlist = clothing.injectEndpoints({
   endpoints: (builder) => ({
     getUserWishlist: builder.query({
       query: () => `user/wishlist/getAll`,
-      providesTags: ["Wishlist"],
+      providesTags: ['Wishlist'],
     }),
     toggleWishlist: builder.mutation({
       query: (proId) => ({
         url: `user/wishlist/toggle/${proId}`,
-        method: "POST",
+        method: 'POST',
       }),
-      invalidatesTags: ["Wishlist"],
+      invalidatesTags: ['Wishlist'],
     }),
   }),
   overrideExisting: false,

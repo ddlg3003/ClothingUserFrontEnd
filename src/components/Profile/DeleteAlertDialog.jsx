@@ -1,9 +1,9 @@
-import React from "react";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogTitle from "@mui/material/DialogTitle";
-import { useDeleteAddressMutation } from "../../services/userApis";
+import React from 'react';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogTitle from '@mui/material/DialogTitle';
+import { useDeleteAddressMutation } from '../../services/userApis';
 
 const DeleteAlertDialog = (props) => {
   const { onClose, open, id } = props;
@@ -27,7 +27,7 @@ const DeleteAlertDialog = (props) => {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Bạn chắc chắn muốn xóa địa chỉ này?"}
+          {'Bạn chắc chắn muốn xóa địa chỉ này?'}
         </DialogTitle>
         <DialogActions>
           <Button
@@ -35,7 +35,7 @@ const DeleteAlertDialog = (props) => {
             color="white"
             variant="contained"
             component="label"
-            style={{ color: "black" }}
+            style={{ color: 'black' }}
             onClick={handleClose}
           >
             Trở lại
@@ -45,7 +45,7 @@ const DeleteAlertDialog = (props) => {
             color="black"
             variant="contained"
             component="label"
-            style={{ color: "white" }}
+            style={{ color: 'white' }}
             onClick={handleConfirmClick}
           >
             Xóa

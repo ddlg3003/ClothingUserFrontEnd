@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   BLACK_LOGO,
   LIMIT,
   PRODUCT_QUERY_STRING,
-} from "../../utils/globalVariables";
+} from '../../utils/globalVariables';
 import {
   AppBar,
   Toolbar,
@@ -15,28 +15,28 @@ import {
   MenuItem,
   Avatar,
   Badge,
-} from "@mui/material";
-import { TextField, InputAdornment } from "@mui/material";
+} from '@mui/material';
+import { TextField, InputAdornment } from '@mui/material';
 import {
   Search as SearchIcon,
   AccountCircle,
   Menu as MenuIcon,
-} from "@mui/icons-material";
-import LoginIcon from "@mui/icons-material/Login";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import SecondNavbar from "../SecondNavbar/SecondNavbar";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { useGetCategoriesQuery } from "../../services/catApis";
-import { useGetCartQuery } from "../../services/cartApis";
+} from '@mui/icons-material';
+import LoginIcon from '@mui/icons-material/Login';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import SecondNavbar from '../SecondNavbar/SecondNavbar';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { useGetCategoriesQuery } from '../../services/catApis';
+import { useGetCartQuery } from '../../services/cartApis';
 // import { useGetProductsQuery } from '../../services/productApis';
-import AutoCompleteSearch from "./AutoCompleteSearch";
-import { logout } from "../../features/auth";
-import decode from "jwt-decode";
-import { useDebounce } from "../../utils/helperFunction";
-import useStyles from "./styles";
-import { useGetProfileQuery } from "../../services/userApis";
-import { useRef } from "react";
+import AutoCompleteSearch from './AutoCompleteSearch';
+import { logout } from '../../features/auth';
+import decode from 'jwt-decode';
+import { useDebounce } from '../../utils/helperFunction';
+import useStyles from './styles';
+import { useGetProfileQuery } from '../../services/userApis';
+import { useRef } from 'react';
 
 const Navbar = () => {
   const classes = useStyles();
@@ -54,7 +54,7 @@ const Navbar = () => {
     useGetCartQuery({ skip: !isAuthenticated });
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
 
     if (token) {
       const decodedToken = decode(token);
@@ -70,12 +70,12 @@ const Navbar = () => {
   let currentAuthHovering = false;
 
   const logo = BLACK_LOGO;
-  const isMobile = useMediaQuery("(max-width: 800px)");
+  const isMobile = useMediaQuery('(max-width: 800px)');
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [anchorElAuth, setAnchorElAuth] = useState(null);
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const [notOpenAutoComplete, setNotOpenAutoComplete] = useState(true);
 
   // Debounce search query
@@ -83,12 +83,12 @@ const Navbar = () => {
 
   // Handle search
   const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
+    if (event.key === 'Enter') {
       navigate(
-        `/products?${PRODUCT_QUERY_STRING.keyword}=${query}&${PRODUCT_QUERY_STRING.page}=1`
+        `/products?${PRODUCT_QUERY_STRING.keyword}=${query}&${PRODUCT_QUERY_STRING.page}=1`,
       );
       setNotOpenAutoComplete(true);
-      setQuery("");
+      setQuery('');
     }
   };
 
@@ -102,16 +102,16 @@ const Navbar = () => {
         setNotOpenAutoComplete(true);
       }
     };
-    document.addEventListener("click", handleClickOutside, true);
+    document.addEventListener('click', handleClickOutside, true);
     return () => {
-      document.removeEventListener("click", handleClickOutside, true);
+      document.removeEventListener('click', handleClickOutside, true);
     };
   }, [setNotOpenAutoComplete]);
 
   const handleSearchChange = (e) => {
     setQuery(e.target.value);
 
-    if (e.target.value === "") {
+    if (e.target.value === '') {
       setNotOpenAutoComplete(true);
     } else {
       setNotOpenAutoComplete(false);
@@ -135,7 +135,7 @@ const Navbar = () => {
   const handleLogout = () => {
     setAnchorElAuth(null);
 
-    window.location.href = "http://localhost:3000/auth";
+    window.location.href = 'http://localhost:3000/auth';
 
     dispatch(logout());
   };
@@ -195,7 +195,7 @@ const Navbar = () => {
             <TextField
               onKeyPress={handleKeyPress}
               value={query}
-              sx={{ width: "100%" }}
+              sx={{ width: '100%' }}
               onChange={handleSearchChange}
               variant="standard"
               InputProps={{
@@ -244,7 +244,7 @@ const Navbar = () => {
                 >
                   <Avatar
                     sx={{ width: 32, height: 32 }}
-                    src={user?.avatar ? user?.avatar : ""}
+                    src={user?.avatar ? user?.avatar : ''}
                   />
                   {!isMobile && <>&nbsp; {user?.username}</>}
                 </Button>
@@ -257,11 +257,11 @@ const Navbar = () => {
                   MenuListProps={{
                     onMouseEnter: handleHoverAuth,
                     onMouseLeave: handleCloseHoverAuth,
-                    style: { pointerEvents: "auto" },
+                    style: { pointerEvents: 'auto' },
                   }}
                   anchorOrigin={{
-                    horizontal: "left",
-                    vertical: "bottom",
+                    horizontal: 'left',
+                    vertical: 'bottom',
                   }}
                   PopoverClasses={{
                     root: classes.popOverRoot,
@@ -275,8 +275,8 @@ const Navbar = () => {
                   <Link
                     to="/profile"
                     style={{
-                      textDecoration: "none",
-                      color: "black",
+                      textDecoration: 'none',
+                      color: 'black',
                     }}
                   >
                     <MenuItem onClick={handleCloseAuth}>Trang cá nhân</MenuItem>
@@ -284,8 +284,8 @@ const Navbar = () => {
                   <Link
                     to="/"
                     style={{
-                      textDecoration: "none",
-                      color: "black",
+                      textDecoration: 'none',
+                      color: 'black',
                     }}
                   >
                     <MenuItem onClick={handleLogout}>Đăng xuất</MenuItem>
@@ -318,7 +318,7 @@ const Navbar = () => {
               classes={{ paper: classes.drawerPaper }}
             >
               <Link to="/" className={classes.responsiveLogo}>
-                <img style={{ margin: "20px 0" }} src={logo} />
+                <img style={{ margin: '20px 0' }} src={logo} />
               </Link>
               <SecondNavbar
                 handleClick={handleClick}
@@ -338,9 +338,9 @@ const Navbar = () => {
           MenuListProps={{
             onMouseEnter: handleHover,
             onMouseLeave: handleCloseHover,
-            style: { pointerEvents: "auto" },
+            style: { pointerEvents: 'auto' },
           }}
-          anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
+          anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
           PopoverClasses={{
             root: classes.popOverRoot,
           }}
@@ -360,8 +360,8 @@ const Navbar = () => {
                   PRODUCT_QUERY_STRING.page
                 }=${1}`}
                 style={{
-                  textDecoration: "none",
-                  color: "black",
+                  textDecoration: 'none',
+                  color: 'black',
                 }}
               >
                 <MenuItem onClick={handleClose}>{category.name}</MenuItem>

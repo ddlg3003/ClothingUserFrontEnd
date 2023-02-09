@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Container,
   Paper,
@@ -6,7 +6,7 @@ import {
   Button,
   Divider,
   Grid,
-} from "@mui/material";
+} from '@mui/material';
 import {
   BLACK_LOGO,
   EMAIL_REGEX,
@@ -15,18 +15,18 @@ import {
   USERNAME_REGEX,
   RECOVERY_FLOW,
   RECOVERY_QUERY_STRING,
-} from "../../utils/globalVariables";
-import GoogleIcon from "@mui/icons-material/Google";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import Input from "../Input/Input";
-import Alert from "../Alert/Alert";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setUser } from "../../features/auth";
-import { getUserLogin, signup } from "../../utils/auth";
-import LoginIcon from "@mui/icons-material/Login";
-import { LoadingButton } from "@mui/lab";
-import useStyles from "./styles";
+} from '../../utils/globalVariables';
+import GoogleIcon from '@mui/icons-material/Google';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import Input from '../Input/Input';
+import Alert from '../Alert/Alert';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../features/auth';
+import { getUserLogin, signup } from '../../utils/auth';
+import LoginIcon from '@mui/icons-material/Login';
+import { LoadingButton } from '@mui/lab';
+import useStyles from './styles';
 
 const Auth = () => {
   const classes = useStyles();
@@ -34,18 +34,18 @@ const Auth = () => {
   const navigate = useNavigate();
 
   const initialFormState = {
-    name: "",
-    email: "",
-    phone: "",
-    username: "",
-    password: "",
-    retypePassword: "",
+    name: '',
+    email: '',
+    phone: '',
+    username: '',
+    password: '',
+    retypePassword: '',
   };
   const [openToast, setOpenToast] = useState(false);
   const [toastData, setToastData] = useState({
-    color: "",
-    severity: "",
-    message: "",
+    color: '',
+    severity: '',
+    message: '',
   });
 
   const [formData, setFormData] = useState(initialFormState);
@@ -54,23 +54,23 @@ const Auth = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [invalidEmail, setInvalidEmail] = useState({
     error: false,
-    helperText: "",
+    helperText: '',
   });
   const [invalidUsername, setInvalidUsername] = useState({
     error: false,
-    helperText: "",
+    helperText: '',
   });
   const [invalidPhone, setInvalidPhone] = useState({
     error: false,
-    helperText: "",
+    helperText: '',
   });
   const [invalidPassword, setInvalidPassword] = useState({
     error: false,
-    helperText: "",
+    helperText: '',
   });
   const [invalidRetypePassword, setInvalidRetypePassword] = useState({
     error: false,
-    helperText: "",
+    helperText: '',
   });
 
   const [loading, setLoading] = useState(false);
@@ -107,7 +107,7 @@ const Auth = () => {
   }, [formData, isRegister]);
 
   const handleCloseToast = (event, reason) => {
-    if (reason === "clickaway") {
+    if (reason === 'clickaway') {
       return;
     }
 
@@ -119,15 +119,15 @@ const Auth = () => {
   const handleInvalid = (e, REGEX, setInvalidData, helperText) => {
     if (isRegister) {
       if (e.target.value.match(REGEX)) {
-        setInvalidData(prev => ({ ...prev, error: false, helperText: "" }));
+        setInvalidData((prev) => ({ ...prev, error: false, helperText: '' }));
       } else {
-        setInvalidData(prev => ({ ...prev, error: true, helperText }));
+        setInvalidData((prev) => ({ ...prev, error: true, helperText }));
       }
     } else {
       if (e.target.value) {
-        setInvalidData(prev => ({ ...prev, error: false, helperText: "" }));
+        setInvalidData((prev) => ({ ...prev, error: false, helperText: '' }));
       } else {
-        setInvalidData(prev => ({ ...prev, error: true, helperText }));
+        setInvalidData((prev) => ({ ...prev, error: true, helperText }));
       }
     }
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -138,7 +138,7 @@ const Auth = () => {
       e,
       EMAIL_REGEX,
       setInvalidEmail,
-      "Không đúng dịnh dạng email"
+      'Không đúng dịnh dạng email',
     );
   };
 
@@ -147,34 +147,38 @@ const Auth = () => {
       e,
       PHONE_REGEX,
       setInvalidPhone,
-      "Không đúng định dạng sđt"
+      'Không đúng định dạng sđt',
     );
   };
 
   const handleUsernameChange = (e) => {
     const helperText = isRegister
-      ? "Username cần có 6 kí tự gổm chữ và số"
-      : "Vui lòng điền vào trường này";
+      ? 'Username cần có 6 kí tự gổm chữ và số'
+      : 'Vui lòng điền vào trường này';
 
     return handleInvalid(e, USERNAME_REGEX, setInvalidUsername, helperText);
   };
 
   const handlePasswordChange = (e) => {
     const helperText = isRegister
-      ? "Có 8-15 ký tự, chữ số, ký tự đặc biệt & in hoa"
-      : "Vui lòng điền vào trường này";
+      ? 'Có 8-15 ký tự, chữ số, ký tự đặc biệt & in hoa'
+      : 'Vui lòng điền vào trường này';
 
     return handleInvalid(e, PASSWORD_REGEX, setInvalidPassword, helperText);
   };
 
   const handleRetypePasswordChange = (e) => {
-    if (formData.password !== "" && e.target.value === formData.password) {
-      setInvalidRetypePassword(prev => ({ ...prev, error: false, helperText: "" }));
+    if (formData.password !== '' && e.target.value === formData.password) {
+      setInvalidRetypePassword((prev) => ({
+        ...prev,
+        error: false,
+        helperText: '',
+      }));
     } else {
-      setInvalidRetypePassword(prev => ({
-        ...prev, 
+      setInvalidRetypePassword((prev) => ({
+        ...prev,
         error: true,
-        helperText: "Mật khẩu nhập lại không khớp",
+        helperText: 'Mật khẩu nhập lại không khớp',
       }));
     }
 
@@ -196,32 +200,32 @@ const Auth = () => {
       } else {
         setToastData((prev) => ({
           ...prev,
-          color: "error",
-          severity: "error",
-          message: "SAI THÔNG TIN ĐĂNG NHẬP",
+          color: 'error',
+          severity: 'error',
+          message: 'SAI THÔNG TIN ĐĂNG NHẬP',
         }));
       }
     } else {
       const axiosRes = await signup({
         ...formData,
         name: formData.username,
-        roles: ["USER"],
+        roles: ['USER'],
       });
 
       if (axiosRes.status === 200) {
         setToastData((prev) => ({
           ...prev,
-          color: "success",
-          severity: "success",
-          message: "ĐĂNG KÝ THÀNH CÔNG",
+          color: 'success',
+          severity: 'success',
+          message: 'ĐĂNG KÝ THÀNH CÔNG',
         }));
         setIsRegister((prev) => !prev);
       } else {
         // console.log(axiosRes);
         setToastData((prev) => ({
           ...prev,
-          color: "error",
-          severity: "error",
+          color: 'error',
+          severity: 'error',
           message: axiosRes.response.data.message,
         }));
       }
@@ -243,12 +247,24 @@ const Auth = () => {
         passwordInput.current ||
         retypePasswordInput.current
       ) {
-        setInvalidPhone(prev => ({ ...prev, error: false, helperText: "" }));
-        setInvalidEmail(prev => ({ ...prev, error: false, helperText: "" }));
-        setInvalidUsername(prev => ({ ...prev, error: false, helperText: "" }));
-        setInvalidPassword(prev => ({ ...prev, error: false, helperText: "" }));
-        setInvalidRetypePassword(prev => ({ ...prev, error: false, helperText: "" }));
-        setFormData(prev => ({ ...prev, ...initialFormState }));
+        setInvalidPhone((prev) => ({ ...prev, error: false, helperText: '' }));
+        setInvalidEmail((prev) => ({ ...prev, error: false, helperText: '' }));
+        setInvalidUsername((prev) => ({
+          ...prev,
+          error: false,
+          helperText: '',
+        }));
+        setInvalidPassword((prev) => ({
+          ...prev,
+          error: false,
+          helperText: '',
+        }));
+        setInvalidRetypePassword((prev) => ({
+          ...prev,
+          error: false,
+          helperText: '',
+        }));
+        setFormData((prev) => ({ ...prev, ...initialFormState }));
         phoneInput.current.value = null;
         emailInput.current.value = null;
         usernameInput.current.value = null;
@@ -257,9 +273,17 @@ const Auth = () => {
       }
     } else {
       if (usernameInput.current || passwordInput.current) {
-        setInvalidUsername(prev => ({ ...prev, error: false, helperText: "" }));
-        setInvalidPassword(prev => ({ ...prev, error: false, helperText: "" }));
-        setFormData(prev => ({ ...prev, ...initialFormState }));
+        setInvalidUsername((prev) => ({
+          ...prev,
+          error: false,
+          helperText: '',
+        }));
+        setInvalidPassword((prev) => ({
+          ...prev,
+          error: false,
+          helperText: '',
+        }));
+        setFormData((prev) => ({ ...prev, ...initialFormState }));
         usernameInput.current.value = null;
         passwordInput.current.value = null;
       }
@@ -270,7 +294,7 @@ const Auth = () => {
     <Container>
       <Paper variant="outlined" className={classes.paper}>
         <Typography variant="h4" marginBottom="20px">
-          {isRegister ? "Đăng ký" : "Đăng nhập"}
+          {isRegister ? 'Đăng ký' : 'Đăng nhập'}
         </Typography>
         <Link to="/">
           <img src={logo} />
@@ -309,7 +333,7 @@ const Auth = () => {
             name="password"
             label="Mật khẩu"
             handleChange={handlePasswordChange}
-            type={showPassword ? "text" : "password"}
+            type={showPassword ? 'text' : 'password'}
             handleShowPassword={handleShowPassword}
             helperText={invalidPassword.helperText}
             error={invalidPassword.error}
@@ -320,7 +344,7 @@ const Auth = () => {
               name="retypePassword"
               label="Nhập lại mật khẩu"
               handleChange={handleRetypePasswordChange}
-              type={showPassword ? "text" : "password"}
+              type={showPassword ? 'text' : 'password'}
               helperText={invalidRetypePassword.helperText}
               error={invalidRetypePassword.error}
               handleShowPassword={handleShowPassword}
@@ -330,7 +354,7 @@ const Auth = () => {
           <LoadingButton
             variant="contained"
             color="black"
-            style={{ color: "white", padding: "16px", width: "100%" }}
+            style={{ color: 'white', padding: '16px', width: '100%' }}
             size="medium"
             loadingPosition="end"
             endIcon={<LoginIcon />}
@@ -338,7 +362,7 @@ const Auth = () => {
             disabled={!enableButton}
             loading={loading}
           >
-            {isRegister ? "Đăng ký" : "Đăng nhập"}
+            {isRegister ? 'Đăng ký' : 'Đăng nhập'}
           </LoadingButton>
           {!isRegister ? (
             <>

@@ -7,9 +7,9 @@ import {
   ListItemText,
   Rating,
   Typography,
-} from "@mui/material";
-import React from "react";
-import useStyles from "./styles";
+} from '@mui/material';
+import React from 'react';
+import useStyles from './styles';
 
 const Comment = ({ keyname, comment }) => {
   const classes = useStyles();
@@ -39,7 +39,7 @@ const Comment = ({ keyname, comment }) => {
             </React.Fragment>
           }
         />
-        <div style={{ marginTop: "6px" }}>
+        <div style={{ marginTop: '6px' }}>
           <Rating
             readOnly
             value={comment?.comRating}

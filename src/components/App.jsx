@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { CssBaseline } from "@mui/material";
-import { Route, Routes, Navigate } from "react-router-dom";
-import NavAndFooter from "./NavAndFooter";
-import NotNavAndFooter from "./NotNavAndFooter";
-import Home from "./Home/Home";
-import ProductDetail from "./ProductDetail/ProductDetail";
-import ProductListMore from "./ProductListMore/ProductListMore";
-import Profile from "./Profile/Profile";
-import Cart from "./Cart/Cart";
-import Auth from "./Auth/Auth";
-import Checkout from "./Checkout/Checkout";
-import ForgotPassword from "./ForgotPassword/ForgotPassword";
-import { useSelector } from "react-redux";
-import useStyles from "./styles";
+import React, { useState, useEffect } from 'react';
+import { CssBaseline } from '@mui/material';
+import { Route, Routes, Navigate } from 'react-router-dom';
+import NavAndFooter from './NavAndFooter';
+import NotNavAndFooter from './NotNavAndFooter';
+import Home from './Home/Home';
+import ProductDetail from './ProductDetail/ProductDetail';
+import ProductListMore from './ProductListMore/ProductListMore';
+import Profile from './Profile/Profile';
+import Cart from './Cart/Cart';
+import Auth from './Auth/Auth';
+import Checkout from './Checkout/Checkout';
+import ForgotPassword from './ForgotPassword/ForgotPassword';
+import { useSelector } from 'react-redux';
+import useStyles from './styles';
 
 const App = () => {
   const classes = useStyles();

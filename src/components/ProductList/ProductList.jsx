@@ -1,18 +1,18 @@
-import React from "react";
-import { Typography, Button, CircularProgress, Box } from "@mui/material";
-import { Link } from "react-router-dom";
-import { useGetProductsQuery } from "../../services/productApis";
-import Products from "../Products/Products";
-import { LIMIT, PRODUCT_QUERY_STRING } from "../../utils/globalVariables";
-import RecommendList from "../RecommendList/RecommendList";
-import useStyles from "./styles";
+import React from 'react';
+import { Typography, Button, CircularProgress, Box } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { useGetProductsQuery } from '../../services/productApis';
+import Products from '../Products/Products';
+import { LIMIT, PRODUCT_QUERY_STRING } from '../../utils/globalVariables';
+import RecommendList from '../RecommendList/RecommendList';
+import useStyles from './styles';
 
 const PorductList = () => {
   const classes = useStyles();
   const { data, isFetching } = useGetProductsQuery({
     pageNumber: 1,
     pageSize: 8,
-    cat: "",
+    cat: '',
   });
 
   return (
@@ -41,7 +41,7 @@ const PorductList = () => {
           to={`/products?${PRODUCT_QUERY_STRING.page}=${1}`}
           variant="contained"
           color="black"
-          style={{ margin: "20px 0 40px 0", color: "white" }}
+          style={{ margin: '20px 0 40px 0', color: 'white' }}
           size="large"
         >
           Xem thêm

@@ -4,23 +4,23 @@ import {
   Container,
   Paper,
   Typography,
-} from "@mui/material";
-import dayjs from "dayjs";
-import React, { useEffect, useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
-import { useGetAllOrdersQuery } from "../../services/orderApis";
+} from '@mui/material';
+import dayjs from 'dayjs';
+import React, { useEffect, useState } from 'react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useGetAllOrdersQuery } from '../../services/orderApis';
 import {
   PROFILE_QUERY_STRING,
   SIDEBAR_STATE,
-} from "../../utils/globalVariables";
-import AddressDetails from "./AddressDetails";
-import Favorites from "./Favorites";
-import Orders from "./Orders";
-import PasswordChange from "./PasswordChange";
-import ProfileDetails from "./ProfileDetails";
-import SideBar from "./SideBar";
-import Alert from "../Alert/Alert";
-import useStyles from "./styles";
+} from '../../utils/globalVariables';
+import AddressDetails from './AddressDetails';
+import Favorites from './Favorites';
+import Orders from './Orders';
+import PasswordChange from './PasswordChange';
+import ProfileDetails from './ProfileDetails';
+import SideBar from './SideBar';
+import Alert from '../Alert/Alert';
+import useStyles from './styles';
 
 const Profile = () => {
   const classes = useStyles();
@@ -30,13 +30,13 @@ const Profile = () => {
   // TOAST
   const [openToast, setOpenToast] = useState(false);
   const [toastData, setToastData] = useState({
-    color: "",
-    severity: "",
-    message: "",
+    color: '',
+    severity: '',
+    message: '',
   });
 
   const handleCloseToast = (event, reason) => {
-    if (reason === "clickaway") {
+    if (reason === 'clickaway') {
       return;
     }
 
@@ -46,7 +46,7 @@ const Profile = () => {
   // Init tab query string for user friendly url
   // Main query tab
   const tabParamInit = Object.values(SIDEBAR_STATE).includes(
-    searchParams.get(PROFILE_QUERY_STRING.tab)
+    searchParams.get(PROFILE_QUERY_STRING.tab),
   )
     ? searchParams.get(PROFILE_QUERY_STRING.tab)
     : SIDEBAR_STATE.profile;
@@ -54,16 +54,16 @@ const Profile = () => {
   const [tabValue, setTabValue] = useState(false);
 
   const [userInfo, setUserInfo] = useState({
-    fullname: "",
-    phone: "",
-    gender: "",
+    fullname: '',
+    phone: '',
+    gender: '',
   });
 
   const [orders, setOrders] = useState();
 
   window.onpopstate = () => {
-    if (window.location.href === "/profile?tab=orders")
-      window.location.href = "/";
+    if (window.location.href === '/profile?tab=orders')
+      window.location.href = '/';
   };
 
   const handleNavSelectionChange = (value) => {
@@ -84,7 +84,7 @@ const Profile = () => {
           paddingTop="60px"
         >
           TRANG CÁ NHÂN
-        </Typography>{" "}
+        </Typography>{' '}
         <Container maxWidth="lg">
           <div className={classes.root}>
             <SideBar

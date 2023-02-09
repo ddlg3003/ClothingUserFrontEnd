@@ -1,11 +1,11 @@
-import { createTheme } from "@mui/material";
+import { createTheme } from '@mui/material';
 
 const theme = createTheme({
   components: {
     MuiAppBar: {
       styleOverrides: {
         colorPrimary: {
-          backgroundColor: "white",
+          backgroundColor: 'white',
           // boxShadow: '1px',
         },
       },
@@ -13,13 +13,13 @@ const theme = createTheme({
   },
   palette: {
     black: {
-      main: "#000",
+      main: '#000',
     },
     white: {
-      main: "#fff",
+      main: '#fff',
     },
     blue: {
-      main: "#2596be",
+      main: '#2596be',
     },
   },
   typography: {

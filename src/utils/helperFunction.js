@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 export function useDebounce(value, delay) {
   const [debouncedValue, setDebouncedValue] = useState(value);
@@ -23,9 +23,9 @@ export function isValidImage(img) {
 
   if (fileSize <= 10) {
     if (
-      fileType === "image/jpeg" ||
-      fileType === "image/png" ||
-      fileType === "image/jpg"
+      fileType === 'image/jpeg' ||
+      fileType === 'image/png' ||
+      fileType === 'image/jpg'
     )
       return true;
   }

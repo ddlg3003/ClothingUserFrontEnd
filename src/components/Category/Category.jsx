@@ -1,11 +1,11 @@
-import React from "react";
-import { Grid, Typography } from "@mui/material";
-import useStyles from "./styles";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Grid, Typography } from '@mui/material';
+import useStyles from './styles';
+import { Link } from 'react-router-dom';
 import {
   PRODUCT_QUERY_STRING,
   CATEGORY_IMG,
-} from "../../utils/globalVariables";
+} from '../../utils/globalVariables';
 
 const Category = ({ category }) => {
   const classes = useStyles();

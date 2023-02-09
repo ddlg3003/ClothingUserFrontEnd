@@ -1,5 +1,5 @@
-import { BASE_API_URL } from "./globalVariables";
-import axios from "axios";
+import { BASE_API_URL } from './globalVariables';
+import axios from 'axios';
 
 const api = axios.create({
   baseURL: BASE_API_URL,
@@ -7,7 +7,7 @@ const api = axios.create({
 
 export const getUserLogin = async (formData) => {
   try {
-    const { data, status } = await api.post("/login", formData);
+    const { data, status } = await api.post('/login', formData);
 
     return { data, status };
   } catch (error) {
@@ -17,7 +17,7 @@ export const getUserLogin = async (formData) => {
 
 export const signup = async (formData) => {
   try {
-    const response = await api.post("/register", formData);
+    const response = await api.post('/register', formData);
 
     return response;
   } catch (error) {

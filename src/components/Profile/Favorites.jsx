@@ -1,4 +1,4 @@
-import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 import {
   Box,
@@ -8,15 +8,15 @@ import {
   Grid,
   Typography,
   CircularProgress,
-} from "@mui/material";
+} from '@mui/material';
 import {
   useGetUserWishlistQuery,
   useToggleWishlistMutation,
-} from "../../services/wishlistApis";
-import { URL_REGEX } from "../../utils/globalVariables";
-import { Link } from "react-router-dom";
+} from '../../services/wishlistApis';
+import { URL_REGEX } from '../../utils/globalVariables';
+import { Link } from 'react-router-dom';
 
-import React from "react";
+import React from 'react';
 
 const Favorites = (props) => {
   const { data, isFetching } = useGetUserWishlistQuery();
@@ -29,7 +29,7 @@ const Favorites = (props) => {
 
   return (
     <>
-      <Box sx={{ display: "flex", mb: 1 }}>
+      <Box sx={{ display: 'flex', mb: 1 }}>
         <Box sx={{ flexGrow: 1 }} className={props.classes.title}>
           Sản phẩm yêu thích
         </Box>
@@ -44,8 +44,8 @@ const Favorites = (props) => {
         <Container
           sx={{
             mt: 3,
-            height: "460px",
-            overflow: data?.length > 2 ? "scroll" : "none",
+            height: '460px',
+            overflow: data?.length > 2 ? 'scroll' : 'none',
           }}
         >
           {data?.map((favorite, i) => (
@@ -55,7 +55,7 @@ const Favorites = (props) => {
                   <Grid item xs container direction="column" spacing={2}>
                     <Link
                       to={`/products/${favorite.name
-                        .replace(URL_REGEX, "-")
+                        .replace(URL_REGEX, '-')
                         .toLowerCase()}-i.${favorite.productId}`}
                       className={props.classes.favoriteItems}
                     >
@@ -76,8 +76,8 @@ const Favorites = (props) => {
                                 gutterBottom
                                 fontSize={18}
                                 sx={{
-                                  textDecoration: "none",
-                                  color: "black!important",
+                                  textDecoration: 'none',
+                                  color: 'black!important',
                                 }}
                               >
                                 {favorite?.name}
@@ -87,9 +87,9 @@ const Favorites = (props) => {
                                 fontWeight="bold"
                                 fontSize={20}
                               >
-                                {Intl.NumberFormat("vi-VN", {
-                                  style: "currency",
-                                  currency: "VND",
+                                {Intl.NumberFormat('vi-VN', {
+                                  style: 'currency',
+                                  currency: 'VND',
                                 }).format(favorite?.price)}
                               </Typography>
                             </Grid>
@@ -105,13 +105,13 @@ const Favorites = (props) => {
                         color="black"
                         variant="contained"
                         component="label"
-                        style={{ color: "white" }}
+                        style={{ color: 'white' }}
                         startIcon={<DeleteIcon />}
                         onClick={() => handleDeleteFav(favorite?.productId)}
                       >
                         Bỏ thích
                       </Button>
-                    </Box>{" "}
+                    </Box>{' '}
                   </Grid>
                 </Grid>
               </Box>

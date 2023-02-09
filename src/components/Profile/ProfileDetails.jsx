@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import React, { useEffect, useState } from 'react';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import {
   Box,
   Button,
@@ -12,17 +12,17 @@ import {
   Radio,
   RadioGroup,
   Typography,
-} from "@mui/material";
-import Stack from "@mui/material/Stack";
-import TextField from "@mui/material/TextField";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { useChangeProfileMutation } from "../../services/userApis";
-import { isValidImage } from "../../utils/helperFunction";
-import { useUploadAvatarMutation } from "../../services/userApis";
-import dayjs from "dayjs";
-import { validateEmail, validatePhoneNumber } from "../../utils/validateString";
-import { useGetProfileQuery } from "../../services/userApis";
-import { LoadingButton } from "@mui/lab";
+} from '@mui/material';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { useChangeProfileMutation } from '../../services/userApis';
+import { isValidImage } from '../../utils/helperFunction';
+import { useUploadAvatarMutation } from '../../services/userApis';
+import dayjs from 'dayjs';
+import { validateEmail, validatePhoneNumber } from '../../utils/validateString';
+import { useGetProfileQuery } from '../../services/userApis';
+import { LoadingButton } from '@mui/lab';
 
 const ProfileDetails = (props) => {
   const [changeProfile] = useChangeProfileMutation();
@@ -32,8 +32,8 @@ const ProfileDetails = (props) => {
   console.log(userInformation);
   // image upload
   const [fileContent, setFileContent] = useState({
-    content: "",
-    file: "",
+    content: '',
+    file: '',
   });
 
   const [uploadAvatar, { isLoading: isUploading }] = useUploadAvatarMutation();
@@ -51,14 +51,14 @@ const ProfileDetails = (props) => {
       props.setOpenToast(true);
       props.setToastData((toast) => ({
         ...toast,
-        color: "error",
-        severity: "error",
-        message: "Vui lòng chọn định dạng JPEG/JPG/PNG và nhỏ hơn 10MB",
+        color: 'error',
+        severity: 'error',
+        message: 'Vui lòng chọn định dạng JPEG/JPG/PNG và nhỏ hơn 10MB',
       }));
     }
   };
 
-  const [birthday, setBirthday] = useState(dayjs("2022-04-07"));
+  const [birthday, setBirthday] = useState(dayjs('2022-04-07'));
 
   // const [emailValid, setEmailValid] = useState(true);
 
@@ -96,14 +96,14 @@ const ProfileDetails = (props) => {
   };
 
   const handleSubmit = async () => {
-    const dob = dayjs(birthday).add(1, "day");
+    const dob = dayjs(birthday).add(1, 'day');
 
     try {
       await changeProfile({ ...props.userInfo, dob });
 
       if (fileContent.file) {
         const formData = new FormData();
-        formData.append("image", fileContent.file);
+        formData.append('image', fileContent.file);
 
         await uploadAvatar(formData);
       }
@@ -111,17 +111,17 @@ const ProfileDetails = (props) => {
       props.setOpenToast(true);
       props.setToastData((toast) => ({
         ...toast,
-        color: "success",
-        severity: "success",
-        message: "Sửa thông tin thành công",
+        color: 'success',
+        severity: 'success',
+        message: 'Sửa thông tin thành công',
       }));
     } catch (error) {
       props.setOpenToast(true);
       props.setToastData((toast) => ({
         ...toast,
-        color: "error",
-        severity: "error",
-        message: "Đã có lỗi xảy ra, vui lòng thử lại sau",
+        color: 'error',
+        severity: 'error',
+        message: 'Đã có lỗi xảy ra, vui lòng thử lại sau',
       }));
     }
   };
@@ -138,7 +138,7 @@ const ProfileDetails = (props) => {
         <Stack
           direction="row"
           spacing={20}
-          sx={{ justifyContent: "space-around" }}
+          sx={{ justifyContent: 'space-around' }}
           mt={5}
         >
           <div>
@@ -190,7 +190,7 @@ const ProfileDetails = (props) => {
                 <FormControl>
                   <RadioGroup
                     value={
-                      !props.userInfo?.gender ? "male" : props.userInfo?.gender
+                      !props.userInfo?.gender ? 'male' : props.userInfo?.gender
                     }
                     row
                     aria-labelledby="demo-row-radio-buttons-group-label"
@@ -213,7 +213,7 @@ const ProfileDetails = (props) => {
                       label="Khác"
                     />
                   </RadioGroup>
-                </FormControl>{" "}
+                </FormControl>{' '}
               </Grid>
               <Grid item xs={4}>
                 <Typography mt="15px">Ngày sinh</Typography>
@@ -223,7 +223,7 @@ const ProfileDetails = (props) => {
                   <DatePicker
                     disableFuture
                     openTo="year"
-                    views={["year", "month", "day"]}
+                    views={['year', 'month', 'day']}
                     value={birthday}
                     onChange={(newValue) => {
                       setBirthday(newValue);
@@ -240,7 +240,7 @@ const ProfileDetails = (props) => {
                   size="large"
                   variant="contained"
                   color="black"
-                  style={{ color: "white" }}
+                  style={{ color: 'white' }}
                   onClick={handleSubmit}
                   loading={isUploading}
                 >
@@ -256,9 +256,9 @@ const ProfileDetails = (props) => {
                   ? fileContent.content
                   : props.userInfo?.avatar
                   ? props.userInfo?.avatar
-                  : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"
+                  : 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541'
               }
-              alt={""}
+              alt={''}
               width={150}
               height={150}
               className={props.classes.image}
@@ -267,7 +267,7 @@ const ProfileDetails = (props) => {
               variant="contained"
               component="label"
               color="black"
-              style={{ color: "white" }}
+              style={{ color: 'white' }}
               disabled={isUploading}
             >
               Chọn ảnh

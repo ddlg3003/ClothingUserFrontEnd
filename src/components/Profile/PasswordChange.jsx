@@ -1,19 +1,19 @@
-import React, { useState } from "react";
-import { Button, Divider, Grid, Typography } from "@mui/material";
-import TextField from "@mui/material/TextField";
-import { useChangePasswordMutation } from "../../services/userApis";
-import { PASSWORD_REGEX } from "../../utils/globalVariables";
-import { logout } from "../../features/auth";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import { Button, Divider, Grid, Typography } from '@mui/material';
+import TextField from '@mui/material/TextField';
+import { useChangePasswordMutation } from '../../services/userApis';
+import { PASSWORD_REGEX } from '../../utils/globalVariables';
+import { logout } from '../../features/auth';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const PasswordChange = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
 
   const handleCurrentPasswordChange = (event) => {
     const curPassword = event.target.value;
@@ -47,7 +47,7 @@ const PasswordChange = (props) => {
 
   const handleSubmit = async () => {
     if (!newPasswordValid || !confirmNewPasswordValid) {
-      alert("Không đúng định dạng mật khẩu!");
+      alert('Không đúng định dạng mật khẩu!');
       return;
     }
 
@@ -62,12 +62,12 @@ const PasswordChange = (props) => {
 
     if (originalStatus === 200) {
       alert(
-        "Đổi mật khẩu thành công, vui lòng đăng nhập lại bằng mật khẩu mới!"
+        'Đổi mật khẩu thành công, vui lòng đăng nhập lại bằng mật khẩu mới!',
       );
       dispatch(logout());
-      navigate("/auth");
+      navigate('/auth');
     } else {
-      alert("Mật khẩu không chính xác!");
+      alert('Mật khẩu không chính xác!');
     }
   };
 
@@ -85,7 +85,7 @@ const PasswordChange = (props) => {
           spacing={2}
           mt="10px"
         >
-          {" "}
+          {' '}
           <Grid item xs={4}>
             <Typography mt="20px">Mật Khẩu Hiện Tại</Typography>
           </Grid>
@@ -138,7 +138,7 @@ const PasswordChange = (props) => {
               size="large"
               variant="contained"
               color="black"
-              style={{ color: "white" }}
+              style={{ color: 'white' }}
               onClick={handleSubmit}
             >
               Xác nhận

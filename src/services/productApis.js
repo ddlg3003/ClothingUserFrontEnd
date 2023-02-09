@@ -1,5 +1,5 @@
-import { clothing } from "./clothingBaseApis";
-import { PYTHON_URL } from "../utils/globalVariables";
+import { clothing } from './clothingBaseApis';
+import { PYTHON_URL } from '../utils/globalVariables';
 
 const product = clothing.injectEndpoints({
   endpoints: (builder) => ({
@@ -29,7 +29,7 @@ const product = clothing.injectEndpoints({
     }),
     getRecommendedProducts: builder.query({
       query: (userId) => `${PYTHON_URL}/recommend/${userId}`,
-      providesTags: ["Wishlist"],
+      providesTags: ['Wishlist'],
     }),
   }),
   overrideExisting: false,

@@ -1,8 +1,8 @@
-import { Button, Dialog, DialogTitle, TextField } from "@mui/material";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import React, { useState } from "react";
-import { useUpdateAddressMutation } from "../../services/userApis";
+import { Button, Dialog, DialogTitle, TextField } from '@mui/material';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import React, { useState } from 'react';
+import { useUpdateAddressMutation } from '../../services/userApis';
 
 const UpdateAddressDialog = (props) => {
   const { onClose, open, address } = props;
@@ -75,7 +75,7 @@ const UpdateAddressDialog = (props) => {
             color="white"
             variant="contained"
             component="label"
-            style={{ color: "black" }}
+            style={{ color: 'black' }}
             onClick={handleClose}
           >
             Trở lại
@@ -85,7 +85,7 @@ const UpdateAddressDialog = (props) => {
             color="black"
             variant="contained"
             component="label"
-            style={{ color: "white" }}
+            style={{ color: 'white' }}
             onClick={handleConfirmClick}
           >
             Hoàn thành

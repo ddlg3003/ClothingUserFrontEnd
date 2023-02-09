@@ -7,14 +7,14 @@ import {
   TextField,
   Typography,
   Stack,
-} from "@mui/material";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import Rating from "@mui/material/Rating";
-import { useAddCommentMutation } from "../../services/commentApis";
-import { URL_REGEX } from "../../utils/globalVariables";
+} from '@mui/material';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import Rating from '@mui/material/Rating';
+import { useAddCommentMutation } from '../../services/commentApis';
+import { URL_REGEX } from '../../utils/globalVariables';
 
 const RatingDialog = (props) => {
   const [addComment] = useAddCommentMutation();
@@ -22,8 +22,8 @@ const RatingDialog = (props) => {
   const { onClose, open, orderDetails } = props;
 
   const [ratings, setRatings] = useState({
-    comRating: "2",
-    comContent: "",
+    comRating: '2',
+    comContent: '',
   });
 
   const handleCommentContent = (event) => {
@@ -50,9 +50,9 @@ const RatingDialog = (props) => {
     onClose();
     props.setToastData((prev) => ({
       ...prev,
-      color: "success",
-      severity: "success",
-      message: "Đánh giá thành công!",
+      color: 'success',
+      severity: 'success',
+      message: 'Đánh giá thành công!',
     }));
     props.setOpenToast(true);
     window.location.reload();
@@ -68,7 +68,7 @@ const RatingDialog = (props) => {
               <Grid item xs container direction="column" spacing={2}>
                 <Link
                   to={`/products/${orderDetails.productName
-                    .replace(URL_REGEX, "-")
+                    .replace(URL_REGEX, '-')
                     .toLowerCase()}-i.${orderDetails.productId}`}
                   className={props.classes.favoriteItems}
                 >
@@ -81,12 +81,12 @@ const RatingDialog = (props) => {
                         fontSize={18}
                         gutterBottom
                         component="div"
-                        sx={{ color: "black!important" }}
+                        sx={{ color: 'black!important' }}
                       >
                         {orderDetails?.productName}
                       </Typography>
                       <Typography color="text.secondary">
-                        Phân loại hàng: {orderDetails?.color} -{" "}
+                        Phân loại hàng: {orderDetails?.color} -{' '}
                         {orderDetails?.size}
                       </Typography>
                     </Grid>
@@ -95,7 +95,7 @@ const RatingDialog = (props) => {
               </Grid>
 
               <Grid item>
-                <Box></Box>{" "}
+                <Box></Box>{' '}
               </Grid>
             </Grid>
             <Stack direction="row" spacing={4}>
@@ -128,7 +128,7 @@ const RatingDialog = (props) => {
             color="white"
             variant="contained"
             component="label"
-            style={{ color: "black" }}
+            style={{ color: 'black' }}
             onClick={handleClose}
           >
             Trở lại
@@ -138,7 +138,7 @@ const RatingDialog = (props) => {
             color="black"
             variant="contained"
             component="label"
-            style={{ color: "white" }}
+            style={{ color: 'white' }}
             onClick={handleConfirmClick}
           >
             Hoàn thành

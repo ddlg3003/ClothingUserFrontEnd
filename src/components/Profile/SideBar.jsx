@@ -1,10 +1,10 @@
-import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
-import LockIcon from "@mui/icons-material/Lock";
-import PersonIcon from "@mui/icons-material/Person";
-import { SIDEBAR_STATE } from "../../utils/globalVariables";
+import EditLocationAltIcon from '@mui/icons-material/EditLocationAlt';
+import LockIcon from '@mui/icons-material/Lock';
+import PersonIcon from '@mui/icons-material/Person';
+import { SIDEBAR_STATE } from '../../utils/globalVariables';
 
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ReceiptIcon from "@mui/icons-material/Receipt";
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ReceiptIcon from '@mui/icons-material/Receipt';
 import {
   Divider,
   List,
@@ -12,9 +12,9 @@ import {
   ListItemIcon,
   ListItemText,
   Typography,
-} from "@mui/material";
-import Stack from "@mui/material/Stack";
-import React from "react";
+} from '@mui/material';
+import Stack from '@mui/material/Stack';
+import React from 'react';
 
 const SideBar = (props) => {
   return (
@@ -27,7 +27,7 @@ const SideBar = (props) => {
               src={
                 props.userInfo?.avatar
                   ? props.userInfo?.avatar
-                  : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"
+                  : 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541'
               }
               width={80}
               height={80}
@@ -40,15 +40,17 @@ const SideBar = (props) => {
 
           <List
             sx={{
-              width: "100%",
+              width: '100%',
               maxWidth: 300,
-              bgcolor: "background.paper",
+              bgcolor: 'background.paper',
             }}
             component="nav"
           >
             <ListItem
               button
-              onClick={() => props.handleNavSelectionChange(SIDEBAR_STATE.profile)}
+              onClick={() =>
+                props.handleNavSelectionChange(SIDEBAR_STATE.profile)
+              }
             >
               <ListItemIcon>
                 <PersonIcon />
@@ -59,7 +61,9 @@ const SideBar = (props) => {
             <ListItem
               button
               divider
-              onClick={() => props.handleNavSelectionChange(SIDEBAR_STATE.address)}
+              onClick={() =>
+                props.handleNavSelectionChange(SIDEBAR_STATE.address)
+              }
             >
               <ListItemIcon>
                 <EditLocationAltIcon />
@@ -68,7 +72,9 @@ const SideBar = (props) => {
             </ListItem>
             <ListItem
               button
-              onClick={() => props.handleNavSelectionChange(SIDEBAR_STATE.password)}
+              onClick={() =>
+                props.handleNavSelectionChange(SIDEBAR_STATE.password)
+              }
             >
               <ListItemIcon>
                 <LockIcon />
@@ -79,7 +85,9 @@ const SideBar = (props) => {
 
             <ListItem
               button
-              onClick={() => props.handleNavSelectionChange(SIDEBAR_STATE.favorites)}
+              onClick={() =>
+                props.handleNavSelectionChange(SIDEBAR_STATE.favorites)
+              }
             >
               <ListItemIcon>
                 <FavoriteIcon />
@@ -90,7 +98,9 @@ const SideBar = (props) => {
 
             <ListItem
               button
-              onClick={() => props.handleNavSelectionChange(SIDEBAR_STATE.orders)}
+              onClick={() =>
+                props.handleNavSelectionChange(SIDEBAR_STATE.orders)
+              }
             >
               <ListItemIcon>
                 <ReceiptIcon />

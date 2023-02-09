@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import AddIcon from "@mui/icons-material/Add";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
+import React, { useState } from 'react';
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import {
   Box,
   Button,
@@ -9,11 +9,11 @@ import {
   Divider,
   Grid,
   Typography,
-} from "@mui/material";
-import NewAddressDialog from "./NewAddressDialog";
-import UpdateAddressDialog from "./UpdateAddressDialog";
-import DeleteAlertDialog from "./DeleteAlertDialog";
-import { useGetUserAddressQuery } from "../../services/userApis";
+} from '@mui/material';
+import NewAddressDialog from './NewAddressDialog';
+import UpdateAddressDialog from './UpdateAddressDialog';
+import DeleteAlertDialog from './DeleteAlertDialog';
+import { useGetUserAddressQuery } from '../../services/userApis';
 
 const AddressDetails = (props) => {
   const { data: dataAddresses, isFetching: isFetchingDataAddresses } =
@@ -21,15 +21,15 @@ const AddressDetails = (props) => {
 
   // Dialog's states
   const [openNewAddressDialog, setOpenNewAddressDialog] = useState(false);
-  const [openUpdateAddressDialog, setOpenUpdateAddressDialog] = useState("");
-  const [openDeleteAddressDialog, setOpenDeleteAddressDialog] = useState("");
+  const [openUpdateAddressDialog, setOpenUpdateAddressDialog] = useState('');
+  const [openDeleteAddressDialog, setOpenDeleteAddressDialog] = useState('');
 
   const handleClickDeleteAddress = (id) => {
     setOpenDeleteAddressDialog(id);
   };
 
   const handleCloseDeleteAddress = () => {
-    setOpenDeleteAddressDialog("");
+    setOpenDeleteAddressDialog('');
   };
 
   const handleClickUpdateAddress = (id) => {
@@ -37,7 +37,7 @@ const AddressDetails = (props) => {
   };
 
   const handleCloseUpdateAddress = () => {
-    setOpenUpdateAddressDialog("");
+    setOpenUpdateAddressDialog('');
   };
 
   const handleClickNewAddress = () => {
@@ -49,7 +49,7 @@ const AddressDetails = (props) => {
 
   return (
     <>
-      <Box sx={{ display: "flex", mb: 1 }}>
+      <Box sx={{ display: 'flex', mb: 1 }}>
         <Box sx={{ flexGrow: 1 }} className={props.classes.title}>
           Địa chỉ của tôi
         </Box>
@@ -57,7 +57,7 @@ const AddressDetails = (props) => {
           <Button
             color="black"
             component="label"
-            style={{ color: "white" }}
+            style={{ color: 'white' }}
             size="large"
             variant="contained"
             onClick={handleClickNewAddress}
@@ -75,7 +75,7 @@ const AddressDetails = (props) => {
 
       <Container sx={{ mt: 3 }}>
         {!dataAddresses?.length ? (
-          <Box mt={5} sx={{ display: "flex", justifyContent: "center" }}>
+          <Box mt={5} sx={{ display: 'flex', justifyContent: 'center' }}>
             <Typography width={200} fontSize="20px" fontWeight="bold">
               Không có địa chỉ
             </Typography>
@@ -119,7 +119,7 @@ const AddressDetails = (props) => {
                         color="black"
                         variant="contained"
                         component="label"
-                        style={{ color: "white" }}
+                        style={{ color: 'white' }}
                         startIcon={<EditIcon />}
                         onClick={() => handleClickUpdateAddress(data.id)}
                       >
@@ -136,10 +136,10 @@ const AddressDetails = (props) => {
                         color="black"
                         variant="contained"
                         component="label"
-                        style={{ color: "white" }}
+                        style={{ color: 'white' }}
                         startIcon={<DeleteIcon />}
                         onClick={() => handleClickDeleteAddress(data.id)}
-                        sx={{ width: "100%" }}
+                        sx={{ width: '100%' }}
                       >
                         Xóa
                       </Button>
@@ -148,7 +148,7 @@ const AddressDetails = (props) => {
                         onClose={handleCloseDeleteAddress}
                         id={data?.id}
                       />
-                    </Box>{" "}
+                    </Box>{' '}
                   </Grid>
                 </Grid>
               </Box>

@@ -1,18 +1,18 @@
-import { clothing, onQueryStartedHandler } from "./clothingBaseApis";
+import { clothing, onQueryStartedHandler } from './clothingBaseApis';
 
 const comment = clothing.injectEndpoints({
   endpoints: (builder) => ({
     getCommentsByProductId: builder.query({
       query: (productId) => `comment/product/${productId}`,
-      providesTags: ["Comment"],
+      providesTags: ['Comment'],
     }),
     addComment: builder.mutation({
       query: (formData) => ({
-        url: "user/comment/create",
-        method: "POST",
+        url: 'user/comment/create',
+        method: 'POST',
         body: formData,
       }),
-      invalidatesTags: ["Comment"],
+      invalidatesTags: ['Comment'],
     }),
   }),
   overrideExisting: false,

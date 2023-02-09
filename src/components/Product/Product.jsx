@@ -1,8 +1,8 @@
-import React from "react";
-import { Typography, Grid, Rating } from "@mui/material";
-import { Link } from "react-router-dom";
-import { URL_REGEX } from "../../utils/globalVariables";
-import useStyles from "./styles";
+import React from 'react';
+import { Typography, Grid, Rating } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { URL_REGEX } from '../../utils/globalVariables';
+import useStyles from './styles';
 
 const Product = ({ product }) => {
   const classes = useStyles();
@@ -12,7 +12,7 @@ const Product = ({ product }) => {
       <Grid item>
         <Link
           to={`/products/${product?.name
-            .replace(URL_REGEX, "-")
+            .replace(URL_REGEX, '-')
             .toLowerCase()}-i.${product.id}`}
           className={classes.links}
         >
@@ -45,9 +45,9 @@ const Product = ({ product }) => {
             fontWeight="bold"
             fontSize={18}
           >
-            {Intl.NumberFormat("vi-VN", {
-              style: "currency",
-              currency: "VND",
+            {Intl.NumberFormat('vi-VN', {
+              style: 'currency',
+              currency: 'VND',
             }).format(product?.price)}
           </Typography>
         </Link>

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Typography,
   Table,
@@ -9,11 +9,11 @@ import {
   TableRow,
   Paper,
   Stack,
-} from "@mui/material";
-import { Container } from "@mui/system";
-import { Link } from "react-router-dom";
-import { URL_REGEX, COLOR_LIST } from "../../utils/globalVariables";
-import useStyles from "./styles";
+} from '@mui/material';
+import { Container } from '@mui/system';
+import { Link } from 'react-router-dom';
+import { URL_REGEX, COLOR_LIST } from '../../utils/globalVariables';
+import useStyles from './styles';
 
 const CartItems = ({ cartItems }) => {
   const classes = useStyles();
@@ -36,7 +36,7 @@ const CartItems = ({ cartItems }) => {
                 </TableCell>
                 <TableCell align="left"></TableCell>
                 <TableCell align="left">
-                  {" "}
+                  {' '}
                   <Typography fontSize="17px">Đơn Giá</Typography>
                 </TableCell>
                 <TableCell align="center">
@@ -51,13 +51,13 @@ const CartItems = ({ cartItems }) => {
               {cartItems.map((item) => (
                 <TableRow
                   key={item.product_id}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell component="th" scope="row">
                     <div>
                       <Link
                         to={`/products/${item.proName
-                          .replace(URL_REGEX, "-")
+                          .replace(URL_REGEX, '-')
                           .toLowerCase()}-i.${item.product_id}`}
                         className={classes.itemLink}
                       >
@@ -69,7 +69,7 @@ const CartItems = ({ cartItems }) => {
                     <Stack direction="column">
                       <Link
                         to={`/products/${item.proName
-                          .replace(URL_REGEX, "-")
+                          .replace(URL_REGEX, '-')
                           .toLowerCase()}-i.${item.product_id}`}
                         className={classes.itemLink}
                       >
@@ -77,7 +77,7 @@ const CartItems = ({ cartItems }) => {
                           fontSize="18px"
                           maxWidth={200}
                           className={classes.itemName}
-                          sx={{ color: "#000" }}
+                          sx={{ color: '#000' }}
                         >
                           {item.proName}
                         </Typography>
@@ -89,7 +89,7 @@ const CartItems = ({ cartItems }) => {
                         >
                           {
                             COLOR_LIST.find(
-                              (colorItem) => colorItem.color === item.color
+                              (colorItem) => colorItem.color === item.color,
                             ).name
                           }
                           , {item.size}
@@ -99,9 +99,9 @@ const CartItems = ({ cartItems }) => {
                   </TableCell>
                   <TableCell align="left">
                     <Typography className={classes.itemName} fontSize={18}>
-                      {Intl.NumberFormat("vi-VN", {
-                        style: "currency",
-                        currency: "VND",
+                      {Intl.NumberFormat('vi-VN', {
+                        style: 'currency',
+                        currency: 'VND',
                       }).format(item.price)}
                     </Typography>
                   </TableCell>
@@ -116,9 +116,9 @@ const CartItems = ({ cartItems }) => {
                       fontSize={18}
                       color="error"
                     >
-                      {Intl.NumberFormat("vi-VN", {
-                        style: "currency",
-                        currency: "VND",
+                      {Intl.NumberFormat('vi-VN', {
+                        style: 'currency',
+                        currency: 'VND',
                       }).format(item.price * item.quantity)}
                     </Typography>
                   </TableCell>

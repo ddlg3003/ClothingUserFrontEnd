@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react';
 import {
   Stack,
   Typography,
   ToggleButton,
   ToggleButtonGroup,
-} from "@mui/material";
-import useStyles from "./styles";
+} from '@mui/material';
+import useStyles from './styles';
 
 const PaymentMethods = ({
   paymentTypeValue,
@@ -40,18 +40,18 @@ const PaymentMethods = ({
         </ToggleButton>
       </ToggleButtonGroup>
       <div className={classes.paymentContainer}>
-        <Typography hidden={paymentTypeValue !== "COD"} fontSize="18px">
+        <Typography hidden={paymentTypeValue !== 'COD'} fontSize="18px">
           Thanh toán khi nhận hàng Phí thu hộ: ₫0 VNĐ. Ưu đãi về phí vận chuyển
           (nếu có) áp dụng cả với phí thu hộ.
         </Typography>
-        <div hidden={paymentTypeValue !== "credit"}>
+        <div hidden={paymentTypeValue !== 'credit'}>
           <ToggleButtonGroup
             value={creditMethod}
             exclusive
             aria-label="text alignment"
           >
             <ToggleButton
-              onClick={() => handleCreditMethod("VNPAY")}
+              onClick={() => handleCreditMethod('VNPAY')}
               value="VNPAY"
               aria-label="left aligned"
             >

@@ -1,8 +1,8 @@
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogTitle from "@mui/material/DialogTitle";
-import React from "react";
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogTitle from '@mui/material/DialogTitle';
+import React from 'react';
 
 const DeleteAlertDialog = ({
   onClose,
@@ -24,7 +24,7 @@ const DeleteAlertDialog = ({
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Bạn chắc chắn muốn xóa sản phẩm này?"}
+          {'Bạn chắc chắn muốn xóa sản phẩm này?'}
         </DialogTitle>
         <DialogActions>
           <Button
@@ -32,7 +32,7 @@ const DeleteAlertDialog = ({
             color="white"
             variant="contained"
             component="label"
-            style={{ color: "black" }}
+            style={{ color: 'black' }}
             onClick={handleClose}
           >
             Trở lại
@@ -42,7 +42,7 @@ const DeleteAlertDialog = ({
             color="black"
             variant="contained"
             component="label"
-            style={{ color: "white" }}
+            style={{ color: 'white' }}
             onClick={() =>
               handleConfirmDeleteClick({
                 color: item.color,

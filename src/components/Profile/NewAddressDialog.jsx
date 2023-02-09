@@ -1,23 +1,23 @@
-import React, { useState } from "react";
-import { Button, Dialog, DialogTitle, TextField } from "@mui/material";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import { useAddAddressMutation } from "../../services/userApis";
-import { validatePhoneNumber } from "../../utils/validateString";
+import React, { useState } from 'react';
+import { Button, Dialog, DialogTitle, TextField } from '@mui/material';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import { useAddAddressMutation } from '../../services/userApis';
+import { validatePhoneNumber } from '../../utils/validateString';
 
 const NewAddressDialog = (props) => {
   const initialState = {
-    name: "",
-    phoneNumber: "",
-    address: "",
+    name: '',
+    phoneNumber: '',
+    address: '',
   };
 
   const [addAddress] = useAddAddressMutation();
   const { onClose, open } = props;
   const [addressInfo, setAddressInfo] = useState({
-    name: "",
-    phoneNumber: "",
-    address: "",
+    name: '',
+    phoneNumber: '',
+    address: '',
   });
 
   const handleClose = () => {
@@ -84,7 +84,7 @@ const NewAddressDialog = (props) => {
             color="white"
             variant="contained"
             component="label"
-            style={{ color: "black" }}
+            style={{ color: 'black' }}
             onClick={handleClose}
           >
             Trở lại
@@ -94,7 +94,7 @@ const NewAddressDialog = (props) => {
             color="black"
             variant="contained"
             component="label"
-            style={{ color: "white" }}
+            style={{ color: 'white' }}
             onClick={handleConfirmClick}
           >
             Hoàn thành

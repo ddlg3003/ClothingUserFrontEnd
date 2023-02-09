@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
-import Products from "../Products/Products";
+import React, { useEffect, useState } from 'react';
+import Products from '../Products/Products';
 import {
   Box,
   CircularProgress,
   Pagination,
   Stack,
   useMediaQuery,
-} from "@mui/material";
-import { useGetProductsQuery } from "../../services/productApis";
-import { useSearchParams } from "react-router-dom";
-import { LIMIT, PRODUCT_QUERY_STRING } from "../../utils/globalVariables";
-import useStyles from "./styles";
+} from '@mui/material';
+import { useGetProductsQuery } from '../../services/productApis';
+import { useSearchParams } from 'react-router-dom';
+import { LIMIT, PRODUCT_QUERY_STRING } from '../../utils/globalVariables';
+import useStyles from './styles';
 
 const ProductListMore = () => {
   const classes = useStyles();
@@ -24,10 +24,10 @@ const ProductListMore = () => {
 
   // const limitNum = parseInt(searchParams.get(PRODUCT_QUERY_STRING[1])); // Get the query of limit for validation
   // const limitInit = Number.isInteger(limitNum) && limitNum > 0 ? limitNum : LIMIT;
-  const searchInit = searchParams.get(PRODUCT_QUERY_STRING.keyword) || "";
+  const searchInit = searchParams.get(PRODUCT_QUERY_STRING.keyword) || '';
 
   const catNum = parseInt(searchParams.get(PRODUCT_QUERY_STRING.cat)); // Get the query of cat for validation
-  const catInit = Number.isInteger(catNum) ? catNum : "";
+  const catInit = Number.isInteger(catNum) ? catNum : '';
 
   const { data, isFetching } = useGetProductsQuery({
     pageNumber: pageInit,
@@ -36,7 +36,7 @@ const ProductListMore = () => {
     keyword: searchInit,
   });
 
-  const isMobile = useMediaQuery("(max-width: 800px)");
+  const isMobile = useMediaQuery('(max-width: 800px)');
 
   const onPageChange = (e, value) => {
     let query = {};
@@ -70,7 +70,7 @@ const ProductListMore = () => {
               count={Math.ceil(data?.numberItem / LIMIT)}
               shape="rounded"
               page={pageInit}
-              size={isMobile ? "small" : "large"}
+              size={isMobile ? 'small' : 'large'}
               siblingCount={isMobile ? -1 : 2}
               onChange={onPageChange}
             />

@@ -1,30 +1,30 @@
-import React, { useState } from "react";
-import { Button, Typography, Paper, Stack } from "@mui/material";
-import { Box, Container } from "@mui/system";
-import CartItems from "./CartItems";
-import ShippingAddresses from "./ShippingAddresses";
-import PaymentMethods from "./PaymentMethods";
-import { useGetUserAddressQuery } from "../../services/userApis";
+import React, { useState } from 'react';
+import { Button, Typography, Paper, Stack } from '@mui/material';
+import { Box, Container } from '@mui/system';
+import CartItems from './CartItems';
+import ShippingAddresses from './ShippingAddresses';
+import PaymentMethods from './PaymentMethods';
+import { useGetUserAddressQuery } from '../../services/userApis';
 import {
   useCreateOrderMutation,
   useCreateVNPAYOrderMutation,
-} from "../../services/orderApis";
-import { useNavigate } from "react-router-dom";
+} from '../../services/orderApis';
+import { useNavigate } from 'react-router-dom';
 import {
   SIDEBAR_STATE,
   PROFILE_QUERY_STRING,
-} from "../../utils/globalVariables";
-import useStyles from "./styles";
+} from '../../utils/globalVariables';
+import useStyles from './styles';
 
 const Checkout = () => {
   const navigate = useNavigate();
 
   const classes = useStyles();
-  const cartItems = [...JSON.parse(sessionStorage.getItem("cartItems"))];
+  const cartItems = [...JSON.parse(sessionStorage.getItem('cartItems'))];
 
   const { data, isFetching } = useGetUserAddressQuery();
 
-  const submitData = [...JSON.parse(sessionStorage.getItem("cartItems"))];
+  const submitData = [...JSON.parse(sessionStorage.getItem('cartItems'))];
 
   const transformObject = ({ color, price, product_id, quantity, size }) => {
     return {
@@ -40,12 +40,12 @@ const Checkout = () => {
     return transformObject(data);
   });
 
-  const [paymentTypeValue, setPaymentTypeValue] = useState("credit");
-  const [creditMethod, setCreditMethod] = useState("VNPAY");
+  const [paymentTypeValue, setPaymentTypeValue] = useState('credit');
+  const [creditMethod, setCreditMethod] = useState('VNPAY');
 
   let payment = {};
-  if (paymentTypeValue === "COD") {
-    payment.payment = "COD";
+  if (paymentTypeValue === 'COD') {
+    payment.payment = 'COD';
     payment.shipping_fee = 30000;
   }
 
@@ -60,28 +60,30 @@ const Checkout = () => {
 
   const handleSubmit = async () => {
     try {
-      if (paymentTypeValue === "COD") {
+      if (paymentTypeValue === 'COD') {
         const response = await createOrder([newSubmitData, payment]);
         if (response?.error.originalStatus === 409) {
           alert(response?.error.data);
           return navigate(`/cart`);
         }
 
-        navigate(`/profile?${PROFILE_QUERY_STRING.tab}=${SIDEBAR_STATE.address}`);
+        navigate(
+          `/profile?${PROFILE_QUERY_STRING.tab}=${SIDEBAR_STATE.address}`,
+        );
       } else {
         const { data: VNPAYData } = await createVNPAYOrder([
           newSubmitData,
           payment,
         ]);
-        if (VNPAYData?.status !== "00") {
-          alert("Đã có lỗi xảy ra");
+        if (VNPAYData?.status !== '00') {
+          alert('Đã có lỗi xảy ra');
           console.log(VNPAYData);
           return;
         }
         window.location.href = VNPAYData?.url;
       }
     } catch {
-      alert("Đã có lỗi xảy ra");
+      alert('Đã có lỗi xảy ra');
     }
 
     sessionStorage.clear();
@@ -119,7 +121,7 @@ const Checkout = () => {
                 display="inline-block"
               >
                 Phương thức thanh toán
-              </Typography>{" "}
+              </Typography>{' '}
             </div>
 
             <PaymentMethods
@@ -135,7 +137,7 @@ const Checkout = () => {
             <Stack
               spacing={1}
               direction="column"
-              sx={{ width: "300px", mr: "300px" }}
+              sx={{ width: '300px', mr: '300px' }}
             >
               <Stack
                 direction="row"
@@ -153,9 +155,9 @@ const Checkout = () => {
                   fontSize={20}
                   color="text.secondary"
                 >
-                  {Intl.NumberFormat("vi-VN", {
-                    style: "currency",
-                    currency: "VND",
+                  {Intl.NumberFormat('vi-VN', {
+                    style: 'currency',
+                    currency: 'VND',
                   }).format(totalItemPrice)}
                 </Typography>
               </Stack>
@@ -175,9 +177,9 @@ const Checkout = () => {
                   fontSize={20}
                   color="text.secondary"
                 >
-                  {Intl.NumberFormat("vi-VN", {
-                    style: "currency",
-                    currency: "VND",
+                  {Intl.NumberFormat('vi-VN', {
+                    style: 'currency',
+                    currency: 'VND',
                   }).format(shipping_fee)}
                 </Typography>
               </Stack>
@@ -197,9 +199,9 @@ const Checkout = () => {
                   fontWeight="normal"
                   fontSize={28}
                 >
-                  {Intl.NumberFormat("vi-VN", {
-                    style: "currency",
-                    currency: "VND",
+                  {Intl.NumberFormat('vi-VN', {
+                    style: 'currency',
+                    currency: 'VND',
                   }).format(shipping_fee + totalItemPrice)}
                 </Typography>
               </Stack>
@@ -208,7 +210,7 @@ const Checkout = () => {
                 variant="outlined"
                 color="black"
                 className={classes.checkoutButton}
-                sx={{ mr: "380px", mt: "10px", width: "300px" }}
+                sx={{ mr: '380px', mt: '10px', width: '300px' }}
                 disabled={!isFetching && data.length ? false : true}
                 onClick={handleSubmit}
               >

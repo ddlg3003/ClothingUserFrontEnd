@@ -1,46 +1,46 @@
-import { clothing, onQueryStartedHandler } from "./clothingBaseApis";
+import { clothing, onQueryStartedHandler } from './clothingBaseApis';
 
 const cart = clothing.injectEndpoints({
   endpoints: (builder) => ({
     getCart: builder.query({
-      query: () => "user/cart/getAll",
-      providesTags: ["Cart"],
+      query: () => 'user/cart/getAll',
+      providesTags: ['Cart'],
     }),
     increaseCartItem: builder.mutation({
       query: (formData) => ({
-        url: "user/cart/increase",
-        method: "POST",
+        url: 'user/cart/increase',
+        method: 'POST',
         body: formData,
       }),
       async onQueryStarted(body, { dispatch, queryFulfilled }) {
-        return onQueryStartedHandler(dispatch, queryFulfilled, "getCart");
+        return onQueryStartedHandler(dispatch, queryFulfilled, 'getCart');
       },
     }),
     decreaseCartItem: builder.mutation({
       query: (formData) => ({
-        url: "user/cart/decrease",
-        method: "POST",
+        url: 'user/cart/decrease',
+        method: 'POST',
         body: formData,
       }),
       async onQueryStarted(body, { dispatch, queryFulfilled }) {
-        return onQueryStartedHandler(dispatch, queryFulfilled, "getCart");
+        return onQueryStartedHandler(dispatch, queryFulfilled, 'getCart');
       },
     }),
     deleteCartItem: builder.mutation({
       query: (formData) => ({
-        url: "user/cart/delete",
-        method: "POST",
+        url: 'user/cart/delete',
+        method: 'POST',
         body: formData,
       }),
-      invalidatesTags: ["Cart"],
+      invalidatesTags: ['Cart'],
     }),
     addItemToCart: builder.mutation({
       query: (formData) => ({
-        url: "user/cart/add",
-        method: "POST",
+        url: 'user/cart/add',
+        method: 'POST',
         body: formData,
       }),
-      invalidatesTags: ["Cart"],
+      invalidatesTags: ['Cart'],
     }),
   }),
   overrideExisting: false,

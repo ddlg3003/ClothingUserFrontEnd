@@ -1,9 +1,9 @@
-import { clothing } from "./clothingBaseApis";
+import { clothing } from './clothingBaseApis';
 
 const cat = clothing.injectEndpoints({
   endpoints: (builder) => ({
     getCategories: builder.query({
-      query: () => "category/getAll",
+      query: () => 'category/getAll',
     }),
   }),
   overrideExisting: false,

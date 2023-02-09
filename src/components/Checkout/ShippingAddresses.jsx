@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Button,
   Typography,
@@ -11,22 +11,22 @@ import {
   DialogTitle,
   Dialog,
   Stack,
-} from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { Box, Container } from "@mui/system";
-import useStyles from "./styles";
-import PropTypes from "prop-types";
-import { blue } from "@mui/material/colors";
-import { useState, useEffect } from "react";
+} from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import { Box, Container } from '@mui/system';
+import useStyles from './styles';
+import PropTypes from 'prop-types';
+import { blue } from '@mui/material/colors';
+import { useState, useEffect } from 'react';
 import {
   useGetUserAddressQuery,
   useSelectDefaultAddressMutation,
-} from "../../services/userApis";
+} from '../../services/userApis';
 import {
   SIDEBAR_STATE,
   PROFILE_QUERY_STRING,
-} from "../../utils/globalVariables";
+} from '../../utils/globalVariables';
 
 function AddressSelectionDialog(props) {
   const { onClose, selectedValue, open } = props;
@@ -138,7 +138,7 @@ const ShippingAddresses = () => {
       <Container>
         <Box className={classes.addressBox} component={Paper} elevation={1}>
           <div>
-            <LocationOnIcon fontSize="small" sx={{ color: "black" }} />
+            <LocationOnIcon fontSize="small" sx={{ color: 'black' }} />
             <Typography
               paddingTop="5px"
               marginLeft="4px"
@@ -150,7 +150,7 @@ const ShippingAddresses = () => {
               mr={2}
             >
               Địa chỉ nhận hàng
-            </Typography>{" "}
+            </Typography>{' '}
             <span>
               <Button
                 variant="outlined"
