@@ -88,7 +88,7 @@ const CartItems = ({ cartItems }) => {
                           className={classes.itemName}
                         >
                           {
-                            Object.values(COLOR_LIST).find(
+                            COLOR_LIST.find(
                               (colorItem) => colorItem.color === item.color
                             ).name
                           }

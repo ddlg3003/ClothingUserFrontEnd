@@ -195,7 +195,7 @@ const Cart = () => {
                             >
                               Màu:{" "}
                               {
-                                Object.values(COLOR_LIST).find(
+                                COLOR_LIST.find(
                                   (item) => item.color === data?.color
                                 ).name
                               }

@@ -90,33 +90,33 @@ export const ACTIVE_STATUS = "Active";
 
 export const DISABLED_STATUS = "Disable";
 
-export const COLOR_LIST = {
-  white: {
+export const COLOR_LIST = [
+  {
     color: "f1f1f1",
     name: "Trắng",
   },
-  black: {
+  {
     color: "000",
     name: "Đen",
   },
-  grey: {
+  {
     color: "8c8c8c",
     name: "Xám",
   },
-  beige: {
+  {
     color: "d9b99b",
     name: "Be",
   },
-  lightBlue: {
+  {
     color: "186287",
     name: "Xanh nước nhạt",
   },
-  blue: {
+  {
     color: "114abd",
     name: "Xanh nước đậm",
   },
-  purple: {
+  {
     color: "6e10a1",
     name: "Tím",
   },
-};
+];

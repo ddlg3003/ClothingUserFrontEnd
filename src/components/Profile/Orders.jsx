@@ -113,7 +113,7 @@ const Orders = (props) => {
                                   <Typography color="text.secondary">
                                     Phân loại hàng:{" "}
                                     {
-                                      Object.values(COLOR_LIST).find(
+                                      COLOR_LIST.find(
                                         (item) => item.color === product?.color
                                       ).name
                                     }{" "}
@@ -280,7 +280,7 @@ const Orders = (props) => {
                                     <Typography color="text.secondary">
                                       Phân loại hàng:{" "}
                                       {
-                                        Object.values(COLOR_LIST).find(
+                                        COLOR_LIST.find(
                                           (item) =>
                                             item.color === product?.color
                                         ).name
@@ -422,7 +422,7 @@ const Orders = (props) => {
                                     <Typography color="text.secondary">
                                       Phân loại hàng:{" "}
                                       {
-                                        Object.values(COLOR_LIST).find(
+                                        COLOR_LIST.find(
                                           (item) =>
                                             item.color === product?.color
                                         ).name
@@ -565,7 +565,7 @@ const Orders = (props) => {
                                       <Typography color="text.secondary">
                                         Phân loại hàng:{" "}
                                         {
-                                          Object.values(COLOR_LIST).find(
+                                          COLOR_LIST.find(
                                             (item) =>
                                               item.color === product?.color
                                           ).name
@@ -730,7 +730,7 @@ const Orders = (props) => {
                                     <Typography color="text.secondary">
                                       Phân loại hàng:{" "}
                                       {
-                                        Object.values(COLOR_LIST).find(
+                                        COLOR_LIST.find(
                                           (item) =>
                                             item.color === product?.color
                                         ).name
