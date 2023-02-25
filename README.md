@@ -1,5 +1,5 @@
 # Clothing Webapp Users-side Front-end
-This is a graduate dissertation project of our team. The project is built with React.js framework along with MUI library and Redux toolkit library.
+This is a graduate dissertation project of our team. The project is built with ReactJs framework along with MUI library and Redux toolkit library.
 ## Our members 
  - Mai Thanh Nha
  - Pham Phi Anh
