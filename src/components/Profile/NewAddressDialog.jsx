@@ -11,25 +11,66 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import { useAddAddressMutation } from '../../services/userApis';
 import { validatePhoneNumber } from '../../utils/validateString';
-import { useGetAllProvinceQuery } from '../../services/locationApis';
+import {
+  useGetAllProvinceQuery,
+  useGetDistrictByProvinceIdQuery,
+  useGetCommuneByDistrictIdQuery,
+} from '../../services/locationApis';
+import Alert from '../Alert/Alert';
+
+const top100Films = [
+  { label: 'The Shawshank Redemption', year: 1994 },
+  { label: 'The Godfather', year: 1972 },
+  { label: 'The Godfather: Part II', year: 1974 },
+  { label: 'The Dark Knight', year: 2008 },
+  { label: '12 Angry Men', year: 1957 },
+  { label: "Schindler's List", year: 1993 },
+  { label: 'Pulp Fiction', year: 1994 },
+];
 
 const NewAddressDialog = (props) => {
+  const [toastData, setToastData] = useState({
+    message: '',
+    severity: '',
+    color: '',
+  });
+
+  const [openToast, setOpenToast] = useState(false);
+
+  const handleCloseToast = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenToast(false);
+  };
+
+  // province and district id state
+  const [provinceId, setProvinceId] = useState(0);
+  const [districtId, setDistrictId] = useState(-1);
+
   const { data: provinceData, isFetching: isFetchingProvinceData } =
     useGetAllProvinceQuery();
+
+  const { data: districtData, isFetching: isFetchingDistrictData } =
+    useGetDistrictByProvinceIdQuery(provinceId);
+
+  const { data: communeData, isFetching: isFetchingCommuneData } =
+    useGetCommuneByDistrictIdQuery(districtId);
 
   const initialState = {
     name: '',
     phoneNumber: '',
     address: '',
+    province: '',
+    district: '',
+    commune: '',
   };
 
   const [addAddress] = useAddAddressMutation();
   const { onClose, open } = props;
-  const [addressInfo, setAddressInfo] = useState({
-    name: '',
-    phoneNumber: '',
-    address: '',
-  });
+
+  const [addressInfo, setAddressInfo] = useState(initialState);
 
   const handleClose = () => {
     setAddressInfo(initialState);
@@ -37,25 +78,77 @@ const NewAddressDialog = (props) => {
   };
 
   const handleConfirmClick = async () => {
+    // check if not enough info
+    const { name, phoneNumber, address, province, district, commune } =
+      addressInfo;
+    if (
+      !name ||
+      !phoneNumber ||
+      !address ||
+      !province ||
+      !district ||
+      !commune
+    ) {
+      setToastData((prev) => ({
+        ...prev,
+        message: 'VUI LÒNG NHẬP ĐỦ THÔNG TIN',
+        severity: 'error',
+        color: 'error',
+      }));
+
+      setOpenToast(true);
+    }
+
+    // manipulate string
+    const addressForm = {
+      name,
+      phoneNumber,
+      address: `${address}, ${commune}, ${district}, ${province}`,
+    };
+
     setAddressInfo(initialState);
     onClose();
 
-    await addAddress(addressInfo);
+    await addAddress(addressForm);
   };
 
   const handleNameChange = (event) => {
     const name = event.target.value;
     if (name.length <= 45) setAddressInfo((prev) => ({ ...prev, name: name }));
   };
+
   const handlePhoneChange = (event) => {
     const phone = event.target.value;
     if (!validatePhoneNumber(phone) && phone.length <= 11)
       setAddressInfo((prev) => ({ ...prev, phoneNumber: phone }));
   };
+
   const handleAddressChange = (event) => {
     const address = event.target.value;
     if (address.length <= 255)
       setAddressInfo((prev) => ({ ...prev, address: address }));
+  };
+
+  const handleProvinceChange = (event, value) => {
+    if (value?.id) {
+      setProvinceId(value.id);
+      setAddressInfo((prev) => ({ ...prev, province: value.label }));
+    }
+    setAddressInfo((prev) => ({ ...prev, district: '', commune: '' }));
+  };
+
+  const handleDistrictChange = (event, value) => {
+    if (value?.id) {
+      setDistrictId(value.id);
+      setAddressInfo((prev) => ({ ...prev, district: value.label }));
+    }
+    setAddressInfo((prev) => ({ ...prev, commune: '' }));
+  };
+
+  const handleCommuneChange = (event, value) => {
+    if (value?.id) {
+      setAddressInfo((prev) => ({ ...prev, commune: value.label }));
+    }
   };
 
   return (
@@ -83,28 +176,36 @@ const NewAddressDialog = (props) => {
           <Stack direction="row" mt={2} spacing={1}>
             <Autocomplete
               id="province-box"
-              options={provinceData}
+              options={isFetchingProvinceData ? top100Films : provinceData}
               sx={{ width: 300 }}
               renderInput={(params) => (
                 <TextField {...params} label="Thành phố" />
               )}
+              onChange={handleProvinceChange}
             />
             <Autocomplete
+              key={provinceId}
+              disabled={provinceId === 0}
               id="district-box"
-              options={provinceData}
+              options={isFetchingDistrictData ? top100Films : districtData}
               sx={{ width: 300 }}
               renderInput={(params) => <TextField {...params} label="Quận" />}
+              onChange={handleDistrictChange}
             />
+
             <Autocomplete
+              key={districtId + provinceId + 63}
+              disabled={districtId === -1}
               id="commune-box"
-              options={provinceData}
+              options={isFetchingCommuneData ? top100Films : communeData}
               sx={{ width: 300 }}
               renderInput={(params) => <TextField {...params} label="Phường" />}
+              onChange={handleCommuneChange}
             />
           </Stack>
           <TextField
             margin="dense"
-            label="Địa chỉ"
+            label="Địa chỉ chi tiết"
             fullWidth
             variant="standard"
             value={addressInfo.address}
@@ -135,6 +236,13 @@ const NewAddressDialog = (props) => {
           </Button>
         </DialogActions>
       </Dialog>
+      <Alert
+        message={toastData.message}
+        openToast={openToast}
+        handleCloseToast={handleCloseToast}
+        color={toastData.color}
+        severity={toastData.severity}
+      />
     </div>
   );
 };
