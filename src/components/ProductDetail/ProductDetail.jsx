@@ -339,12 +339,22 @@ const ProductDetail = () => {
             {data?.name}
           </Typography>
           <div>
-            <Rating
-              readOnly
-              value={data?.avgRating ? data?.avgRating : 0}
-              precision={0.1}
-              size="medium"
-            />
+            <Stack direction="row" spacing={1}>
+              <Rating
+                readOnly
+                value={data?.avgRating ? data?.avgRating : 0}
+                precision={0.1}
+                size="medium"
+              />
+              <Typography
+                fontWeight="bold"
+                color="text.primary"
+                variant="title1"
+                fontSize={18}
+              >
+                (96)
+              </Typography>
+            </Stack>
           </div>
           {data?.status === ACTIVE_STATUS ? (
             <>

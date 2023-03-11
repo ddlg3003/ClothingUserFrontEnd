@@ -1,11 +1,12 @@
 import React from 'react';
-import { Typography, Grid, Rating } from '@mui/material';
+import { Typography, Grid, Rating, Stack } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { URL_REGEX } from '../../utils/globalVariables';
 import useStyles from './styles';
 
 const Product = ({ product }) => {
   const classes = useStyles();
+  console.log(product);
 
   return (
     <>
@@ -18,18 +19,27 @@ const Product = ({ product }) => {
         >
           <img src={product?.image} className={classes.image} />
           <div>
-            <Rating
-              readOnly
-              value={
-                product?.avgRating
-                  ? product?.avgRating
-                  : product?.avg_rating
-                  ? product?.avg_rating
-                  : 0
-              }
-              precision={0.1}
-              size="large"
-            />
+            <Stack direction="row" spacing={1}>
+              <Rating
+                readOnly
+                value={
+                  product?.avgRating
+                    ? product?.avgRating
+                    : product?.avg_rating
+                    ? product?.avg_rating
+                    : 0
+                }
+                precision={0.1}
+                size="medium"
+              />
+              {/* <Typography
+            color="text.primary"
+            variant="title1"
+            fontSize={16}
+          >
+            {product.countComment}
+          </Typography> */}
+            </Stack>
           </div>
           <Typography
             fontWeight="normal"
