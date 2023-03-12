@@ -97,6 +97,7 @@ const NewAddressDialog = (props) => {
       }));
 
       setOpenToast(true);
+      return;
     }
 
     // manipulate string
