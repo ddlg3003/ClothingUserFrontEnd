@@ -352,7 +352,10 @@ const ProductDetail = () => {
                 variant="title1"
                 fontSize={18}
               >
-                (96)
+                ({data?.countComment})
+              </Typography>
+              <Typography color="text.primary" variant="title1" fontSize={18}>
+                Đã bán: {data?.sold}
               </Typography>
             </Stack>
           </div>
@@ -555,7 +558,7 @@ const ProductDetail = () => {
             paddingTop="36px"
             display="block"
           >
-            ĐÁNH GIÁ
+            ĐÁNH GIÁ ({data?.countComment})
           </Typography>
         </Grid>
         <Grid

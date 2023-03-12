@@ -32,13 +32,9 @@ const Product = ({ product }) => {
                 precision={0.1}
                 size="medium"
               />
-              {/* <Typography
-            color="text.primary"
-            variant="title1"
-            fontSize={16}
-          >
-            {product.countComment}
-          </Typography> */}
+              <Typography color="text.primary" variant="title1" fontSize={16}>
+                ({product.countComment})
+              </Typography>
             </Stack>
           </div>
           <Typography
