@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  CircularProgress,
-  Divider,
-  Paper,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Box, CircularProgress, Paper, Stack, Typography } from '@mui/material';
 import { useGetProductsQuery } from '../../services/productApis';
-import { LIMIT, URL_REGEX } from '../../utils/globalVariables';
+import { URL_REGEX } from '../../utils/globalVariables';
 import { Link } from 'react-router-dom';
 import useStyles from './styles';
 
@@ -23,8 +16,7 @@ const AutoCompleteSearch = ({
   const { data: productsData, isFetching: isFetchingProducts } =
     useGetProductsQuery(
       {
-        pageNumber: 1,
-        pageSize: LIMIT,
+        page: 1,
         keyword: query,
       },
       {

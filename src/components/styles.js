@@ -14,9 +14,9 @@ export default makeStyles((theme) => ({
     },
   },
   toolbar: {
-    height: '144px',
+    height: '134px',
     [theme.breakpoints.down('800')]: {
-      height: '80px',
+      height: '70px',
     },
   },
   content: {

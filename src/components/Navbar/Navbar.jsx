@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  BLACK_LOGO,
-  LIMIT,
-  PRODUCT_QUERY_STRING,
-} from '../../utils/globalVariables';
+import { BLACK_LOGO, PRODUCT_QUERY_STRING } from '../../utils/globalVariables';
 import {
   AppBar,
   Toolbar,
@@ -17,11 +13,7 @@ import {
   Badge,
 } from '@mui/material';
 import { TextField, InputAdornment } from '@mui/material';
-import {
-  Search as SearchIcon,
-  AccountCircle,
-  Menu as MenuIcon,
-} from '@mui/icons-material';
+import { Search as SearchIcon, Menu as MenuIcon } from '@mui/icons-material';
 import LoginIcon from '@mui/icons-material/Login';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SecondNavbar from '../SecondNavbar/SecondNavbar';
@@ -46,12 +38,11 @@ const Navbar = () => {
 
   const { isAuthenticated } = useSelector((state) => state.auth);
 
-  const { data: user, isFetching: isFetchingUser } = useGetProfileQuery({
+  const { data: user } = useGetProfileQuery({
     skip: !isAuthenticated,
   });
 
-  const { data: dataCartList, isFetching: isFetchingCartList } =
-    useGetCartQuery({ skip: !isAuthenticated });
+  const { data: dataCartList } = useGetCartQuery({ skip: !isAuthenticated });
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -61,7 +52,7 @@ const Navbar = () => {
 
       if (decodedToken.exp * 1000 < new Date().getTime()) dispatch(logout());
     }
-  }, [location]);
+  }, [location, dispatch]);
 
   // const cartData = useSelector((state) => state.cart.data);
   const { data, isFetching } = useGetCategoriesQuery();
@@ -85,7 +76,7 @@ const Navbar = () => {
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       navigate(
-        `/products?${PRODUCT_QUERY_STRING.keyword}=${query}&${PRODUCT_QUERY_STRING.page}=1`,
+        `/products?${PRODUCT_QUERY_STRING.page}=1&${PRODUCT_QUERY_STRING.keyword}=${query}`,
       );
       setNotOpenAutoComplete(true);
       setQuery('');
@@ -181,7 +172,7 @@ const Navbar = () => {
         <Toolbar className={classes.toolbar}>
           {!isMobile && (
             <Link to="/">
-              <img src={logo} />
+              <img src={logo} alt="" />
             </Link>
           )}
           {isMobile && (
@@ -318,7 +309,7 @@ const Navbar = () => {
               classes={{ paper: classes.drawerPaper }}
             >
               <Link to="/" className={classes.responsiveLogo}>
-                <img style={{ margin: '20px 0' }} src={logo} />
+                <img style={{ margin: '20px 0' }} src={logo} alt="" />
               </Link>
               <SecondNavbar
                 handleClick={handleClick}
@@ -356,9 +347,9 @@ const Navbar = () => {
             data.map((category) => (
               <Link
                 key={category.id}
-                to={`/products?${PRODUCT_QUERY_STRING.cat}=${category.id}&${
-                  PRODUCT_QUERY_STRING.page
-                }=${1}`}
+                to={`/products?${PRODUCT_QUERY_STRING.page}=${1}&${
+                  PRODUCT_QUERY_STRING.cat
+                }=${category.id}`}
                 style={{
                   textDecoration: 'none',
                   color: 'black',

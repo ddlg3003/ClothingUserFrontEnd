@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Products from '../Products/Products';
 import {
   Box,
@@ -10,10 +10,13 @@ import {
 import { useGetProductsQuery } from '../../services/productApis';
 import { useSearchParams } from 'react-router-dom';
 import { LIMIT, PRODUCT_QUERY_STRING } from '../../utils/globalVariables';
+import Filter from '../Filter/Filter';
 import useStyles from './styles';
 
 const ProductListMore = () => {
   const classes = useStyles();
+  const isMobile = useMediaQuery('(max-width: 800px)');
+
   // Hook for set query string state
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -24,60 +27,72 @@ const ProductListMore = () => {
 
   // const limitNum = parseInt(searchParams.get(PRODUCT_QUERY_STRING[1])); // Get the query of limit for validation
   // const limitInit = Number.isInteger(limitNum) && limitNum > 0 ? limitNum : LIMIT;
-  const searchInit = searchParams.get(PRODUCT_QUERY_STRING.keyword) || '';
+  const searchInit = searchParams.get(PRODUCT_QUERY_STRING.keyword);
 
   const catNum = parseInt(searchParams.get(PRODUCT_QUERY_STRING.cat)); // Get the query of cat for validation
-  const catInit = Number.isInteger(catNum) ? catNum : '';
+  const catInit = Number.isInteger(catNum) ? catNum : null;
 
-  const { data, isFetching } = useGetProductsQuery({
-    pageNumber: pageInit,
-    pageSize: LIMIT,
-    cat: catInit,
-    keyword: searchInit,
-  });
+  const ratingNum = parseInt(searchParams.get(PRODUCT_QUERY_STRING.rating));
+  const ratingInit =
+    Number.isInteger(ratingNum) && ratingNum >= 3 && ratingNum <= 5
+      ? ratingNum
+      : null;
 
-  const isMobile = useMediaQuery('(max-width: 800px)');
+  const query = {
+    [PRODUCT_QUERY_STRING.page]: pageInit,
+  };
 
-  const onPageChange = (e, value) => {
-    let query = {};
+  // Check if cat query exist
+  if (catInit) {
+    query[PRODUCT_QUERY_STRING.cat] = catInit;
+  }
 
-    // Check if cat query exist
-    if (searchParams.get(PRODUCT_QUERY_STRING.limit)) {
-      query = { ...query, [PRODUCT_QUERY_STRING.limit]: catInit };
-    }
+  // Check if search query exist
+  if (searchInit) {
+    query[PRODUCT_QUERY_STRING.keyword] = searchInit;
+  }
 
-    // Check if search query exist
-    if (searchParams.get(PRODUCT_QUERY_STRING.keyword)) {
-      query = { ...query, [PRODUCT_QUERY_STRING.keyword]: searchInit };
-    }
+  // Check if rating query exist
+  if (ratingInit) {
+    query[PRODUCT_QUERY_STRING.rating] = ratingInit;
+  }
 
-    query = { ...query, [PRODUCT_QUERY_STRING.page]: value };
+  const { data, isFetching } = useGetProductsQuery(query);
 
+  const onPageChange = (_, value) => {
+    query[PRODUCT_QUERY_STRING.page] = value;
     setSearchParams(query);
   };
 
   return (
-    <div className={classes.container}>
-      {isFetching ? (
-        <Box display="flex" justifyContent="center">
-          <CircularProgress color="black" size="4rem" />
-        </Box>
-      ) : (
-        <>
-          <Products data={data?.list} />
-          <Stack spacing={2} className={classes.pagination}>
-            <Pagination
-              count={Math.ceil(data?.numberItem / LIMIT)}
-              shape="rounded"
-              page={pageInit}
-              size={isMobile ? 'small' : 'large'}
-              siblingCount={isMobile ? -1 : 2}
-              onChange={onPageChange}
-            />
-          </Stack>
-        </>
-      )}
-    </div>
+    <>
+      <Filter
+        query={query}
+        setSearchParams={setSearchParams}
+        ratingInit={ratingInit}
+      />
+      <div className={classes.container}>
+        {isFetching ? (
+          <Box display="flex" justifyContent="center">
+            <CircularProgress color="black" size="4rem" />
+          </Box>
+        ) : (
+          <>
+            <Products data={data?.list} />
+            <Stack spacing={2} className={classes.pagination}>
+              <Pagination
+                count={Math.ceil(data?.numberItem / LIMIT)}
+                shape="rounded"
+                page={pageInit}
+                size={isMobile ? 'small' : 'large'}
+                siblingCount={isMobile ? -1 : 2}
+                onChange={onPageChange}
+              />
+            </Stack>
+          </>
+        )}
+      </div>
+    </>
   );
 };
 
