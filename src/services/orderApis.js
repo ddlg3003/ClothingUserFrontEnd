@@ -3,7 +3,7 @@ import { clothing } from './clothingBaseApis';
 const order = clothing.injectEndpoints({
   endpoints: (builder) => ({
     getAllOrders: builder.query({
-      query: () => `user/order/getAll`,
+      query: (status = '') => `user/order/get-by-status?status=${status}`,
       providesTags: ['Order'],
     }),
     createOrder: builder.mutation({

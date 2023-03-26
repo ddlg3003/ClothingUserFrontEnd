@@ -339,12 +339,25 @@ const ProductDetail = () => {
             {data?.name}
           </Typography>
           <div>
-            <Rating
-              readOnly
-              value={data?.avgRating ? data?.avgRating : 0}
-              precision={0.1}
-              size="medium"
-            />
+            <Stack direction="row" spacing={1}>
+              <Rating
+                readOnly
+                value={data?.avgRating ? data?.avgRating : 0}
+                precision={0.1}
+                size="medium"
+              />
+              <Typography
+                fontWeight="bold"
+                color="text.primary"
+                variant="title1"
+                fontSize={18}
+              >
+                ({data?.countComment})
+              </Typography>
+              <Typography color="text.primary" variant="title1" fontSize={18}>
+                Đã bán: {data?.sold}
+              </Typography>
+            </Stack>
           </div>
           {data?.status === ACTIVE_STATUS ? (
             <>
@@ -545,7 +558,7 @@ const ProductDetail = () => {
             paddingTop="36px"
             display="block"
           >
-            ĐÁNH GIÁ
+            ĐÁNH GIÁ ({data?.countComment})
           </Typography>
         </Grid>
         <Grid

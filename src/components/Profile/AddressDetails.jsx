@@ -14,6 +14,7 @@ import NewAddressDialog from './NewAddressDialog';
 import UpdateAddressDialog from './UpdateAddressDialog';
 import DeleteAlertDialog from './DeleteAlertDialog';
 import { useGetUserAddressQuery } from '../../services/userApis';
+import { useGetAllProvinceQuery } from '../../services/locationApis';
 
 const AddressDetails = (props) => {
   const { data: dataAddresses, isFetching: isFetchingDataAddresses } =
@@ -73,7 +74,13 @@ const AddressDetails = (props) => {
 
       <Divider />
 
-      <Container sx={{ mt: 3 }}>
+      <Container
+        sx={{
+          mt: 3,
+          height: '460px',
+          overflow: dataAddresses?.length > 2 ? 'scroll' : 'none',
+        }}
+      >
         {!dataAddresses?.length ? (
           <Box mt={5} sx={{ display: 'flex', justifyContent: 'center' }}>
             <Typography width={200} fontSize="20px" fontWeight="bold">

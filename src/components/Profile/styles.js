@@ -1,6 +1,10 @@
 import { makeStyles } from '@mui/styles';
 
 export default makeStyles((theme) => ({
+  emptyTabPanel: {
+    marginTop: '-20px',
+  },
+
   image: {
     borderRadius: '50%',
   },

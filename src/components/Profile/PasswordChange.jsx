@@ -58,7 +58,6 @@ const PasswordChange = (props) => {
       newPassword,
       rePassword: confirmNewPassword,
     });
-    console.log(originalStatus);
 
     if (originalStatus === 200) {
       alert(

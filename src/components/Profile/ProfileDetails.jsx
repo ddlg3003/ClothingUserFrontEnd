@@ -29,7 +29,6 @@ const ProfileDetails = (props) => {
 
   const { data: userInformation, isFetching: isFetchingUserInformation } =
     useGetProfileQuery();
-  console.log(userInformation);
   // image upload
   const [fileContent, setFileContent] = useState({
     content: '',
