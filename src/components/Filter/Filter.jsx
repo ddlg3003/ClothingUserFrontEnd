@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   FormControl,
   InputLabel,
@@ -11,18 +11,10 @@ import {
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { PRODUCT_QUERY_STRING } from '../../utils/globalVariables';
 import useStyles from './styles';
-import { useLocation } from 'react-router-dom';
 
 const Filter = ({ query, setSearchParams, ratingInit }) => {
   const classes = useStyles();
-  const location = useLocation();
-  const [rating, setRating] = useState('');
   const [price, setPrice] = useState('');
-
-  useEffect(() => {
-    setRating(ratingInit);
-    setPrice('');
-  }, [location]);
 
   const handleRatingChange = (e) => {
     query[PRODUCT_QUERY_STRING.rating] = e.target.value;
@@ -57,7 +49,7 @@ const Filter = ({ query, setSearchParams, ratingInit }) => {
         <Select
           labelId="rating-label"
           id="rating"
-          value={rating}
+          value={ratingInit}
           label="Rating"
           onChange={handleRatingChange}
           className={classes.select}

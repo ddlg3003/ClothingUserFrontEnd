@@ -30,13 +30,14 @@ const ProductListMore = () => {
   const searchInit = searchParams.get(PRODUCT_QUERY_STRING.keyword);
 
   const catNum = parseInt(searchParams.get(PRODUCT_QUERY_STRING.cat)); // Get the query of cat for validation
-  const catInit = Number.isInteger(catNum) ? catNum : null;
+  const catInit = Number.isInteger(catNum) ? catNum : '';
 
-  const ratingNum = parseInt(searchParams.get(PRODUCT_QUERY_STRING.rating));
+  const ratingNum =
+    parseInt(searchParams.get(PRODUCT_QUERY_STRING.rating)) || '';
   const ratingInit =
     Number.isInteger(ratingNum) && ratingNum >= 3 && ratingNum <= 5
       ? ratingNum
-      : null;
+      : '';
 
   const query = {
     [PRODUCT_QUERY_STRING.page]: pageInit,
