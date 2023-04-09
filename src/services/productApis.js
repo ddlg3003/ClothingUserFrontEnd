@@ -31,6 +31,13 @@ const product = clothing.injectEndpoints({
       query: (userId) => `${PYTHON_URL}/recommend/${userId}`,
       providesTags: ['Wishlist'],
     }),
+    searchProductByImage: builder.mutation({
+      query: (file) => ({
+        url: `${PYTHON_URL}/search-by-image`,
+        method: 'POST',
+        body: file,
+      }),
+    }),
   }),
   overrideExisting: false,
 });
@@ -43,4 +50,5 @@ export const {
   useGetTypesPropsQuery,
   useGetProductsImagesQuery,
   useGetRecommendedProductsQuery,
+  useSearchProductByImageMutation,
 } = product;

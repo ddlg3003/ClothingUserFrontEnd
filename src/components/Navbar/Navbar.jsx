@@ -11,8 +11,10 @@ import {
   MenuItem,
   Avatar,
   Badge,
+  Stack,
 } from '@mui/material';
 import { TextField, InputAdornment } from '@mui/material';
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import { Search as SearchIcon, Menu as MenuIcon } from '@mui/icons-material';
 import LoginIcon from '@mui/icons-material/Login';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -25,10 +27,11 @@ import { useGetCartQuery } from '../../services/cartApis';
 import AutoCompleteSearch from './AutoCompleteSearch';
 import { logout } from '../../features/auth';
 import decode from 'jwt-decode';
-import { useDebounce } from '../../utils/helperFunction';
+import { isValidImage, useDebounce } from '../../utils/helperFunction';
 import useStyles from './styles';
 import { useGetProfileQuery } from '../../services/userApis';
 import { useRef } from 'react';
+import { updateImage } from '../../features/image';
 
 const Navbar = () => {
   const classes = useStyles();
@@ -166,6 +169,20 @@ const Navbar = () => {
     }, 50);
   };
 
+  const openFileSelector = (e) => {
+    if (isValidImage(e.target.files[0])) {
+      dispatch(
+        updateImage({
+          content: URL.createObjectURL(e.target.files[0]), // URL for show in UI
+          file: e.target.files[0], // file to upload to cloudinary
+        }),
+      );
+      navigate('/products/search-by-image');
+    } else {
+      alert('error');
+    }
+  };
+
   return (
     <>
       <AppBar position="fixed">
@@ -183,32 +200,47 @@ const Navbar = () => {
             </IconButton>
           )}
           <div ref={searchRef} className={classes.search}>
-            <TextField
-              onKeyPress={handleKeyPress}
-              value={query}
-              sx={{ width: '100%' }}
-              onChange={handleSearchChange}
-              variant="standard"
-              InputProps={{
-                // className: classes.input,
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-              }}
-            />
-            {!isMobile ? (
-              <AutoCompleteSearch
-                hidden={notOpenAutoComplete}
-                query={debouncedQuery}
-                setQuery={setQuery}
-                setNotOpenAutoComplete={setNotOpenAutoComplete}
+            <Stack direction="row" spacing={1}>
+              <TextField
+                placeholder="Nhập tên sản phẩm"
+                onKeyPress={handleKeyPress}
+                value={query}
+                sx={{ width: '100%' }}
+                onChange={handleSearchChange}
+                variant="standard"
+                InputProps={{
+                  // className: classes.input,
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon />
+                    </InputAdornment>
+                  ),
+                }}
               />
-            ) : (
-              <></>
-            )}
+              {!isMobile ? (
+                <AutoCompleteSearch
+                  hidden={notOpenAutoComplete}
+                  query={debouncedQuery}
+                  setQuery={setQuery}
+                  setNotOpenAutoComplete={setNotOpenAutoComplete}
+                />
+              ) : (
+                <></>
+              )}
+              <Button component="label">
+                <CameraAltIcon color="black" />
+                <input
+                  name="image"
+                  accept="image/*"
+                  id="contained-button-file"
+                  type="file"
+                  hidden
+                  onChange={openFileSelector}
+                />
+              </Button>
+            </Stack>
           </div>
+
           <div>
             <Button component={Link} to="/cart" color="black">
               <Badge badgeContent={dataCartList?.length} color="error">
