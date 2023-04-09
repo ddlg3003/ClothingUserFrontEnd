@@ -217,16 +217,7 @@ const Navbar = () => {
                   ),
                 }}
               />
-              {!isMobile ? (
-                <AutoCompleteSearch
-                  hidden={notOpenAutoComplete}
-                  query={debouncedQuery}
-                  setQuery={setQuery}
-                  setNotOpenAutoComplete={setNotOpenAutoComplete}
-                />
-              ) : (
-                <></>
-              )}
+
               <Button component="label">
                 <CameraAltIcon color="black" />
                 <input
@@ -239,6 +230,16 @@ const Navbar = () => {
                 />
               </Button>
             </Stack>
+            {!isMobile ? (
+              <AutoCompleteSearch
+                hidden={notOpenAutoComplete}
+                query={debouncedQuery}
+                setQuery={setQuery}
+                setNotOpenAutoComplete={setNotOpenAutoComplete}
+              />
+            ) : (
+              <></>
+            )}
           </div>
 
           <div>
