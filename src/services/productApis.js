@@ -1,15 +1,15 @@
 import { clothing } from './clothingBaseApis';
-import { PYTHON_URL } from '../utils/globalVariables';
+import { PYTHON_URL, LIMIT } from '../utils/globalVariables';
 
 const product = clothing.injectEndpoints({
   endpoints: (builder) => ({
     getProducts: builder.query({
-      query: ({ pageNumber, pageSize, cat, keyword }) => {
-        if (!keyword) {
-          return `product?pageNo=${pageNumber}&pageSize=${pageSize}&catId=${cat}`;
-        }
+      query: ({ page, cat, keyword, rating }) => {
+        cat = cat ? cat : '';
+        keyword = keyword ? keyword : '';
+        rating = rating ? rating : '';
 
-        return `product/search?keyword=${keyword}&pageNo=${pageNumber}&pageSize=${pageSize}`;
+        return `product?keyword=${keyword}&pageNo=${page}&pageSize=${LIMIT}&catId=${cat}&rating=${rating}`;
       },
     }),
     getProduct: builder.query({

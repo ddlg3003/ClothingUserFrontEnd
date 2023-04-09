@@ -3,7 +3,7 @@ import { makeStyles } from '@mui/styles';
 export default makeStyles((theme) => ({
   toolbar: {
     margin: '0 100px',
-    height: '80px',
+    height: '70px',
     borderBottom: '1px solid #dedede',
     display: 'flex',
     justifyContent: 'space-between',

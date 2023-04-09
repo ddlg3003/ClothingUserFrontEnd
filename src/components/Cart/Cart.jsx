@@ -21,7 +21,6 @@ import useStyles from './styles';
 import DeleteAlertDialog from './DeleteAlertDialog';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  LIMIT,
   PRODUCT_QUERY_STRING,
   URL_REGEX,
   COLOR_LIST,

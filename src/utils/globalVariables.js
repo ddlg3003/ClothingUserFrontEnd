@@ -38,6 +38,7 @@ export const PRODUCT_QUERY_STRING = {
   limit: 'limit',
   cat: 'cat',
   keyword: 'keyword',
+  rating: 'rating',
 };
 
 export const PROFILE_QUERY_STRING = {

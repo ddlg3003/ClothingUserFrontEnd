@@ -3,16 +3,15 @@ import { Typography, Button, CircularProgress, Box } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useGetProductsQuery } from '../../services/productApis';
 import Products from '../Products/Products';
-import { LIMIT, PRODUCT_QUERY_STRING } from '../../utils/globalVariables';
+import { PRODUCT_QUERY_STRING } from '../../utils/globalVariables';
 import RecommendList from '../RecommendList/RecommendList';
 import useStyles from './styles';
 
 const PorductList = () => {
   const classes = useStyles();
   const { data, isFetching } = useGetProductsQuery({
-    pageNumber: 1,
+    page: 1,
     pageSize: 8,
-    cat: '',
   });
 
   return (

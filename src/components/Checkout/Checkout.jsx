@@ -68,7 +68,7 @@ const Checkout = () => {
         }
 
         navigate(
-          `/profile?${PROFILE_QUERY_STRING.tab}=${SIDEBAR_STATE.address}`,
+          `/profile?${PROFILE_QUERY_STRING.tab}=${SIDEBAR_STATE.orders}`,
         );
       } else {
         const { data: VNPAYData } = await createVNPAYOrder([
