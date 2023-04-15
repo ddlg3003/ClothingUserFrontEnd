@@ -12,6 +12,7 @@ import Auth from './Auth/Auth';
 import Checkout from './Checkout/Checkout';
 import ForgotPassword from './ForgotPassword/ForgotPassword';
 import { useSelector } from 'react-redux';
+import SearchByImageList from './SearchByImageList/SearchByImageList';
 import useStyles from './styles';
 
 const App = () => {
@@ -28,6 +29,10 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/products/:name" element={<ProductDetail />} />
           <Route path="/products/" element={<ProductListMore />} />
+          <Route
+            path="/products/search-by-image"
+            element={<SearchByImageList />}
+          />
           <Route
             path="/cart"
             element={

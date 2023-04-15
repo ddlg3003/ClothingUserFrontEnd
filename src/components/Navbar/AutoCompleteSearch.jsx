@@ -38,7 +38,7 @@ const AutoCompleteSearch = ({
 
   return (
     <Paper
-      sx={{ position: 'absolute', width: '100%', zIndex: 99 }}
+      sx={{ position: 'absolute', width: '90%', zIndex: 99 }}
       hidden={hidden}
     >
       {isFetchingProducts ? (
