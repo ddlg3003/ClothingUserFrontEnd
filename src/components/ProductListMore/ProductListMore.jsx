@@ -24,16 +24,14 @@ const ProductListMore = () => {
   // 3 main query: page, limit, cat
   const pageNum = parseInt(searchParams.get(PRODUCT_QUERY_STRING.page)); // Get the query of page for validation
   const pageInit = Number.isInteger(pageNum) && pageNum > 0 ? pageNum : 1;
-
-  // const limitNum = parseInt(searchParams.get(PRODUCT_QUERY_STRING[1])); // Get the query of limit for validation
-  // const limitInit = Number.isInteger(limitNum) && limitNum > 0 ? limitNum : LIMIT;
   const searchInit = searchParams.get(PRODUCT_QUERY_STRING.keyword);
-
   const catNum = parseInt(searchParams.get(PRODUCT_QUERY_STRING.cat)); // Get the query of cat for validation
   const catInit = Number.isInteger(catNum) ? catNum : '';
+  const sortByInit = searchParams.get(PRODUCT_QUERY_STRING.sortBy);
 
   const ratingNum =
     parseInt(searchParams.get(PRODUCT_QUERY_STRING.rating)) || '';
+
   const ratingInit =
     Number.isInteger(ratingNum) && ratingNum >= 3 && ratingNum <= 5
       ? ratingNum
@@ -58,6 +56,11 @@ const ProductListMore = () => {
     query[PRODUCT_QUERY_STRING.rating] = ratingInit;
   }
 
+  // Check if sort_by query exist
+  if (sortByInit) {
+    query[PRODUCT_QUERY_STRING.sortBy] = sortByInit;
+  }
+
   const { data, isFetching } = useGetProductsQuery(query);
 
   const onPageChange = (_, value) => {
@@ -71,6 +74,7 @@ const ProductListMore = () => {
         query={query}
         setSearchParams={setSearchParams}
         ratingInit={ratingInit}
+        sortByInit={sortByInit}
       />
       <div className={classes.container}>
         {isFetching ? (
