@@ -13,6 +13,7 @@ import {
   Stack,
   Tooltip,
   Divider,
+  Pagination,
 } from '@mui/material';
 import Alert from '../Alert/Alert';
 import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied';
@@ -39,17 +40,28 @@ import {
 } from '../../services/wishlistApis';
 import {
   ACTIVE_STATUS,
+  LIMIT,
   PRODUCT_QUERY_STRING,
 } from '../../utils/globalVariables';
 import useStyles from './styles';
 import Comment from './Comment';
-import { useGetCommentsByProductIdQuery } from '../../services/commentApis';
+import {
+  useGetCommentsByProductIdQuery,
+  useGetCommentsByProductIdPaginationQuery,
+} from '../../services/commentApis';
+// import Pagination from '../Pagination/Pagination';
 
 const ProductDetail = () => {
   const classes = useStyles();
   const { name } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [page, setPage] = useState(1);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
 
   const id = parseInt(name.slice(name.indexOf('.') + 1));
 
@@ -74,6 +86,15 @@ const ProductDetail = () => {
   // comment api
   const { data: commentsData, isFetching: isFetchingComments } =
     useGetCommentsByProductIdQuery(id);
+
+  const {
+    data: commentsDataPagination,
+    isFetching: isFetchingCommentsPagination,
+  } = useGetCommentsByProductIdPaginationQuery({
+    pageNo: page,
+    pageSize: 3,
+    productId: id,
+  });
 
   // images list api
   const { data: imgArr, isFetching: isFetchingImgArr } =
@@ -558,17 +579,17 @@ const ProductDetail = () => {
             paddingTop="36px"
             display="block"
           >
-            ĐÁNH GIÁ ({data?.countComment})
+            ĐÁNH GIÁ ({commentsDataPagination?.numberItem})
           </Typography>
         </Grid>
         <Grid
           item
-          sx={{
-            height: '460px',
-            overflow: commentsData?.length > 3 ? 'scroll' : 'none',
-          }}
+          // sx={{
+          //   height: '460px',
+          //   overflow: commentsDataPagination?.list.length > 3 ? 'scroll' : 'none',
+          // }}
         >
-          {commentsData?.length === 0 ? (
+          {commentsDataPagination?.list.length === 0 ? (
             <>
               <Typography
                 letterSpacing="2px"
@@ -581,11 +602,19 @@ const ProductDetail = () => {
               <SentimentDissatisfiedIcon fontSize="large" />
             </>
           ) : (
-            commentsData?.map((comment) => (
-              <Comment keyname={comment?.id} comment={comment} />
+            commentsDataPagination?.list.map((comment) => (
+              <Comment key={comment?.id} comment={comment} />
             ))
           )}
         </Grid>
+        <Pagination
+          count={Math.ceil(commentsDataPagination?.numberItem / 3)}
+          shape="rounded"
+          page={page}
+          // size={isMobile ? 'small' : 'large'}
+          // siblingCount={isMobile ? -1 : 2}
+          onChange={handleChangePage}
+        />
       </Grid>
       <Modal
         closeAfterTransition
