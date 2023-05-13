@@ -53,7 +53,7 @@ const Footer = () => {
             variant="caption"
             gutterBottom={false}
           >
-            ©2022 ADNCloth.
+            ©2023 ADNCloth.
           </Typography>
         </Box>
       </Container>

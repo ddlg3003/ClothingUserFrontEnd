@@ -39,6 +39,7 @@ export const PRODUCT_QUERY_STRING = {
   cat: 'cat',
   keyword: 'keyword',
   rating: 'rating',
+  sortBy: 'sort_by',
 };
 
 export const PROFILE_QUERY_STRING = {
@@ -121,3 +122,9 @@ export const COLOR_LIST = [
     name: 'Tím',
   },
 ];
+
+export const SORT_CRITERIA = {
+  priceAsc: 'price-asc',
+  priceDesc: 'price-desc',
+  soldDesc: 'sold-desc',
+};

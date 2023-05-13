@@ -31,3 +31,32 @@ export function isValidImage(img) {
   }
   return false;
 }
+
+export function sortParamTransformer(str) {
+  if (typeof str !== 'string') {
+    return '';
+  }
+
+  const arr = str.split('-');
+
+  const direction = {
+    asc: 'asc',
+    desc: 'desc',
+  };
+
+  if (arr[1] === direction.asc) {
+    arr.pop();
+
+    str = arr.join('');
+    str = 'type.' + str;
+  } else if (arr[1] === direction.desc) {
+    arr.pop();
+
+    str = arr.join('');
+    str = '-type.' + str;
+  } else {
+    str = '';
+  }
+
+  return str;
+}

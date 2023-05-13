@@ -1,15 +1,25 @@
 import { clothing } from './clothingBaseApis';
 import { PYTHON_URL, LIMIT } from '../utils/globalVariables';
+import { sortParamTransformer } from '../utils/helperFunction';
 
 const product = clothing.injectEndpoints({
   endpoints: (builder) => ({
     getProducts: builder.query({
-      query: ({ page, cat, keyword, rating }) => {
+      query: ({ page, cat, keyword, rating, sort_by: sortBy }) => {
+        let endpoint = '';
+
+        if (keyword) {
+          endpoint = 'product/elastic-search';
+        } else {
+          endpoint = 'product';
+        }
+
         cat = cat ? cat : '';
         keyword = keyword ? keyword : '';
         rating = rating ? rating : '';
+        sortBy = sortParamTransformer(sortBy);
 
-        return `product?keyword=${keyword}&pageNo=${page}&pageSize=${LIMIT}&catId=${cat}&rating=${rating}`;
+        return `${endpoint}?keyword=${keyword}&pageNo=${page}&pageSize=${LIMIT}&catId=${cat}&rating=${rating}&sortBy=${sortBy}`;
       },
     }),
     getProduct: builder.query({
