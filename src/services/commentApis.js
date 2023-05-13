@@ -14,9 +14,17 @@ const comment = clothing.injectEndpoints({
       }),
       invalidatesTags: ['Comment'],
     }),
+    getCommentsByProductIdPagination: builder.query({
+      query: ({ pageNo, pageSize, productId }) =>
+        `comment?pageNo=${pageNo}&pageSize=${pageSize}&productId=${productId}`,
+      invalidatesTags: ['Comment'],
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useAddCommentMutation, useGetCommentsByProductIdQuery } =
-  comment;
+export const {
+  useAddCommentMutation,
+  useGetCommentsByProductIdQuery,
+  useGetCommentsByProductIdPaginationQuery,
+} = comment;

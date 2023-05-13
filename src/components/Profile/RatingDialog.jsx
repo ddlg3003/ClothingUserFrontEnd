@@ -41,6 +41,7 @@ const RatingDialog = (props) => {
   };
 
   const handleConfirmClick = async () => {
+    console.log(orderDetails);
     await addComment({
       comContent: ratings.comContent,
       comRating: ratings.comRating,
