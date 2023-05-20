@@ -40,7 +40,6 @@ import {
 } from '../../services/wishlistApis';
 import {
   ACTIVE_STATUS,
-  LIMIT,
   PRODUCT_QUERY_STRING,
 } from '../../utils/globalVariables';
 import useStyles from './styles';
@@ -59,7 +58,7 @@ const ProductDetail = () => {
 
   const [page, setPage] = useState(1);
 
-  const handleChangePage = (event, newPage) => {
+  const handleChangePage = (_, newPage) => {
     setPage(newPage);
   };
 
@@ -84,17 +83,15 @@ const ProductDetail = () => {
   const { data: dataCartList } = useGetCartQuery();
 
   // comment api
-  const { data: commentsData, isFetching: isFetchingComments } =
-    useGetCommentsByProductIdQuery(id);
+  // const { data: commentsData, isFetching: isFetchingComments } =
+  //   useGetCommentsByProductIdQuery(id);
 
-  const {
-    data: commentsDataPagination,
-    isFetching: isFetchingCommentsPagination,
-  } = useGetCommentsByProductIdPaginationQuery({
-    pageNo: page,
-    pageSize: 3,
-    productId: id,
-  });
+  const { data: commentsDataPagination } =
+    useGetCommentsByProductIdPaginationQuery({
+      pageNo: page,
+      pageSize: 3,
+      productId: id,
+    });
 
   // images list api
   const { data: imgArr, isFetching: isFetchingImgArr } =
@@ -589,7 +586,7 @@ const ProductDetail = () => {
           //   overflow: commentsDataPagination?.list.length > 3 ? 'scroll' : 'none',
           // }}
         >
-          {commentsDataPagination?.list.length === 0 ? (
+          {!commentsDataPagination?.list.length ? (
             <>
               <Typography
                 letterSpacing="2px"
@@ -607,14 +604,18 @@ const ProductDetail = () => {
             ))
           )}
         </Grid>
-        <Pagination
-          count={Math.ceil(commentsDataPagination?.numberItem / 3)}
-          shape="rounded"
-          page={page}
-          // size={isMobile ? 'small' : 'large'}
-          // siblingCount={isMobile ? -1 : 2}
-          onChange={handleChangePage}
-        />
+        {commentsDataPagination?.list.length ? (
+          <Pagination
+            count={Math.ceil(commentsDataPagination?.numberItem / 3)}
+            shape="rounded"
+            page={page}
+            // size={isMobile ? 'small' : 'large'}
+            // siblingCount={isMobile ? -1 : 2}
+            onChange={handleChangePage}
+          />
+        ) : (
+          <></>
+        )}
       </Grid>
       <Modal
         closeAfterTransition
@@ -626,7 +627,7 @@ const ProductDetail = () => {
         onClose={() => setOpen(false)}
       >
         <Fade in={open} timeout={500} style={{ outline: 'none' }}>
-          <img src={image} className={classes.image} />
+          <img src={image} alt="" className={classes.image} />
         </Fade>
       </Modal>
     </Grid>

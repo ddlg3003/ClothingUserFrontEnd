@@ -1,5 +1,5 @@
 import { clothing } from './clothingBaseApis';
-import { PYTHON_URL, LIMIT } from '../utils/globalVariables';
+import { RECOMMEND_URL, LIMIT, AI_URL } from '../utils/globalVariables';
 import { sortParamTransformer } from '../utils/helperFunction';
 
 const product = clothing.injectEndpoints({
@@ -38,12 +38,12 @@ const product = clothing.injectEndpoints({
       query: (productId) => `product/${productId}/imageDetail`,
     }),
     getRecommendedProducts: builder.query({
-      query: (userId) => `${PYTHON_URL}/recommend/${userId}`,
+      query: (userId) => `${RECOMMEND_URL}/recommend/${userId}`,
       providesTags: ['Wishlist'],
     }),
     searchProductByImage: builder.mutation({
       query: (file) => ({
-        url: `${PYTHON_URL}/search-by-image`,
+        url: `${AI_URL}/search-by-image`,
         method: 'POST',
         body: file,
       }),

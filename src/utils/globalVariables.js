@@ -77,7 +77,9 @@ export const axiosConfig = () => {
   };
 };
 
-export const PYTHON_URL = 'http://localhost:8081';
+export const RECOMMEND_URL = 'http://localhost:8081';
+
+export const AI_URL = 'http://localhost:8088';
 
 export const RECOVERY_QUERY_STRING = {
   step: 'step',
