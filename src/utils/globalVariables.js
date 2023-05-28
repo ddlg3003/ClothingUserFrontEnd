@@ -31,7 +31,8 @@ export const SIDEBAR_STATE = {
   orders: 'orders',
 };
 
-export const BASE_API_URL = 'http://localhost:8099';
+// export const BASE_API_URL = 'http://localhost:8099';
+export const BASE_API_URL = 'https://nda-clothing-web.herokuapp.com';
 
 export const PRODUCT_QUERY_STRING = {
   page: 'page',
