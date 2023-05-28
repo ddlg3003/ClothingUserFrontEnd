@@ -11,5 +11,4 @@ npm i --legacy-peer-deps
 npm start
 ```
 ## Hosting
-https://adncloth.netlify.app/
-Dung vao trang dang nhap
+https://adncloth.netlify.app
