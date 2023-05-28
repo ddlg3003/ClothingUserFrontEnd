@@ -60,6 +60,16 @@ const App = () => {
               isAuthenticated ? <Profile /> : <Navigate replace to="/auth" />
             }
           />
+          <Route
+            path="/faq"
+            element={
+              isAuthenticated ? (
+                <QuestionAnswer />
+              ) : (
+                <Navigate replace to="/auth" />
+              )
+            }
+          />
         </Route>
         <Route element={<NotNavAndFooter />}>
           <Route
@@ -73,16 +83,6 @@ const App = () => {
                 <ForgotPassword />
               ) : (
                 <Navigate replace to="/" />
-              )
-            }
-          />
-          <Route
-            path="/faq"
-            element={
-              isAuthenticated ? (
-                <QuestionAnswer />
-              ) : (
-                <Navigate replace to="/auth" />
               )
             }
           />
