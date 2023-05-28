@@ -6,6 +6,7 @@ import {
   Button,
   Divider,
   Grid,
+  TextField,
 } from '@mui/material';
 import {
   BLACK_LOGO,
@@ -300,7 +301,7 @@ const Auth = () => {
           <img src={logo} />
         </Link>
         <form className={classes.form} onSubmit={handleSubmit}>
-          {/* <Input
+          <TextField
             name="username"
             label="Username"
             handleChange={handleUsernameChange}
@@ -310,7 +311,7 @@ const Auth = () => {
           />
           {isRegister ? (
             <>
-              <Input
+              <TextField
                 name="phone"
                 label="Số điện thoại"
                 handleChange={handlePhoneChange}
@@ -318,7 +319,7 @@ const Auth = () => {
                 helperText={invalidPhone.helperText}
                 inputRef={phoneInput}
               />
-              <Input
+              <TextField
                 name="email"
                 label="Email"
                 handleChange={handleEmailChange}
@@ -329,7 +330,7 @@ const Auth = () => {
               />
             </>
           ) : null}
-          <Input
+          {/* <Input
             name="password"
             label="Mật khẩu"
             handleChange={handlePasswordChange}
