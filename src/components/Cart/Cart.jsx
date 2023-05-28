@@ -196,7 +196,7 @@ const Cart = () => {
                               {
                                 COLOR_LIST.find(
                                   (item) => item.color === data?.color,
-                                ).name
+                                )?.name
                               }
                             </Typography>
                             <Typography

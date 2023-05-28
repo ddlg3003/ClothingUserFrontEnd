@@ -90,7 +90,7 @@ const CartItems = ({ cartItems }) => {
                           {
                             COLOR_LIST.find(
                               (colorItem) => colorItem.color === item.color,
-                            ).name
+                            )?.name
                           }
                           , {item.size}
                         </Typography>

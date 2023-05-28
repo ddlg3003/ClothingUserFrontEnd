@@ -1,5 +1,9 @@
 import { clothing } from './clothingBaseApis';
-import { RECOMMEND_URL, LIMIT, AI_URL } from '../utils/globalVariables';
+import {
+  RECOMMEND_URL,
+  LIMIT,
+  SEARCH_BY_IMAGE_URL,
+} from '../utils/globalVariables';
 import { sortParamTransformer } from '../utils/helperFunction';
 
 const product = clothing.injectEndpoints({
@@ -43,7 +47,7 @@ const product = clothing.injectEndpoints({
     }),
     searchProductByImage: builder.mutation({
       query: (file) => ({
-        url: `${AI_URL}/search-by-image`,
+        url: `${SEARCH_BY_IMAGE_URL}/search-by-image`,
         method: 'POST',
         body: file,
       }),

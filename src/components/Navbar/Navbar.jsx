@@ -129,7 +129,7 @@ const Navbar = () => {
   const handleLogout = () => {
     setAnchorElAuth(null);
 
-    window.location.href = 'http://localhost:3000/auth';
+    window.location.href = '/auth';
 
     dispatch(logout());
   };

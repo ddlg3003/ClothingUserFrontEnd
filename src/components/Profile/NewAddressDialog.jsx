@@ -18,16 +18,6 @@ import {
 } from '../../services/locationApis';
 import Alert from '../Alert/Alert';
 
-const top100Films = [
-  { label: 'The Shawshank Redemption', year: 1994 },
-  { label: 'The Godfather', year: 1972 },
-  { label: 'The Godfather: Part II', year: 1974 },
-  { label: 'The Dark Knight', year: 2008 },
-  { label: '12 Angry Men', year: 1957 },
-  { label: "Schindler's List", year: 1993 },
-  { label: 'Pulp Fiction', year: 1994 },
-];
-
 const NewAddressDialog = (props) => {
   const [toastData, setToastData] = useState({
     message: '',
@@ -177,7 +167,7 @@ const NewAddressDialog = (props) => {
           <Stack direction="row" mt={2} spacing={1}>
             <Autocomplete
               id="province-box"
-              options={isFetchingProvinceData ? top100Films : provinceData}
+              options={isFetchingProvinceData ? [] : provinceData}
               sx={{ width: 300 }}
               renderInput={(params) => (
                 <TextField {...params} label="Thành phố" />
@@ -188,7 +178,7 @@ const NewAddressDialog = (props) => {
               key={provinceId}
               disabled={provinceId === 0}
               id="district-box"
-              options={isFetchingDistrictData ? top100Films : districtData}
+              options={isFetchingDistrictData ? [] : districtData}
               sx={{ width: 300 }}
               renderInput={(params) => <TextField {...params} label="Quận" />}
               onChange={handleDistrictChange}
@@ -198,7 +188,7 @@ const NewAddressDialog = (props) => {
               key={districtId + provinceId + 63}
               disabled={districtId === -1}
               id="commune-box"
-              options={isFetchingCommuneData ? top100Films : communeData}
+              options={isFetchingCommuneData ? [] : communeData}
               sx={{ width: 300 }}
               renderInput={(params) => <TextField {...params} label="Phường" />}
               onChange={handleCommuneChange}

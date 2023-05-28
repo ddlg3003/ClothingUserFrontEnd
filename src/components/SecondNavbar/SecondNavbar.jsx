@@ -34,7 +34,13 @@ const SecondNavbar = ({
       >
         Sản phẩm
       </Button>
-      <Button className={classes.navButton} color="black" size="large">
+      <Button
+        component={Link}
+        to="faq"
+        className={classes.navButton}
+        color="black"
+        size="large"
+      >
         Về ADNCloth
       </Button>
     </Stack>

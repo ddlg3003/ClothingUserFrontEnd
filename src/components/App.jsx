@@ -14,6 +14,7 @@ import ForgotPassword from './ForgotPassword/ForgotPassword';
 import { useSelector } from 'react-redux';
 import SearchByImageList from './SearchByImageList/SearchByImageList';
 import useStyles from './styles';
+import QuestionAnswer from './QuestionAnswer/QuestionAnswer';
 
 const App = () => {
   const classes = useStyles();
@@ -57,6 +58,16 @@ const App = () => {
             path="/profile"
             element={
               isAuthenticated ? <Profile /> : <Navigate replace to="/auth" />
+            }
+          />
+          <Route
+            path="/faq"
+            element={
+              isAuthenticated ? (
+                <QuestionAnswer />
+              ) : (
+                <Navigate replace to="/auth" />
+              )
             }
           />
         </Route>
