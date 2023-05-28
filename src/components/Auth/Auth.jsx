@@ -6,9 +6,6 @@ import {
   Button,
   Divider,
   Grid,
-  TextField,
-  InputAdornment,
-  IconButton,
 } from '@mui/material';
 import {
   BLACK_LOGO,
@@ -19,11 +16,9 @@ import {
   RECOVERY_FLOW,
   RECOVERY_QUERY_STRING,
 } from '../../utils/globalVariables';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import GoogleIcon from '@mui/icons-material/Google';
 import FacebookIcon from '@mui/icons-material/Facebook';
-// import Input from '../Input/Input';
+import Input from '../Input/Input';
 import Alert from '../Alert/Alert';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -32,51 +27,6 @@ import { getUserLogin, signup } from '../../utils/auth';
 import LoginIcon from '@mui/icons-material/Login';
 import { LoadingButton } from '@mui/lab';
 import useStyles from './styles';
-
-const Input = ({
-  name,
-  handleChange,
-  label,
-  autoFocus,
-  handleShowPassword,
-  type,
-  helperText,
-  error,
-  inputRef,
-}) => {
-  const classes = useStyles();
-
-  return (
-    <TextField
-      inputRef={inputRef}
-      className={classes.helperText}
-      style={{ marginBottom: '32px' }}
-      name={name}
-      onChange={handleChange}
-      variant="outlined"
-      required
-      fullWidth
-      label={label}
-      autoFocus={autoFocus}
-      type={type}
-      helperText={helperText}
-      error={error}
-      InputProps={
-        name === 'password' || name === 'newPassword'
-          ? {
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton onClick={handleShowPassword}>
-                    {type === 'password' ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }
-          : {}
-      }
-    />
-  );
-};
 
 const Auth = () => {
   const classes = useStyles();
