@@ -70,8 +70,6 @@ const App = () => {
               )
             }
           />
-        </Route>
-        <Route element={<NotNavAndFooter />}>
           <Route
             path="/auth"
             element={!isAuthenticated ? <Auth /> : <Navigate replace to="/" />}
@@ -87,6 +85,7 @@ const App = () => {
             }
           />
         </Route>
+        <Route element={<NotNavAndFooter />}></Route>
       </Routes>
     </div>
   );
