@@ -6,6 +6,10 @@ import {
   Button,
   Divider,
   Grid,
+  TextField,
+  Grid,
+  InputAdornment,
+  IconButton,
 } from '@mui/material';
 import {
   BLACK_LOGO,
@@ -16,6 +20,8 @@ import {
   RECOVERY_FLOW,
   RECOVERY_QUERY_STRING,
 } from '../../utils/globalVariables';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import GoogleIcon from '@mui/icons-material/Google';
 import FacebookIcon from '@mui/icons-material/Facebook';
 // import Input from '../Input/Input';
@@ -26,12 +32,6 @@ import { setUser } from '../../features/auth';
 import { getUserLogin, signup } from '../../utils/auth';
 import LoginIcon from '@mui/icons-material/Login';
 import { LoadingButton } from '@mui/lab';
-import useStyles from './styles';
-
-import React from 'react';
-import { TextField, Grid, InputAdornment, IconButton } from '@material-ui/core';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import useStyles from './styles';
 
 const Input = ({
