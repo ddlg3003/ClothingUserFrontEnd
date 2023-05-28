@@ -24,9 +24,9 @@ const App = () => {
 
   return (
     <div className={classes.root}>
+      <CssBaseline />
       <Routes>
         <Route element={<NavAndFooter />}>
-          <CssBaseline />
           <Route path="/" element={<Home />} />
           <Route path="/products/:name" element={<ProductDetail />} />
           <Route path="/products/" element={<ProductListMore />} />
@@ -72,7 +72,6 @@ const App = () => {
           />
         </Route>
         <Route element={<NotNavAndFooter />}>
-          <CssBaseline />
           <Route
             path="/auth"
             element={!isAuthenticated ? <Auth /> : <Navigate replace to="/" />}
