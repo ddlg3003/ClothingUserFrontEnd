@@ -6,7 +6,6 @@ import {
   Button,
   Divider,
   Grid,
-  TextField,
 } from '@mui/material';
 import {
   BLACK_LOGO,
@@ -19,7 +18,7 @@ import {
 } from '../../utils/globalVariables';
 import GoogleIcon from '@mui/icons-material/Google';
 import FacebookIcon from '@mui/icons-material/Facebook';
-import Input from '../Input/Input';
+// import Input from '../Input/Input';
 import Alert from '../Alert/Alert';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -28,6 +27,57 @@ import { getUserLogin, signup } from '../../utils/auth';
 import LoginIcon from '@mui/icons-material/Login';
 import { LoadingButton } from '@mui/lab';
 import useStyles from './styles';
+
+import React from 'react';
+import { TextField, Grid, InputAdornment, IconButton } from '@material-ui/core';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import useStyles from './styles';
+
+const Input = ({
+  name,
+  handleChange,
+  label,
+  autoFocus,
+  handleShowPassword,
+  type,
+  helperText,
+  error,
+  inputRef,
+}) => {
+  const classes = useStyles();
+
+  return (
+    <TextField
+      inputRef={inputRef}
+      className={classes.helperText}
+      style={{ marginBottom: '32px' }}
+      name={name}
+      onChange={handleChange}
+      variant="outlined"
+      required
+      fullWidth
+      label={label}
+      autoFocus={autoFocus}
+      type={type}
+      helperText={helperText}
+      error={error}
+      InputProps={
+        name === 'password' || name === 'newPassword'
+          ? {
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={handleShowPassword}>
+                    {type === 'password' ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }
+          : {}
+      }
+    />
+  );
+};
 
 const Auth = () => {
   const classes = useStyles();
@@ -301,7 +351,7 @@ const Auth = () => {
           <img src={logo} />
         </Link>
         <form className={classes.form} onSubmit={handleSubmit}>
-          <TextField
+          <Input
             name="username"
             label="Username"
             handleChange={handleUsernameChange}
@@ -311,7 +361,7 @@ const Auth = () => {
           />
           {isRegister ? (
             <>
-              <TextField
+              <Input
                 name="phone"
                 label="Số điện thoại"
                 handleChange={handlePhoneChange}
@@ -319,7 +369,7 @@ const Auth = () => {
                 helperText={invalidPhone.helperText}
                 inputRef={phoneInput}
               />
-              <TextField
+              <Input
                 name="email"
                 label="Email"
                 handleChange={handleEmailChange}
@@ -330,7 +380,7 @@ const Auth = () => {
               />
             </>
           ) : null}
-          {/* <Input
+          <Input
             name="password"
             label="Mật khẩu"
             handleChange={handlePasswordChange}
@@ -351,7 +401,7 @@ const Auth = () => {
               handleShowPassword={handleShowPassword}
               inputRef={retypePasswordInput}
             />
-          ) : null} */}
+          ) : null}
           <LoadingButton
             variant="contained"
             color="black"
