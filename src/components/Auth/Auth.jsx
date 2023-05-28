@@ -300,7 +300,7 @@ const Auth = () => {
           <img src={logo} />
         </Link>
         <form className={classes.form} onSubmit={handleSubmit}>
-          <Input
+          {/* <Input
             name="username"
             label="Username"
             handleChange={handleUsernameChange}
@@ -350,7 +350,7 @@ const Auth = () => {
               handleShowPassword={handleShowPassword}
               inputRef={retypePasswordInput}
             />
-          ) : null}
+          ) : null} */}
           <LoadingButton
             variant="contained"
             color="black"
