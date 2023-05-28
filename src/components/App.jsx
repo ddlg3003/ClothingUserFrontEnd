@@ -70,16 +70,12 @@ const App = () => {
               )
             }
           />
+        </Route>
+        <Route element={<NotNavAndFooter />}>
           <Route
             path="/auth"
             element={!isAuthenticated ? <Auth /> : <Navigate replace to="/" />}
           />
-        </Route>
-        <Route element={<NotNavAndFooter />}>
-          {/* <Route
-            path="/auth"
-            element={!isAuthenticated ? <Auth /> : <Navigate replace to="/" />}
-          /> */}
           <Route
             path="/recovery"
             element={
