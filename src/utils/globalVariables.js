@@ -133,3 +133,8 @@ export const SORT_CRITERIA = {
   priceDesc: 'price-desc',
   soldDesc: 'sold-desc',
 };
+
+export const ROLES = {
+  assistant: 'assistant',
+  user: 'user',
+};

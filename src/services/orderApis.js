@@ -14,6 +14,13 @@ const order = clothing.injectEndpoints({
       }),
       invalidatesTags: ['Cart', 'Order'],
     }),
+    denyOrder: builder.mutation({
+      query: (orderId) => ({
+        url: `user/order/deny/${orderId}`,
+        method: 'POST',
+      }),
+      invalidatesTags: ['Order'],
+    }),
     createVNPAYOrder: builder.mutation({
       query: (formData) => ({
         url: 'user/order/payment/vnpay',
@@ -30,4 +37,5 @@ export const {
   useGetAllOrdersQuery,
   useCreateOrderMutation,
   useCreateVNPAYOrderMutation,
+  useDenyOrderMutation,
 } = order;

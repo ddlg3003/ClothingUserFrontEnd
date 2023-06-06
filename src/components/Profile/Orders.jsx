@@ -25,11 +25,22 @@ import RatingDialog from './RatingDialog';
 import StickyNote2Icon from '@mui/icons-material/StickyNote2';
 import { StickyNote2 } from '@mui/icons-material';
 import useStyles from './styles';
+import CancelAlertDialog from './CancelAlertDialog';
 
 const Orders = (props) => {
   const classes = useStyles();
   const [orderStatus, setOrderStatus] = useState('');
   const [openRatingDialog, setOpenRatingDialog] = useState(false);
+
+  const [openCancelOrderDialog, setOpenCancelOrderDialog] = useState(false);
+
+  const handleCancelOrderClick = () => {
+    setOpenCancelOrderDialog(true);
+  };
+
+  const handleCloseCancelOrder = () => {
+    setOpenCancelOrderDialog(false);
+  };
 
   const { data: allUserOrders, isFetching: isFetchingUserOrders } =
     useGetAllOrdersQuery(orderStatus);
@@ -227,43 +238,107 @@ const Orders = (props) => {
                     alignItems="center"
                     sx={{ background: '#Fbf9f8' }}
                   >
-                    <Stack p={1} width="400px">
-                      <Typography fontWeight="bold" fontSize={16}>
-                        SĐT: {order?.ordPhone}
-                      </Typography>
-                      <Typography color="text.secondary">
-                        {order?.ordAddress}
-                      </Typography>
-                      <Typography color="text.secondary">
-                        {order?.ordDate}
-                      </Typography>
-                    </Stack>
-                    <Chip
-                      color={
-                        Object.values(ORDER_STATUS).find(
-                          (o) => o.status === order?.ordStatus,
-                        ).color
-                      }
-                      variant="outlined"
-                      icon={<FiberManualRecordIcon />}
-                      label={
-                        Object.values(ORDER_STATUS).find(
-                          (o) => o.status === order?.ordStatus,
-                        ).string
-                      }
-                    />
+                    {order?.ordStatus === ORDER_STATUS.pending.status ? (
+                      <>
+                        <Stack p={1} width="400px">
+                          <Typography fontWeight="bold" fontSize={16}>
+                            SĐT: {order?.ordPhone}
+                          </Typography>
+                          <Typography color="text.secondary">
+                            {order?.ordAddress}
+                          </Typography>
+                          <Typography color="text.secondary">
+                            {order?.ordDate}
+                          </Typography>
+                        </Stack>
+                        <Chip
+                          color={
+                            Object.values(ORDER_STATUS).find(
+                              (o) => o.status === order?.ordStatus,
+                            ).color
+                          }
+                          variant="outlined"
+                          icon={<FiberManualRecordIcon />}
+                          label={
+                            Object.values(ORDER_STATUS).find(
+                              (o) => o.status === order?.ordStatus,
+                            ).string
+                          }
+                        />
+                        <Stack direction="column">
+                          <Typography
+                            p={1}
+                            color="error"
+                            fontWeight="bold"
+                            fontSize={22}
+                          >
+                            {Intl.NumberFormat('vi-VN', {
+                              style: 'currency',
+                              currency: 'VND',
+                            }).format(
+                              order?.ordTotalPrice + order?.ordShippingFee,
+                            )}
+                          </Typography>
+                          <Button
+                            color="error"
+                            variant="contained"
+                            component="label"
+                            style={{ color: 'white' }}
+                            onClick={() => handleCancelOrderClick()}
+                          >
+                            Hủy đơn
+                          </Button>
+                          <CancelAlertDialog
+                            open={openCancelOrderDialog}
+                            onClose={handleCloseCancelOrder}
+                            item={order?.id}
+                            handleConfirmDeleteClick={handleCancelOrderClick}
+                          />
+                        </Stack>
+                      </>
+                    ) : (
+                      <>
+                        <Stack p={1} width="400px">
+                          <Typography fontWeight="bold" fontSize={16}>
+                            SĐT: {order?.ordPhone}
+                          </Typography>
+                          <Typography color="text.secondary">
+                            {order?.ordAddress}
+                          </Typography>
+                          <Typography color="text.secondary">
+                            {order?.ordDate}
+                          </Typography>
+                        </Stack>
+                        <Chip
+                          color={
+                            Object.values(ORDER_STATUS).find(
+                              (o) => o.status === order?.ordStatus,
+                            ).color
+                          }
+                          variant="outlined"
+                          icon={<FiberManualRecordIcon />}
+                          label={
+                            Object.values(ORDER_STATUS).find(
+                              (o) => o.status === order?.ordStatus,
+                            ).string
+                          }
+                        />
 
-                    <Typography
-                      p={1}
-                      color="error"
-                      fontWeight="bold"
-                      fontSize={22}
-                    >
-                      {Intl.NumberFormat('vi-VN', {
-                        style: 'currency',
-                        currency: 'VND',
-                      }).format(order?.ordTotalPrice + order?.ordShippingFee)}
-                    </Typography>
+                        <Typography
+                          p={1}
+                          color="error"
+                          fontWeight="bold"
+                          fontSize={22}
+                        >
+                          {Intl.NumberFormat('vi-VN', {
+                            style: 'currency',
+                            currency: 'VND',
+                          }).format(
+                            order?.ordTotalPrice + order?.ordShippingFee,
+                          )}
+                        </Typography>
+                      </>
+                    )}
                   </Stack>
                   <Divider />
                 </div>

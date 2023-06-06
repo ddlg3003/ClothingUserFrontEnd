@@ -13,29 +13,66 @@ import {
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { useGetAnswerMutation } from '../../services/questionApis';
+import { ROLES } from '../../utils/globalVariables';
 
 const QuestionAnswer = () => {
   const [getAnswer, { isLoading }] = useGetAnswerMutation();
 
-  const [formData, setFormData] = useState({
-    question: '',
-  });
+  const [content, setContent] = useState('');
+
+  const [context, setContext] = useState([]);
 
   const [answer, setAnswer] = useState(
     'Xin chào! Tôi là trợ lý Q&A của cửa hàng ADNCloth. Hãy đưa ra câu hỏi của bạn để tôi có thể hỗ trợ bạn. Tuy nhiên, tôi chỉ có thể trả lời những câu hỏi liên quan đến sản phẩm của cửa hàng.',
   );
 
-  const handleQuestion = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      question: e.target.value,
-    }));
+  const handleContent = (e) => {
+    setContent(e.target.value);
   };
 
   const handleSubmit = async (e) => {
     try {
+      setContext((prev) => {
+        if (prev.length > 4) {
+          prev.splice(0, 2);
+        }
+
+        return [
+          ...prev,
+          {
+            role: ROLES.user,
+            content,
+          },
+        ];
+      });
+
+      const formData = {
+        messages: [
+          ...context,
+          {
+            role: ROLES.user,
+            content,
+          },
+        ],
+      };
+
       const res = await getAnswer(formData);
       setAnswer(res?.data.content);
+
+      console.log(res?.data);
+
+      setContext((prev) => {
+        if (prev.length > 4) {
+          prev.splice(0, 2);
+        }
+        return [
+          ...prev,
+          {
+            role: ROLES.assistant,
+            content: res?.data.content,
+          },
+        ];
+      });
     } catch (error) {
       setAnswer('Đã có lỗi xảy ra');
     }
@@ -56,8 +93,9 @@ const QuestionAnswer = () => {
           <Alert severity="info">
             Đặt câu hỏi, vui lòng mô tả <strong>tên sản phẩm</strong>,{' '}
             <strong>kích thước</strong>,.. một cách chi tiết. Đây là câu trả lời
-            được tạo tự động
-            <strong> và có thể không hoàn toàn chính xác</strong>
+            được tạo tự động và có thể
+            <strong> không hoàn toàn chính xác</strong>. Hệ thống có thể ghi nhớ
+            tối đa <strong> 3 câu hỏi gần nhất</strong> của bạn
           </Alert>
         </Stack>
         <TextField
@@ -68,8 +106,8 @@ const QuestionAnswer = () => {
           rows={4}
           fullWidth
           sx={{ mt: 2 }}
-          value={formData.question}
-          onChange={handleQuestion}
+          value={content}
+          onChange={handleContent}
         />
         <LoadingButton
           variant="contained"
@@ -84,7 +122,7 @@ const QuestionAnswer = () => {
           loadingPosition="end"
           type="submit"
           onClick={handleSubmit}
-          disabled={isLoading || !(formData.question.length > 20)}
+          disabled={isLoading || !(content.length > 15)}
           loading={isLoading}
         >
           Gửi
@@ -100,6 +138,7 @@ const QuestionAnswer = () => {
           fontWeight="normal"
           align="left"
           paddingTop="24px"
+          // sx={{whiteSpace: 'pre'}}
         >
           {answer}
         </Typography>
