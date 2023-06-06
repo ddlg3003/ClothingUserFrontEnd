@@ -41,7 +41,7 @@ const SecondNavbar = ({
         color="black"
         size="large"
       >
-        Về ADNCloth
+        Q&A
       </Button>
     </Stack>
   );
